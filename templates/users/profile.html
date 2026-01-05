@@ -1,0 +1,439 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Mi Perfil |
+MiXiaomiUnlock{% endblock %} {% block content %}
+<div
+    class="min-h-screen bg-background-light dark:bg-background-dark font-display animate-fade-in pb-20"
+>
+    <!-- Header Background -->
+    <div
+        class="h-48 bg-gradient-to-r from-primary to-[#0F1C2E] relative overflow-hidden"
+    >
+        <div
+            class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"
+        ></div>
+        <div
+            class="absolute -bottom-10 -right-10 w-64 h-64 bg-accent/20 rounded-full blur-3xl"
+        ></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar Navigation -->
+            <div class="w-full md:w-80 flex-shrink-0 space-y-6">
+                <!-- User Card -->
+                <div
+                    class="bg-white dark:bg-card-dark rounded-3xl shadow-lg p-6 text-center border border-gray-100 dark:border-gray-800"
+                >
+                    <div
+                        class="relative w-32 h-32 mx-auto mb-4 group cursor-pointer"
+                    >
+                        <div
+                            class="w-full h-full rounded-full overflow-hidden border-4 border-white dark:border-card-dark shadow-md"
+                        >
+                            <img
+                                id="user-avatar"
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300"
+                                alt="Profile"
+                                class="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div
+                            class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                            <span class="material-icons text-white"
+                                >camera_alt</span
+                            >
+                        </div>
+                    </div>
+                    <h2
+                        id="display-name"
+                        class="text-2xl font-bold text-primary dark:text-white"
+                    >
+                        John Doe
+                    </h2>
+                    <p
+                        id="display-email"
+                        class="text-sm text-gray-500 dark:text-gray-400"
+                    >
+                        john.doe@example.com
+                    </p>
+                    <div class="mt-4 flex justify-center gap-2">
+                        <span
+                            class="px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold"
+                            >Cliente VIP</span
+                        >
+                    </div>
+                </div>
+
+                <!-- Navigation Menu -->
+                <div
+                    class="bg-white dark:bg-card-dark rounded-3xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-800"
+                >
+                    <nav class="flex flex-col">
+                        <button
+                            onclick="switchTab('profile')"
+                            id="nav-profile"
+                            class="nav-btn w-full flex items-center p-4 transition-colors border-l-4 border-accent bg-gray-50 dark:bg-gray-800 text-accent font-bold"
+                        >
+                            <span class="material-icons mr-4">person</span>
+                            Mi Información
+                            <span
+                                class="ml-auto material-icons text-sm opacity-50"
+                                >chevron_right</span
+                            >
+                        </button>
+                        <button
+                            onclick="switchTab('orders')"
+                            id="nav-orders"
+                            class="nav-btn w-full flex items-center p-4 transition-colors border-l-4 border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                        >
+                            <span class="material-icons mr-4">inventory_2</span>
+                            Mis Pedidos
+                            <span
+                                class="ml-auto material-icons text-sm opacity-50"
+                                >chevron_right</span
+                            >
+                        </button>
+                        <button
+                            onclick="switchTab('settings')"
+                            id="nav-settings"
+                            class="nav-btn w-full flex items-center p-4 transition-colors border-l-4 border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                        >
+                            <span class="material-icons mr-4">settings</span>
+                            Configuración
+                            <span
+                                class="ml-auto material-icons text-sm opacity-50"
+                                >chevron_right</span
+                            >
+                        </button>
+                    </nav>
+                    <div class="border-t border-gray-100 dark:border-gray-800">
+                        <button
+                            id="btn-logout"
+                            class="w-full flex items-center p-4 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors font-medium"
+                        >
+                            <span class="material-icons mr-4">logout</span>
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="flex-1">
+                <!-- TAB: PROFILE -->
+                <div
+                    id="tab-profile"
+                    class="tab-content bg-white dark:bg-card-dark rounded-3xl shadow-lg p-8 border border-gray-100 dark:border-gray-800 animate-slide-up"
+                >
+                    <h3
+                        class="text-xl font-bold text-primary dark:text-white mb-6 flex items-center gap-2"
+                    >
+                        <span class="material-icons text-accent"
+                            >edit_note</span
+                        >
+                        Editar Perfil
+                    </h3>
+                    <form id="profile-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    >Nombre</label
+                                >
+                                <input
+                                    type="text"
+                                    id="input-name"
+                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none transition-all"
+                                />
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    >Apellidos</label
+                                >
+                                <input
+                                    type="text"
+                                    id="input-lastname"
+                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none transition-all"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    >Teléfono</label
+                                >
+                                <input
+                                    type="tel"
+                                    id="input-phone"
+                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none transition-all"
+                                />
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="text-xs font-bold text-gray-500 uppercase"
+                                    >Email</label
+                                >
+                                <input
+                                    type="email"
+                                    id="input-email"
+                                    disabled
+                                    class="w-full bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-gray-500 cursor-not-allowed"
+                                />
+                                <span class="text-[10px] text-gray-400"
+                                    >El email no se puede cambiar por
+                                    seguridad.</span
+                                >
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label
+                                class="text-xs font-bold text-gray-500 uppercase"
+                                >Dirección de Envío</label
+                            >
+                            <textarea
+                                id="input-address"
+                                rows="3"
+                                class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none transition-all resize-none"
+                            ></textarea>
+                        </div>
+
+                        <div class="pt-4 flex justify-end">
+                            <button
+                                type="submit"
+                                class="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-accent/20 transition-transform active:scale-95"
+                            >
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TAB: ORDERS -->
+                <div
+                    id="tab-orders"
+                    class="tab-content hidden space-y-6 animate-slide-up"
+                >
+                    <h3
+                        class="text-xl font-bold text-primary dark:text-white mb-6 flex items-center gap-2"
+                    >
+                        <span class="material-icons text-accent">history</span>
+                        Historial de Pedidos
+                    </h3>
+
+                    <!-- Orders Container -->
+                    <div id="orders-list" class="space-y-4">
+                        <!-- Injected via JS -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div
+                        id="no-orders"
+                        class="hidden p-8 text-center bg-white dark:bg-card-dark rounded-3xl border border-gray-100 dark:border-gray-800"
+                    >
+                        <div
+                            class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <span class="material-icons text-gray-400 text-2xl"
+                                >local_mall</span
+                            >
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400">
+                            No tienes pedidos recientes.
+                        </p>
+                        <a
+                            href="/catalog"
+                            class="mt-4 inline-block text-accent font-bold hover:underline"
+                            >Ir a comprar</a
+                        >
+                    </div>
+                </div>
+
+                <!-- TAB: SETTINGS -->
+                <div
+                    id="tab-settings"
+                    class="tab-content hidden bg-white dark:bg-card-dark rounded-3xl shadow-lg p-8 border border-gray-100 dark:border-gray-800 animate-slide-up"
+                >
+                    <h3
+                        class="text-xl font-bold text-primary dark:text-white mb-6 flex items-center gap-2"
+                    >
+                        <span class="material-icons text-accent">tune</span>
+                        Preferencias
+                    </h3>
+
+                    <div class="space-y-6">
+                        <!-- Dark Mode Toggle -->
+                        <div
+                            class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl"
+                        >
+                            <div class="flex items-center gap-4">
+                                <div
+                                    id="setting-theme-icon-bg"
+                                    class="w-10 h-10 rounded-full flex items-center justify-center bg-yellow-400 text-white transition-colors"
+                                >
+                                    <span
+                                        id="setting-theme-icon"
+                                        class="material-icons"
+                                        >light_mode</span
+                                    >
+                                </div>
+                                <div>
+                                    <h4
+                                        class="font-bold text-primary dark:text-white"
+                                    >
+                                        Modo Oscuro
+                                    </h4>
+                                    <p class="text-xs text-gray-500">
+                                        Cambia la apariencia de la aplicación
+                                    </p>
+                                </div>
+                            </div>
+                            <label
+                                class="relative inline-flex items-center cursor-pointer"
+                            >
+                                <input
+                                    type="checkbox"
+                                    id="setting-theme-toggle"
+                                    class="sr-only peer"
+                                />
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/20 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"
+                                ></div>
+                            </label>
+                        </div>
+
+                        <!-- Notifications Toggle -->
+                        <div
+                            class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl opacity-70"
+                        >
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center"
+                                >
+                                    <span class="material-icons"
+                                        >notifications</span
+                                    >
+                                </div>
+                                <div>
+                                    <h4
+                                        class="font-bold text-primary dark:text-white"
+                                    >
+                                        Notificaciones
+                                    </h4>
+                                    <p class="text-xs text-gray-500">
+                                        Recibir alertas de pedidos
+                                    </p>
+                                </div>
+                            </div>
+                            <label
+                                class="relative inline-flex items-center cursor-pointer"
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked
+                                    disabled
+                                    class="sr-only peer"
+                                />
+                                <div
+                                    class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:bg-accent after:translate-x-full after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5"
+                                ></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REVIEW MODAL -->
+    <div
+        id="review-modal"
+        class="fixed inset-0 z-[60] flex items-center justify-center px-4 hidden"
+    >
+        <div
+            class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0"
+            id="review-modal-bg"
+        ></div>
+        <div
+            class="bg-white dark:bg-card-dark rounded-3xl shadow-2xl w-full max-w-lg relative z-10 p-8 transform translate-y-10 opacity-0 transition-all duration-300"
+            id="review-modal-content"
+        >
+            <div class="text-center mb-6">
+                <div
+                    class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/20 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-500"
+                >
+                    <span class="material-icons text-3xl">star</span>
+                </div>
+                <h3 class="text-2xl font-bold text-primary dark:text-white">
+                    Califica tu Servicio
+                </h3>
+                <p
+                    class="text-gray-500 dark:text-gray-400 text-sm mt-1"
+                    id="review-order-id"
+                >
+                    Pedido #
+                </p>
+            </div>
+
+            <div class="flex justify-center gap-2 mb-8" id="star-container">
+                <!-- Stars injected via JS -->
+            </div>
+
+            <div class="mb-6">
+                <label
+                    class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
+                    >Cuéntanos tu experiencia</label
+                >
+                <textarea
+                    id="review-text"
+                    rows="4"
+                    placeholder="El servicio fue rápido y el desbloqueo funcionó perfectamente..."
+                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none resize-none"
+                ></textarea>
+            </div>
+
+            <div class="flex gap-4">
+                <button
+                    id="btn-cancel-review"
+                    class="flex-1 px-4 py-3 rounded-xl font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                    Cancelar
+                </button>
+                <button
+                    id="btn-submit-review"
+                    class="flex-1 px-4 py-3 rounded-xl font-bold text-white transition-all shadow-lg bg-accent hover:bg-accent-hover transform hover:-translate-y-1"
+                >
+                    Enviar Reseña
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Toast -->
+<div
+    id="profile-toast"
+    class="fixed top-24 right-6 z-[100] transition-all duration-500 transform translate-x-10 opacity-0 pointer-events-none"
+>
+    <div
+        class="bg-white dark:bg-card-dark border-l-4 border-accent text-primary dark:text-white pl-4 pr-6 py-4 rounded-r-xl shadow-2xl flex items-center gap-4 min-w-[300px]"
+    >
+        <div class="bg-accent/10 rounded-full p-2 text-accent">
+            <span class="material-icons text-xl">check_circle</span>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm">Notificación</h4>
+            <span
+                class="text-sm text-gray-500 dark:text-gray-400 font-medium"
+                id="toast-msg"
+                >Mensaje</span
+            >
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+<script src="{% static 'js/profile.js' %}"></script>

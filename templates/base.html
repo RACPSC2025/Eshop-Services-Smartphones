@@ -1,0 +1,27 @@
+{% load static %} {% load tailwind_cli %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Poppins:wght@300..700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+        />
+        {% tailwind_css %}
+        <title>Home</title>
+    </head>
+    <body
+        class="bg-background-light dark:bg-background-dark text-text-main dark:text-text-dark transition-colors duration-500 font-display flex flex-col min-h-screen"
+    >
+        {% include 'components/navbar.html' %}
+        <main class="flex-grow">{% block content %} {% endblock %}</main>
+        {% include 'components/footer.html' %}
+
+        <script src="{% static 'js/theme_toggle.js' %}" defer></script>
+    </body>
+</html>

@@ -16,6 +16,17 @@ RUN pip install uv
 COPY uv.lock pyproject.toml ./
 RUN uv pip install -p pyproject.toml
 
+# Tailwind CSS
+# Install Tailwind CLI
+# Ejecutar la descarga del binario de Tailwind CLI
+RUN python manage.py tailwind download_cli
+
+# Compilar el CSS para producción (minificado)
+RUN python manage.py tailwind build
+
+# Ejecutar collectstatic (esto incluirá el styles.css generado)
+RUN python manage.py collectstatic --noinput
+
 # Copy the rest of the application's code into the container
 COPY . .
 

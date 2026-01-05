@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'apps.pages',
     'apps.products',
     'apps.users',
+    'django_tailwind_cli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,7 +77,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'postgres_db': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB_NAME'),
         'USER': os.getenv('POSTGRES_DB_USER'),
@@ -122,3 +123,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Indica dónde está el archivo de configuración que acabas de crear
+TAILWIND_CLI_CONFIG_FILE = "tailwind.config.js"
+
+# Indica la ruta del CSS de entrada (el que tiene @import y @theme)
+# Según tu comentario anterior, está en static/css/
+TAILWIND_CLI_SRC_CSS = "static/css/tailwind.css"
+
+# Indica dónde se guardará el CSS final compilado
+TAILWIND_CLI_DIST_CSS = "css/styles.css"

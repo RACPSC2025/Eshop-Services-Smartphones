@@ -1,0 +1,80 @@
+<!-- NAVBAR (Simplificado y funcional) -->
+<nav
+    class="sticky top-0 z-50 bg-white/50 dark:bg-[#0F1C2E]/50 backdrop-blur-sm border-b border-transparent transition-all duration-300"
+    id="navbar"
+>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center">
+            <!-- Logo -->
+            <a
+                href="/"
+                class="flex items-center gap-3 cursor-pointer group z-50 select-none flex-shrink-0"
+            >
+                <div
+                    class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
+                >
+                    <img
+                        src="https://assets.stickpng.com/images/6102dadda849c40004f9a13b.png"
+                        alt="Xiaomi"
+                        class="w-full h-full object-contain"
+                    />
+                </div>
+                <div class="flex flex-col">
+                    <span
+                        class="font-bold text-lg md:text-2xl text-primary dark:text-white tracking-tight leading-none"
+                        >MiXiaomi<span class="text-accent">Unlock</span></span
+                    >
+                    <span
+                        class="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]"
+                        >Service</span
+                    >
+                </div>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center space-x-2">
+                <a
+                    href="/"
+                    class="px-3 py-2 rounded-full text-sm font-medium text-accent bg-accent/10 flex items-center gap-2"
+                >
+                    Inicio
+                    <span
+                        class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"
+                    ></span>
+                </a>
+                <a
+                    href="/catalog"
+                    class="px-3 py-2 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >Servicios</a
+                >
+                <a
+                    href="/contact"
+                    class="px-3 py-2 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >Contacto</a
+                >
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+                <button
+                    id="theme-toggle"
+                    class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-yellow-500 dark:text-blue-300 transition-colors"
+                >
+                    <span class="material-icons" id="theme-icon"
+                        >light_mode</span
+                    >
+                </button>
+                <a
+                    href="/cart"
+                    class="relative w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 hover:bg-accent hover:text-white text-gray-600 dark:text-gray-300 flex items-center justify-center transition-colors"
+                >
+                    <span class="material-icons text-xl">shopping_bag</span>
+                    <span
+                        class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full"
+                        >0</span
+                    >
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

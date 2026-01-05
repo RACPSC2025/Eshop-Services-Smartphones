@@ -33,6 +33,7 @@ node_modules/
 .stylelintcache
 mix-manifest.json
 npm-debug.log
+.django_tailwind_cli
 
 # --- Pruebas y Cobertura ---
 .tox/

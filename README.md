@@ -1,12 +1,12 @@
-<div align="center">
+<div align="center" style="background: #F75A02; padding: 20px; border-radius: 15px; margin: 10px 0;">
   <img src="static/assets/images/Mascota-Auth.png" alt="Mascota UnlockXiaomi" width="200" height="200" style="border-radius: 50%; object-fit: contain;"/>
 
-# UNLOCKXIAOMI - SERVICIO TÉCNICO GARANTIZADO
+# <span style="color: white;">UNLOCKXIAOMI - SERVICIO TÉCNICO GARANTIZADO</span>
 
-  <p><strong>Especialistas en desbloqueo, reparación y servicios técnicos certificados para dispositivos Xiaomi, Samsung y mas</strong></p>
+  <p style="color: white;"><strong>Especialistas en desbloqueo, reparación y servicios técnicos certificados para dispositivos Xiaomi y Poco</strong></p>
 
-  <div style="background: linear-gradient(135deg, #FC5E01 0%, #e05500 100%); padding: 15px; border-radius: 15px; color: white; margin: 15px 0;">
-    <strong>Tiempo </strong> Record <strong> Nuestro Trabajo</strong> Garantizado <strong>100%</strong> Éxito | <strong>24/7</strong> Soporte
+  <div style="background: linear-gradient(135deg, #F75A02 0%, #d64a00 100%); padding: 15px; border-radius: 15px; color: white; margin: 15px 0;">
+    <strong>20min</strong> Tiempo Promedio | <strong>90 días</strong> Garantía | <strong>100%</strong> Éxito | <strong>24/7</strong> Soporte
   </div>
 </div>
 

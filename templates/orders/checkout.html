@@ -1,0 +1,562 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Finalizar Compra |
+MiXiaomiUnlock{% endblock %} {% block content %}
+<div
+    class="font-display bg-background-light dark:bg-background-dark min-h-screen text-text-light dark:text-text-dark animate-fade-in transition-colors duration-500 pb-20"
+>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Checkout Steps -->
+        <div class="flex justify-center mb-10">
+            <nav
+                class="flex items-center space-x-4 bg-white dark:bg-card-dark px-8 py-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-x-auto"
+            >
+                <a
+                    href="/cart"
+                    class="flex items-center text-primary dark:text-white cursor-pointer group flex-shrink-0"
+                >
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-accent text-accent font-bold text-xs mr-3 group-hover:bg-accent group-hover:text-white transition-colors"
+                        >1</span
+                    >
+                    <span class="font-medium text-sm">Carrito</span>
+                </a>
+                <div
+                    class="w-12 h-0.5 bg-gray-200 dark:bg-gray-700 flex-shrink-0"
+                ></div>
+                <div
+                    class="flex items-center text-accent cursor-default flex-shrink-0"
+                >
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-accent text-white font-bold text-xs mr-3 shadow-md shadow-accent/30"
+                        >2</span
+                    >
+                    <span class="font-bold text-sm">Pago</span>
+                </div>
+                <div
+                    class="w-12 h-0.5 bg-gray-200 dark:bg-gray-700 flex-shrink-0"
+                ></div>
+                <div
+                    class="flex items-center text-gray-400 cursor-default flex-shrink-0"
+                >
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700 text-gray-400 font-bold text-xs mr-3"
+                        >3</span
+                    >
+                    <span class="font-medium text-sm">Confirmación</span>
+                </div>
+            </nav>
+        </div>
+
+        <div class="lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start">
+            <!-- Forms -->
+            <section class="lg:col-span-7 space-y-6">
+                <form id="checkout-form">
+                    {% csrf_token %}
+
+                    <!-- Contact Info -->
+                    <div
+                        class="bg-white dark:bg-card-dark rounded-[2rem] shadow-sm p-8 border border-gray-100 dark:border-gray-700 animate-slide-up relative overflow-hidden mb-6"
+                    >
+                        <div
+                            class="absolute top-0 left-0 w-1 h-full bg-accent"
+                        ></div>
+                        <div class="flex justify-between items-center mb-6">
+                            <h2
+                                class="text-lg font-bold text-primary dark:text-white flex items-center gap-2"
+                            >
+                                <span class="material-icons text-accent"
+                                    >contact_mail</span
+                                >
+                                Información de Contacto
+                            </h2>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- Email Input -->
+                            <div class="relative group">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    required
+                                    placeholder=" "
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent focus:border-transparent transition-all outline-none placeholder-transparent invalid:border-red-400 focus:invalid:border-red-400"
+                                />
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                    >Correo Electrónico *</label
+                                >
+                            </div>
+
+                            <div class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id="newsletter"
+                                    class="h-4 w-4 text-accent border-gray-300 rounded focus:ring-accent"
+                                />
+                                <label
+                                    htmlFor="newsletter"
+                                    class="ml-3 text-sm text-gray-600 dark:text-gray-400 select-none cursor-pointer"
+                                    >Enviarme noticias y ofertas
+                                    exclusivas</label
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div
+                        class="bg-white dark:bg-card-dark rounded-[2rem] shadow-sm p-8 border border-gray-100 dark:border-gray-700 animate-slide-up mb-6"
+                        style="animation-delay: 100ms"
+                    >
+                        <h2
+                            class="text-lg font-bold text-primary dark:text-white mb-6 flex items-center gap-2"
+                        >
+                            <span class="material-icons text-accent"
+                                >local_shipping</span
+                            >
+                            Dirección de Envío
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div class="relative group">
+                                <input
+                                    type="text"
+                                    required
+                                    minlength="2"
+                                    placeholder=" "
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                />
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                    >Nombre *</label
+                                >
+                            </div>
+                            <div class="relative group">
+                                <input
+                                    type="text"
+                                    required
+                                    minlength="2"
+                                    placeholder=" "
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                />
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                    >Apellido *</label
+                                >
+                            </div>
+                            <div class="md:col-span-2 relative group">
+                                <input
+                                    type="text"
+                                    required
+                                    minlength="5"
+                                    placeholder=" "
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                />
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                    >Dirección *</label
+                                >
+                            </div>
+                            <div class="relative group">
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder=" "
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                />
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                    >Ciudad *</label
+                                >
+                            </div>
+                            <div class="relative group">
+                                <select
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none appearance-none"
+                                >
+                                    <option>México</option>
+                                    <option>Estados Unidos</option>
+                                    <option>España</option>
+                                </select>
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider"
+                                    >País</label
+                                >
+                                <span
+                                    class="material-icons absolute right-3 top-4 text-gray-400 pointer-events-none"
+                                    >expand_more</span
+                                >
+                            </div>
+                            <div class="relative group">
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder=" "
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                />
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                    >Estado / Provincia *</label
+                                >
+                            </div>
+                            <div class="relative group">
+                                <input
+                                    type="text"
+                                    required
+                                    pattern="[0-9]{5}"
+                                    maxlength="5"
+                                    placeholder=" "
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                />
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                    >Código Postal *</label
+                                >
+                            </div>
+                            <div class="md:col-span-2 relative group">
+                                <input
+                                    type="tel"
+                                    required
+                                    pattern="[0-9]{10}"
+                                    maxlength="10"
+                                    placeholder=" "
+                                    class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                />
+                                <label
+                                    class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                    >Teléfono (10 dígitos) *</label
+                                >
+                                <span
+                                    class="material-icons absolute right-3 top-3.5 text-gray-400"
+                                    >phone</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Selection -->
+                    <div
+                        class="bg-white dark:bg-card-dark rounded-[2rem] shadow-sm p-8 border border-gray-100 dark:border-gray-700 animate-slide-up mb-6"
+                        style="animation-delay: 200ms"
+                    >
+                        <h2
+                            class="text-lg font-bold text-primary dark:text-white mb-4 flex items-center gap-2"
+                        >
+                            <span class="material-icons text-accent"
+                                >payment</span
+                            >
+                            Método de Pago
+                        </h2>
+                        <p
+                            class="text-sm text-gray-500 dark:text-gray-400 mb-6 flex items-center gap-1"
+                        >
+                            <span class="material-icons text-green-500 text-sm"
+                                >lock</span
+                            >
+                            Transacción 100% segura y encriptada
+                        </p>
+
+                        <div
+                            class="border rounded-2xl border-gray-200 dark:border-gray-700 overflow-hidden mb-6"
+                        >
+                            <!-- Option: Stripe / Credit Card -->
+                            <div
+                                class="payment-option border-b border-gray-200 dark:border-gray-700 p-4 flex items-center cursor-pointer transition-colors bg-gray-50 dark:bg-gray-800/80"
+                                data-method="stripe"
+                                id="opt-stripe"
+                            >
+                                <input
+                                    type="radio"
+                                    name="payment_method"
+                                    value="stripe"
+                                    checked
+                                    class="h-4 w-4 text-accent border-gray-300 focus:ring-accent"
+                                />
+                                <label
+                                    class="ml-3 block text-sm font-bold text-primary dark:text-white flex-1 cursor-pointer pointer-events-none"
+                                    >Tarjeta de Crédito / Débito</label
+                                >
+                                <div
+                                    class="flex gap-2 opacity-80 pointer-events-none"
+                                >
+                                    <span class="material-icons text-blue-600"
+                                        >payment</span
+                                    >
+                                    <span class="material-icons text-orange-500"
+                                        >credit_card</span
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Stripe Form Container -->
+                            <div
+                                id="stripe-form"
+                                class="p-6 space-y-4 bg-white dark:bg-gray-800/20 animate-fade-in block"
+                            >
+                                <div class="relative group">
+                                    <input
+                                        type="text"
+                                        required
+                                        pattern="[0-9]{16}"
+                                        maxlength="16"
+                                        placeholder=" "
+                                        class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                    />
+                                    <label
+                                        class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                        >Número de Tarjeta *</label
+                                    >
+                                    <span
+                                        class="material-icons absolute right-3 top-3.5 text-gray-400"
+                                        >credit_card</span
+                                    >
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="relative group">
+                                        <input
+                                            type="text"
+                                            required
+                                            pattern="(0[1-9]|1[0-2])\/[0-9]{2}"
+                                            maxlength="5"
+                                            placeholder=" "
+                                            class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                        />
+                                        <label
+                                            class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                            >MM/YY *</label
+                                        >
+                                    </div>
+                                    <div class="relative group">
+                                        <input
+                                            type="text"
+                                            required
+                                            pattern="[0-9]{3,4}"
+                                            maxlength="4"
+                                            placeholder=" "
+                                            class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                        />
+                                        <label
+                                            class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                            >CVC *</label
+                                        >
+                                        <span
+                                            class="material-icons absolute right-3 top-3.5 text-gray-400"
+                                            >help_outline</span
+                                        >
+                                    </div>
+                                </div>
+                                <div class="relative group">
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder=" "
+                                        class="peer w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-4 py-3.5 pt-5 text-gray-900 dark:text-white focus:ring-2 focus:ring-accent outline-none placeholder-transparent"
+                                    />
+                                    <label
+                                        class="absolute left-4 top-1 text-xs font-bold text-gray-500 uppercase tracking-wider transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-placeholder-shown:font-normal peer-focus:top-1 peer-focus:text-xs peer-focus:font-bold peer-focus:text-accent"
+                                        >Nombre en la tarjeta *</label
+                                    >
+                                </div>
+                                <div class="flex justify-end">
+                                    <span
+                                        class="text-[10px] text-gray-400 font-medium flex items-center"
+                                    >
+                                        Procesado por
+                                        <span
+                                            class="font-bold text-indigo-500 ml-1"
+                                            >Stripe</span
+                                        >
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Option: PayPal -->
+                            <div
+                                class="payment-option p-4 flex items-center cursor-pointer transition-colors bg-white dark:bg-card-dark hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                                data-method="paypal"
+                                id="opt-paypal"
+                            >
+                                <input
+                                    type="radio"
+                                    name="payment_method"
+                                    value="paypal"
+                                    class="h-4 w-4 text-accent border-gray-300 focus:ring-accent"
+                                />
+                                <label
+                                    class="ml-3 block text-sm font-bold text-primary dark:text-white flex-1 cursor-pointer pointer-events-none"
+                                    >PayPal</label
+                                >
+                                <span
+                                    class="material-icons text-[#003087] pointer-events-none"
+                                    >account_balance_wallet</span
+                                >
+                            </div>
+
+                            <!-- PayPal Info -->
+                            <div
+                                id="paypal-info"
+                                class="p-6 bg-[#003087]/5 border-t border-gray-200 dark:border-gray-700 animate-fade-in text-center hidden"
+                            >
+                                <p
+                                    class="text-sm text-gray-600 dark:text-gray-300 mb-4"
+                                >
+                                    Serás redirigido a PayPal para completar tu
+                                    compra de forma segura.
+                                </p>
+                                <div
+                                    class="w-full max-w-xs mx-auto bg-[#FFC439] py-2 rounded-full flex items-center justify-center gap-2 shadow-sm opacity-90"
+                                >
+                                    <span
+                                        class="font-bold text-[#003087] italic text-lg"
+                                        >Pay</span
+                                    >
+                                    <span
+                                        class="font-bold text-[#009cde] italic text-lg"
+                                        >Pal</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button
+                            type="submit"
+                            id="btn-pay"
+                            class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-primary/20 transform transition-all flex justify-center items-center group relative overflow-hidden"
+                        >
+                            <span
+                                id="btn-pay-text"
+                                class="relative z-10 flex items-center text-lg"
+                            >
+                                Pagar $<span id="btn-pay-amount">0.00</span>
+                                <span
+                                    class="material-icons ml-2 group-hover:translate-x-1 transition-transform"
+                                    >arrow_forward</span
+                                >
+                            </span>
+                            <!-- Loading Spinner (Hidden) -->
+                            <span
+                                id="btn-pay-loader"
+                                class="hidden flex items-center gap-2"
+                            >
+                                <span
+                                    class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                                ></span>
+                                Procesando...
+                            </span>
+                        </button>
+                        <div class="text-center mt-6">
+                            <a
+                                href="/cart"
+                                class="text-sm text-gray-500 hover:text-accent font-medium inline-flex items-center transition-colors"
+                            >
+                                <span class="material-icons text-sm mr-1"
+                                    >arrow_back</span
+                                >
+                                Volver al carrito
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Summary Sidebar -->
+            <section class="lg:col-span-5 mt-10 lg:mt-0">
+                <div
+                    class="bg-white dark:bg-card-dark rounded-[2rem] shadow-lg border border-gray-100 dark:border-gray-700 sticky top-24 overflow-hidden"
+                >
+                    <div
+                        class="p-6 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/30"
+                    >
+                        <h2
+                            class="text-lg font-bold text-primary dark:text-white"
+                        >
+                            Resumen de Orden
+                        </h2>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <!-- Dynamic Items Container -->
+                        <div id="checkout-items" class="space-y-4">
+                            <!-- Items rendered by JS -->
+                        </div>
+
+                        <div
+                            class="pt-6 border-t border-gray-100 dark:border-gray-700"
+                        >
+                            <div class="flex space-x-3">
+                                <input
+                                    type="text"
+                                    placeholder="Tarjeta de regalo o código"
+                                    class="block w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-accent"
+                                />
+                                <button
+                                    class="bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-white font-medium py-2.5 px-4 rounded-xl hover:bg-gray-200 transition-colors"
+                                >
+                                    Usar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div
+                            class="pt-6 border-t border-gray-100 dark:border-gray-700 space-y-3"
+                        >
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Subtotal</span>
+                                <span
+                                    id="checkout-subtotal"
+                                    class="font-medium text-primary dark:text-white"
+                                    >$0.00</span
+                                >
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Envío</span>
+                                <span class="font-medium text-green-500"
+                                    >Gratis</span
+                                >
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500"
+                                    >Tarifa de Servicio</span
+                                >
+                                <span
+                                    id="checkout-fee"
+                                    class="font-medium text-primary dark:text-white"
+                                    >$0.00</span
+                                >
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500"
+                                    >Impuestos (8.5%)</span
+                                >
+                                <span
+                                    id="checkout-tax"
+                                    class="font-medium text-primary dark:text-white"
+                                    >$0.00</span
+                                >
+                            </div>
+                        </div>
+
+                        <div
+                            class="pt-6 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/20 -mx-6 -mb-6 p-6"
+                        >
+                            <span
+                                class="text-base font-bold text-primary dark:text-white"
+                                >Total</span
+                            >
+                            <div class="text-right">
+                                <span
+                                    class="text-xs text-gray-400 block font-medium"
+                                    >USD</span
+                                >
+                                <span
+                                    id="checkout-total"
+                                    class="text-2xl font-bold text-accent"
+                                    >$0.00</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+{% endblock %}
+<script src="{% static %}/checkout.js"></script>

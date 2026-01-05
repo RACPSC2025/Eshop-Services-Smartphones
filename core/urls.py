@@ -4,10 +4,12 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
-    # Incluye las páginas. El string vacío '' hace que sea la página de inicio.
+    # Home y Páginas Estaticas
     path('', include('apps.pages.urls')), 
-    
-    # Tu app de productos que ya tenías
+    # app de productos
     path('products/', include('apps.products.urls')),
+    # app de usuarios
+    path('users/', include('apps.users.urls')),
+    # app de pedidos
+    path('orders/', include('apps.orders.urls')),
 ]

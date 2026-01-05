@@ -1,0 +1,54 @@
+# --- Django Específico ---
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+static_collected/
+staticfiles/
+
+# --- Python General ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.python-version
+
+# --- Entornos Virtuales ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Variables de Entorno (CRÍTICO) ---
+# No subir credenciales, SECRET_KEY o llaves de APIs
+.env
+*.env
+.secrets
+secrets.toml
+
+# --- Frontend & Assets (Si usas Tailwind, Vite o Webpack) ---
+node_modules/
+.eslintcache
+.stylelintcache
+mix-manifest.json
+npm-debug.log
+
+# --- Pruebas y Cobertura ---
+.tox/
+.coverage
+.cache
+htmlcov/
+.pytest_cache/
+
+# --- IDEs y Sistemas Operativos ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- Paquetes y Distribución ---
+dist/
+build/
+*.egg-info/

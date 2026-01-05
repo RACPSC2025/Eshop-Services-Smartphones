@@ -1,566 +1,570 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Inicio |
-MiXiaomiUnlock{% endblock %} {% block content %}
-<div
-    class="font-display animate-fade-in bg-[#F5F5F7] dark:bg-background-dark min-h-screen"
->
-    <!-- Hero Section -->
-    <section
-        class="relative px-0 md:px-4 lg:px-6 pt-0 pb-0 max-w-[1500px] mx-auto mt-2"
-    >
-        <div
-            class="relative overflow-hidden md:rounded-[2rem] shadow-xl h-[280px] md:h-[360px] group border border-transparent dark:border-white/15 dark:shadow-[0_0_20px_rgba(0,0,0,0.5)]"
-        >
-            <!-- Hero Slides Container -->
-            <div id="hero-slider">
-                <!-- Slide 1 -->
-                <div
-                    class="hero-slide absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100 z-10 bg-black"
-                    data-index="0"
-                >
-                    <div class="absolute inset-0">
-                        <img
-                            src="https://images.unsplash.com/photo-1621330396173-e41b1cafd17f?auto=format&fit=crop&q=80&w=1600"
-                            class="w-full h-full object-cover object-center md:object-right opacity-80"
-                            alt="Hero 1"
-                        />
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"
-                        ></div>
-                    </div>
-                    <div
-                        class="absolute inset-0 flex flex-col justify-center px-6 md:px-24 max-w-4xl z-20"
-                    >
-                        <div
-                            class="slide-content transform transition-all duration-700 delay-100 translate-y-0 opacity-100"
-                        >
-                            <div
-                                class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white shadow-lg"
-                            >
-                                <span
-                                    class="w-1.5 h-1.5 rounded-full bg-xiaomi animate-pulse"
-                                ></span>
-                                <span
-                                    class="text-[10px] font-bold uppercase tracking-[0.15em]"
-                                    >Certificado</span
-                                >
-                            </div>
-                            <h1
-                                class="text-3xl md:text-5xl font-bold mb-2 leading-none tracking-tight text-white drop-shadow-lg"
-                            >
-                                Servicio Especializado <br />
-                                <span
-                                    class="text-transparent bg-clip-text bg-gradient-to-r from-xiaomi to-accent font-extrabold"
-                                    >Xiaomi & Poco</span
-                                >
-                            </h1>
-                            <p
-                                class="text-sm md:text-base mb-5 max-w-lg leading-snug text-gray-300 font-light hidden sm:block"
-                            >
-                                Recuperación de software y reparación de
-                                hardware certificada.
-                            </p>
-                            <div class="flex gap-3">
-                                <a
-                                    href="/catalog"
-                                    class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all transform hover:-translate-y-0.5 hover:shadow-lg bg-white text-black hover:bg-gray-100"
-                                    >Ver Servicios</a
-                                >
-                                <a
-                                    href="/contact"
-                                    class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all transform hover:-translate-y-0.5 border border-white/20 hover:bg-white/10 text-white backdrop-blur-sm"
-                                    >Contactar</a
-                                >
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{% extends 'base.html' %}
+{% load static %}
 
-                <!-- Slide 2 -->
-                <div
-                    class="hero-slide absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 z-0 bg-black"
-                    data-index="1"
-                >
-                    <div class="absolute inset-0">
-                        <img
-                            src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&q=80&w=1600"
-                            class="w-full h-full object-cover object-center md:object-right opacity-80"
-                            alt="Hero 2"
-                        />
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"
-                        ></div>
-                    </div>
-                    <div
-                        class="absolute inset-0 flex flex-col justify-center px-6 md:px-24 max-w-4xl z-20"
-                    >
-                        <div
-                            class="slide-content transform transition-all duration-700 delay-100 translate-y-4 opacity-0"
-                        >
-                            <div
-                                class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white shadow-lg"
-                            >
-                                <span
-                                    class="w-1.5 h-1.5 rounded-full bg-xiaomi animate-pulse"
-                                ></span>
-                                <span
-                                    class="text-[10px] font-bold uppercase tracking-[0.15em]"
-                                    >Software</span
-                                >
-                            </div>
-                            <h1
-                                class="text-3xl md:text-5xl font-bold mb-2 leading-none tracking-tight text-white drop-shadow-lg"
-                            >
-                                Desbloqueo Instantáneo <br />
-                                <span
-                                    class="text-transparent bg-clip-text bg-gradient-to-r from-xiaomi to-accent font-extrabold"
-                                    >Sin Esperas</span
-                                >
-                            </h1>
-                            <p
-                                class="text-sm md:text-base mb-5 max-w-lg leading-snug text-gray-300 font-light hidden sm:block"
-                            >
-                                Soluciones remotas para bootloader y red. 100%
-                                Garantizado.
-                            </p>
-                            <div class="flex gap-3">
-                                <a
-                                    href="/catalog"
-                                    class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all transform hover:-translate-y-0.5 hover:shadow-lg bg-white text-black hover:bg-gray-100"
-                                    >Ver Servicios</a
-                                >
-                            </div>
+{% block title %}Inicio | MiXiaomiUnlock{% endblock %}
+
+{% block content %}
+<div class="font-display animate-fade-in bg-[#F5F5F7] dark:bg-background-dark min-h-screen">
+      
+    <!-- Hero Section -->
+    <section class="relative px-0 md:px-4 lg:px-6 pt-0 pb-0 max-w-[1500px] mx-auto mt-2">
+      <div class="relative overflow-hidden md:rounded-[2rem] shadow-xl h-[280px] md:h-[360px] group border border-transparent dark:border-white/15 dark:shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+        
+        <!-- Hero Slides Container -->
+        <div id="hero-slider">
+            <!-- Slide 1 -->
+            <div class="hero-slide absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100 z-10 bg-black" data-index="0">
+                <div class="absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1621330396173-e41b1cafd17f?auto=format&fit=crop&q=80&w=1600" class="w-full h-full object-cover object-center md:object-right opacity-80" alt="Hero 1">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"></div>
+                </div>
+                <div class="absolute inset-0 flex flex-col justify-center px-6 md:px-24 max-w-4xl z-20">
+                    <div class="slide-content transform transition-all duration-700 delay-100 translate-y-0 opacity-100">
+                        <div class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white shadow-lg">
+                             <span class="w-1.5 h-1.5 rounded-full bg-xiaomi animate-pulse"></span>
+                             <span class="text-[10px] font-bold uppercase tracking-[0.15em]">Certificado</span>
+                        </div>
+                        <h1 class="text-3xl md:text-5xl font-bold mb-2 leading-none tracking-tight text-white drop-shadow-lg">
+                            Servicio Especializado <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-xiaomi to-accent font-extrabold">Xiaomi & Poco</span>
+                        </h1>
+                        <p class="text-sm md:text-base mb-5 max-w-lg leading-snug text-gray-300 font-light hidden sm:block">
+                            Recuperación de software y reparación de hardware certificada.
+                        </p>
+                        <div class="flex gap-3">
+                            <a href="{% url 'products:product-list' %}" class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all transform hover:-translate-y-0.5 hover:shadow-lg bg-white text-black hover:bg-gray-100">Ver Catálogo</a>
+                            <a href="{% url 'pages:contact' %}" class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all transform hover:-translate-y-0.5 border border-white/20 hover:bg-white/10 text-white backdrop-blur-sm">Contactar</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Controls -->
-            <div
-                class="absolute bottom-6 right-8 flex gap-2 z-30"
-                id="hero-dots"
-            >
-                <button
-                    class="hero-dot h-1 rounded-full transition-all duration-500 bg-xiaomi w-6"
-                    data-index="0"
-                ></button>
-                <button
-                    class="hero-dot h-1 rounded-full transition-all duration-500 bg-white/20 w-1.5 hover:bg-white/40"
-                    data-index="1"
-                ></button>
+            <!-- Slide 2 -->
+            <div class="hero-slide absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 z-0 bg-black" data-index="1">
+                <div class="absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&q=80&w=1600" class="w-full h-full object-cover object-center md:object-right opacity-80" alt="Hero 2">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"></div>
+                </div>
+                <div class="absolute inset-0 flex flex-col justify-center px-6 md:px-24 max-w-4xl z-20">
+                    <div class="slide-content transform transition-all duration-700 delay-100 translate-y-4 opacity-0">
+                        <div class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white shadow-lg">
+                             <span class="w-1.5 h-1.5 rounded-full bg-xiaomi animate-pulse"></span>
+                             <span class="text-[10px] font-bold uppercase tracking-[0.15em]">Software</span>
+                        </div>
+                        <h1 class="text-3xl md:text-5xl font-bold mb-2 leading-none tracking-tight text-white drop-shadow-lg">
+                            Desbloqueo Instantáneo <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-xiaomi to-accent font-extrabold">Sin Esperas</span>
+                        </h1>
+                        <p class="text-sm md:text-base mb-5 max-w-lg leading-snug text-gray-300 font-light hidden sm:block">
+                            Soluciones remotas para bootloader y red. 100% Garantizado.
+                        </p>
+                        <div class="flex gap-3">
+                            <a href="{% url 'products:product-list' %}" class="px-5 py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all transform hover:-translate-y-0.5 hover:shadow-lg bg-white text-black hover:bg-gray-100">Ver Servicios</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        
+        <!-- Controls -->
+        <div class="absolute bottom-6 right-8 flex gap-2 z-30" id="hero-dots">
+            <button class="hero-dot h-1 rounded-full transition-all duration-500 bg-xiaomi w-6" data-index="0"></button>
+            <button class="hero-dot h-1 rounded-full transition-all duration-500 bg-white/20 w-1.5 hover:bg-white/40" data-index="1"></button>
+        </div>
+      </div>
     </section>
 
     <!-- Separator -->
     <div class="w-full max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 my-6">
-        <div
-            class="h-[1px] w-full bg-gradient-to-r from-xiaomi to-accent rounded-full opacity-80"
-        ></div>
+        <div class="h-[1px] w-full bg-gradient-to-r from-xiaomi to-accent rounded-full opacity-80"></div>
     </div>
 
     <!-- Brands Strip -->
     <div class="py-2">
-        <div
-            class="max-w-7xl mx-auto overflow-hidden opacity-90 hover:opacity-100 transition-opacity duration-500 relative z-10"
-        >
-            <div
-                class="flex animate-marquee hover:[animation-play-state:paused] items-center whitespace-nowrap"
-            >
-                <!-- Repeated items for marquee effect -->
-                {% for i in "012345" %}
-                <div class="mx-8 md:mx-12 shrink-0">
-                    <img
-                        src="https://1000logos.net/wp-content/uploads/2021/08/Xiaomi-logo-500x281.png"
-                        class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 mix-blend-multiply dark:mix-blend-normal dark:invert"
-                        alt="Xiaomi"
-                    />
-                </div>
-                <div class="mx-8 md:mx-12 shrink-0">
-                    <img
-                        src="https://i.pinimg.com/736x/37/f7/67/37f7671523be8d2cc51fd0b2c421fc8f.jpg"
-                        class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 mix-blend-multiply dark:mix-blend-normal dark:invert"
-                        alt="Apple"
-                    />
-                </div>
-                <div class="mx-8 md:mx-12 shrink-0">
-                    <img
-                        src="https://i.pinimg.com/736x/0c/c0/07/0cc0071c1be4c8ac814f3aaa386b34ac.jpg"
-                        class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 mix-blend-multiply dark:mix-blend-normal dark:invert"
-                        alt="Samsung"
-                    />
-                </div>
-                <div class="mx-8 md:mx-12 shrink-0">
-                    <img
-                        src="https://i.pinimg.com/736x/3b/ee/a1/3beea1580c002c02e1a63ba283263fc1.jpg"
-                        class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 mix-blend-multiply dark:mix-blend-normal dark:invert"
-                        alt="Huawei"
-                    />
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+         <div class="max-w-7xl mx-auto overflow-hidden opacity-90 hover:opacity-100 transition-opacity duration-500 relative z-10">
+           <div class="flex animate-marquee hover:[animation-play-state:paused] items-center whitespace-nowrap">
+               <!-- Repeated items for marquee effect -->
+               {% for i in "012345" %} 
+                  <div class="mx-8 md:mx-12 shrink-0"><img src="https://1000logos.net/wp-content/uploads/2021/08/Xiaomi-logo-500x281.png" class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 mix-blend-multiply dark:mix-blend-normal dark:invert" alt="Xiaomi"></div>
+                  <div class="mx-8 md:mx-12 shrink-0"><img src="https://i.pinimg.com/736x/37/f7/67/37f7671523be8d2cc51fd0b2c421fc8f.jpg" class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 mix-blend-multiply dark:mix-blend-normal dark:invert" alt="Apple"></div>
+                  <div class="mx-8 md:mx-12 shrink-0"><img src="https://i.pinimg.com/736x/0c/c0/07/0cc0071c1be4c8ac814f3aaa386b34ac.jpg" class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 mix-blend-multiply dark:mix-blend-normal dark:invert" alt="Samsung"></div>
+                  <div class="mx-8 md:mx-12 shrink-0"><img src="https://i.pinimg.com/736x/3b/ee/a1/3beea1580c002c02e1a63ba283263fc1.jpg" class="h-16 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 mix-blend-multiply dark:mix-blend-normal dark:invert" alt="Huawei"></div>
+               {% endfor %}
+           </div>
+         </div>
     </div>
 
     <!-- Separator -->
     <div class="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 my-6">
-        <div
-            class="h-[1px] w-full bg-gradient-to-r from-xiaomi to-accent rounded-full opacity-80"
-        ></div>
+        <div class="h-[1px] w-full bg-gradient-to-r from-xiaomi to-accent rounded-full opacity-80"></div>
     </div>
 
-    <!-- Services Grid -->
-    <section class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-10">
-            <div>
-                <h2
-                    class="text-3xl font-bold text-primary dark:text-white tracking-tight"
-                >
-                    Catálogo Xiaomi
-                </h2>
-                <div
-                    class="h-1 w-20 bg-gradient-to-r from-xiaomi to-accent rounded-full mt-2"
-                ></div>
-                <p class="mt-4 text-gray-500 dark:text-gray-400 text-base">
-                    Reparaciones certificadas y software especializado.
-                </p>
-            </div>
+       <div class="flex flex-col md:flex-row justify-between items-end mb-10">
+          <div>
+              <h2 class="text-3xl font-bold text-primary dark:text-white tracking-tight">Catálogo de Servicios</h2>
+              <div class="h-1 w-20 bg-gradient-to-r from-xiaomi to-accent rounded-full mt-2"></div>
+              <p class="mt-4 text-gray-500 dark:text-gray-400 text-base">Reparaciones certificadas y software especializado.</p>
+          </div>
+          
+          <!-- Tab Switcher -->
+          <div class="bg-white dark:bg-card-dark p-1 rounded-xl flex gap-1 mt-4 md:mt-0 shadow-sm border border-gray-100 dark:border-gray-800">
+              <button type="button" id="tab-services" class="px-5 py-2 rounded-lg text-sm font-bold transition-all bg-primary dark:bg-white text-white dark:text-black shadow-md cursor-pointer select-none">
+                  Servicios
+              </button>
+              <button type="button" id="tab-products" class="px-5 py-2 rounded-lg text-sm font-bold transition-all text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer select-none">
+                  Productos
+              </button>
+          </div>
+       </div>
 
-            <!-- Tab Switcher (Vanilla JS) -->
-            <div
-                class="bg-white dark:bg-card-dark p-1 rounded-xl flex gap-1 mt-4 md:mt-0 shadow-sm border border-gray-100 dark:border-gray-800"
-            >
-                <button
-                    id="tab-services"
-                    class="px-5 py-2 rounded-lg text-sm font-bold transition-all bg-primary dark:bg-white text-white dark:text-black shadow-md"
-                >
-                    Servicios
-                </button>
-                <button
-                    id="tab-products"
-                    class="px-5 py-2 rounded-lg text-sm font-bold transition-all text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
-                >
-                    Productos
-                </button>
-            </div>
-        </div>
+       <!-- Container for SERVICES (Active by default) -->
+       <div id="content-services" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start">
+           {% for service in services %}
+           <div class="group bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800/50 overflow-hidden hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-300 cursor-pointer flex flex-col h-auto max-w-[280px] mx-auto w-full relative">
+               
+                <div class="relative h-72 w-full overflow-hidden bg-white dark:bg-[#0a0a0a]">
+                    <a href="{% url 'products:product-detail' service.id %}" class="block h-full w-full">
+                        {% if service.image %}
+                        <img src="{% static 'assets/images/' %}{{ service.image }}" class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" alt="{{ service.name }}">
+                        {% else %}
+                        <div class="w-full h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-white/5 text-gray-300">
+                            <span class="material-icons text-6xl mb-2">build_circle</span>
+                            <span class="text-xs font-bold uppercase tracking-wider">Servicio</span>
+                        </div>
+                        {% endif %}
+                    </a>
+                    
+                    {% if service.is_new %}
+                    <span class="absolute top-3 left-3 bg-blue-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide shadow-md">NUEVO</span>
+                    {% endif %}
 
-        <!-- Container for Services -->
-        <div
-            id="content-services"
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start"
-        >
-            <!-- CARD SERVICES ITEM 1 -->
-            <div
-                class="group bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800/50 overflow-hidden hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-300 cursor-pointer flex flex-col h-auto max-w-[280px] mx-auto w-full relative"
-            >
-                <div
-                    class="relative h-72 w-full overflow-hidden bg-white dark:bg-[#0a0a0a]"
-                >
-                    <img
-                        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                        alt="Display"
-                    />
-                    <span
-                        class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide shadow-md"
-                        >OFERTA</span
+                    <!-- Favorite Button -->
+                    <button 
+                        onclick="toggleFavorite(this, {{ service.id }})"
+                        class="absolute top-3 right-3 w-8 h-8 bg-white dark:bg-card-dark rounded-full flex items-center justify-center shadow-md transition-all duration-300 z-30 hover:scale-110 {% if service.id in user_favorites %}text-red-500{% else %}text-gray-400 hover:text-red-500{% endif %}"
                     >
-                    <button
-                        class="absolute top-3 right-3 w-8 h-8 bg-white dark:bg-card-dark rounded-full flex items-center justify-center shadow-md transition-colors z-30 text-gray-400 hover:text-red-500 wishlist-btn"
-                    >
-                        <span class="material-icons text-[16px]"
-                            >favorite_border</span
-                        >
+                        <span class="material-icons text-[16px]">
+                            {% if service.id in user_favorites %}favorite{% else %}favorite_border{% endif %}
+                        </span>
                     </button>
                 </div>
-                <div
-                    class="p-4 flex flex-col bg-white dark:bg-card-dark relative z-20"
-                >
-                    <h3
-                        class="font-bold text-gray-900 dark:text-white mb-1 truncate text-xl leading-tight"
-                    >
-                        Display Original AMOLED
-                    </h3>
-                    <div class="flex items-center gap-1 mb-2">
-                        <div class="flex text-yellow-400">
-                            <span class="material-icons text-[14px]">star</span>
-                            <span class="material-icons text-[14px]">star</span>
-                            <span class="material-icons text-[14px]">star</span>
-                            <span class="material-icons text-[14px]">star</span>
-                            <span class="material-icons text-[14px]">star</span>
-                        </div>
-                        <span
-                            class="text-[10px] text-gray-400 dark:text-gray-500 font-medium translate-y-[1px]"
-                            >(128)</span
-                        >
-                    </div>
-                    <p
-                        class="text-sm text-gray-500 dark:text-gray-400 leading-snug line-clamp-2 mb-3"
-                    >
-                        Panel 120Hz con marco y digitalizador.
-                    </p>
-                    <div
-                        class="flex justify-between items-center pt-3 border-t border-gray-50 dark:border-gray-800 mt-auto"
-                    >
-                        <div class="flex flex-col">
-                            <span
-                                class="text-[10px] text-gray-400 line-through font-medium leading-none mb-0.5"
-                                >$65.00</span
-                            >
-                            <div class="flex items-center gap-1.5">
-                                <span
-                                    class="text-2xl font-bold text-primary dark:text-white leading-none"
-                                    >$45.00</span
-                                >
-                                <span
-                                    class="text-[9px] font-bold text-xiaomi bg-orange-100 dark:bg-orange-900/20 px-1 py-0.5 rounded"
-                                    >-30%</span
-                                >
-                            </div>
-                        </div>
-                        <button
-                            class="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 text-primary dark:text-white hover:bg-xiaomi hover:text-white transition-all shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-center group/btn active:scale-90"
-                        >
-                            <span
-                                class="material-icons text-xl group-hover/btn:scale-110 transition-transform"
-                                >add_shopping_cart</span
-                            >
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- More hardcoded items for Services would go here... -->
-        </div>
 
-        <!-- Container for Products (Hidden by default) -->
-        <div
-            id="content-products"
-            class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start"
-        >
-            <div
-                class="group bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800/50 overflow-hidden hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-300 cursor-pointer flex flex-col h-auto max-w-[280px] mx-auto w-full relative"
-            >
-                <div
-                    class="relative h-72 w-full overflow-hidden bg-white dark:bg-[#0a0a0a]"
-                >
-                    <img
-                        src="https://woodmart.xtemos.com/wp-content/uploads/2017/04/Product-3-1-430x491.jpg"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                        alt="Headphones"
-                    />
-                    <span
-                        class="absolute top-3 left-3 bg-green-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide shadow-md"
-                        >NUEVO</span
+               <div class="p-4 flex flex-col bg-white dark:bg-card-dark relative z-20">
+                   <h3 class="font-bold text-gray-900 dark:text-white mb-1 truncate text-lg leading-tight">
+                       <a href="{% url 'products:product-detail' service.id %}">{{ service.name }}</a>
+                   </h3>
+                   <p class="text-sm text-gray-500 dark:text-gray-400 leading-snug line-clamp-2 mb-3 min-h-[2.5em]">{{ service.description|truncatechars:60 }}</p>
+                   
+                   <div class="flex justify-between items-center pt-3 border-t border-gray-50 dark:border-gray-800 mt-auto">
+                       <div class="flex flex-col">
+                           <span class="text-xl font-bold text-primary dark:text-white leading-none">${{ service.price }}</span>
+                       </div>
+                       <button onclick="addToCart({{ service.id }})" class="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 text-primary dark:text-white hover:bg-xiaomi hover:text-white transition-all shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-center active:scale-95">
+                           <span class="material-icons text-xl">add_shopping_cart</span>
+                       </button>
+                   </div>
+               </div>
+           </div>
+           {% empty %}
+            <div class="col-span-full py-12 text-center text-gray-500 bg-gray-50 dark:bg-white/5 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700">
+                <span class="material-icons text-4xl mb-2 text-gray-400">miscellaneous_services</span>
+                <p>No tenemos servicios disponibles en este momento.</p>
+            </div>
+           {% endfor %}
+       </div>
+
+       <!-- Container for PRODUCTS (Hidden by default) -->
+       <div id="content-products" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start">
+
+           {% for product in products %}
+
+           <div class="group bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800/50 overflow-hidden hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-300 cursor-pointer flex flex-col h-auto max-w-[280px] mx-auto w-full relative">
+               
+                <div class="relative h-72 w-full overflow-hidden bg-white dark:bg-[#0a0a0a]">
+                    <a href="{% url 'products:product-detail' product.id %}" class="block h-full w-full">
+                        {% if product.image %}
+                        <img src="{% static 'assets/images/' %}{{ product.image }}" class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" alt="{{ product.name }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300?text=No+Image" class="w-full h-full object-cover grayscale opacity-50" alt="No image">
+                        {% endif %}
+                    </a>
+                    
+                    {% if product.is_new %}
+                    <span class="absolute top-3 left-3 bg-green-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide shadow-md">NUEVO</span>
+                    {% endif %}
+                    
+                    <!-- Favorite Button -->
+                    <button 
+                        onclick="toggleFavorite(this, {{ product.id }})"
+                        class="absolute top-3 right-3 w-8 h-8 bg-white dark:bg-card-dark rounded-full flex items-center justify-center shadow-md transition-all duration-300 z-30 hover:scale-110 {% if product.id in user_favorites %}text-red-500{% else %}text-gray-400 hover:text-red-500{% endif %}"
                     >
-                    <button
-                        class="absolute top-3 right-3 w-8 h-8 bg-white dark:bg-card-dark rounded-full flex items-center justify-center shadow-md transition-colors z-30 text-gray-400 hover:text-red-500 wishlist-btn"
-                    >
-                        <span class="material-icons text-[16px]"
-                            >favorite_border</span
-                        >
+                        <span class="material-icons text-[16px]">
+                            {% if product.id in user_favorites %}favorite{% else %}favorite_border{% endif %}
+                        </span>
                     </button>
                 </div>
-                <div
-                    class="p-4 flex flex-col bg-white dark:bg-card-dark relative z-20"
-                >
-                    <h3
-                        class="font-bold text-gray-900 dark:text-white mb-1 truncate text-xl leading-tight"
-                    >
-                        Wireless Headphones
-                    </h3>
-                    <div class="flex items-center gap-1 mb-2">
-                        <div class="flex text-yellow-400">
-                            <span class="material-icons text-[14px]">star</span
-                            ><span class="material-icons text-[14px]">star</span
-                            ><span class="material-icons text-[14px]">star</span
-                            ><span class="material-icons text-[14px]">star</span
-                            ><span class="material-icons text-[14px]"
-                                >star</span
-                            >
+
+               <div class="p-4 flex flex-col bg-white dark:bg-card-dark relative z-20">
+                   <h3 class="font-bold text-gray-900 dark:text-white mb-1 truncate text-lg leading-tight">
+                       <a href="{% url 'products:product-detail' product.id %}">{{ product.name }}</a>
+                   </h3>
+                   <div class="flex items-center gap-1 mb-2">
+                        <div class="flex text-yellow-400 text-xs">
+                           <span class="material-icons text-[14px]">star</span>
+                           <span class="material-icons text-[14px]">star</span>
+                           <span class="material-icons text-[14px]">star</span>
+                           <span class="material-icons text-[14px]">star</span>
+                           <span class="material-icons text-[14px]">star_border</span>
                         </div>
-                    </div>
-                    <p
-                        class="text-sm text-gray-500 dark:text-gray-400 leading-snug line-clamp-2 mb-3"
-                    >
-                        Sonido de alta fidelidad con cancelación de ruido.
-                    </p>
-                    <div
-                        class="flex justify-between items-center pt-3 border-t border-gray-50 dark:border-gray-800 mt-auto"
-                    >
-                        <div class="flex flex-col">
-                            <span
-                                class="text-2xl font-bold text-primary dark:text-white leading-none"
-                                >$199.99</span
-                            >
-                        </div>
-                        <button
-                            class="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 text-primary dark:text-white hover:bg-xiaomi hover:text-white transition-all shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-center"
-                        >
-                            <span class="material-icons text-xl"
-                                >add_shopping_cart</span
-                            >
-                        </button>
-                    </div>
-                </div>
+                   </div>
+                   <p class="text-sm text-gray-500 dark:text-gray-400 leading-snug line-clamp-2 mb-3">{{ product.description|truncatechars:60 }}</p>
+                   
+                   <div class="flex justify-between items-center pt-3 border-t border-gray-50 dark:border-gray-800 mt-auto">
+                       <div class="flex flex-col">
+                           <span class="text-xl font-bold text-primary dark:text-white leading-none">${{ product.price }}</span>
+                       </div>
+                       <button onclick="addToCart({{ product.id }})" class="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 text-primary dark:text-white hover:bg-xiaomi hover:text-white transition-all shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-center active:scale-95">
+                           <span class="material-icons text-xl">add_shopping_cart</span>
+                       </button>
+                   </div>
+               </div>
+           </div>
+           {% empty %}
+            <div class="col-span-full py-12 text-center text-gray-500">
+                <p>No hay productos disponibles por el momento.</p>
             </div>
+           {% endfor %}
+       </div>
+
+       <!-- Container for SERVICES (Hidden by default, Static Examples for now) -->
+       <div id="content-services" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-start">
+          <div class="col-span-full py-12 text-center text-gray-500 bg-white dark:bg-card-dark rounded-2xl border border-dashed border-gray-200">
+              <span class="material-icons text-4xl mb-2">build</span>
+              <p>El catálogo de servicios se cargará próximamente.</p>
+           </div>
+       </div>
+
+    </section>
+
+    <!-- Bento Grid Education Section -->
+    <section class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-16 mb-16 font-display">
+        <div class="text-center mb-12 animate-fade-in-up">
+            <h2 class="text-2xl md:text-3xl font-black mb-4 tracking-tight leading-none uppercase">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-xiaomi to-accent">¿TIENES PROBLEMAS CON TU SMARTPHONE?</span>
+            </h2>
+            <p class="text-lg text-gray-500 dark:text-gray-400 font-medium">
+                No te preocupes. <span class="font-bold text-gray-900 dark:text-white bg-yellow-400/20 px-2 rounded-lg">Te tenemos la solución.</span>
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-[240px]">
+            <!-- Large Main Card (Mascota) -->
+            <div id="bento-large-card" class="lg:col-span-2 lg:row-span-2 relative overflow-hidden rounded-[2rem] shadow-2xl group cursor-pointer transition-all duration-700 hover:shadow-orange-500/20 flex flex-col bg-white dark:bg-[#0F1C2E]">
+                 
+                 <!-- Image Area (70%) -->
+                 <div class="h-[65%] sm:h-[70%] w-full relative overflow-hidden bg-white dark:bg-gray-900 border-b-4 border-yellow-400">
+                     <img id="bento-large-img-current" src="{% static 'assets/images/Mascota-xiaomi-enojado.png' %}" class="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105" alt="Problemas de Bloqueo">
+                     <img id="bento-large-img-prev" src="" class="absolute inset-0 w-full h-full object-contain p-4 hidden transition-all duration-500 opacity-0 scale-110">
+                 </div>
+                 
+                 <!-- Text Area (30%) - Xiaomi Orange Background -->
+                 <div class="h-[35%] sm:h-[30%] w-full bg-xiaomi p-6 md:p-8 flex flex-col justify-center relative z-20">
+                     <!-- Decorative pattern overlay -->
+                     <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                     
+                     <div class="relative z-10">
+                         <h3 id="bento-large-title" class="text-2xl md:text-3xl font-black text-white mb-2 leading-tight tracking-tight">¿Frustrado con tu bloqueo?</h3>
+                         <p id="bento-large-desc" class="text-white/90 text-sm md:text-lg font-medium leading-relaxed line-clamp-2">Entendemos tu molestia. Recupera el acceso total a tu dispositivo Xiaomi hoy mismo.</p>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- Card 1: IMEI -->
+            <div class="bento-small-card relative overflow-hidden rounded-[2rem] shadow-lg group cursor-pointer hover:scale-[1.02] transition-all bg-black"
+                 data-img="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=800"
+                 data-title="¿Qué es el IMEI?"
+                 data-desc="Es la huella digital única global de tu equipo. Vital para reportes y garantías.">
+                 <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-40">
+                 <div class="absolute inset-0 flex flex-col justify-end p-6 z-20">
+                     <h4 class="text-xl font-bold text-white group-hover:text-xiaomi transition-colors leading-tight">¿Qué es el IMEI?</h4>
+                 </div>
+            </div>
+
+            <!-- Card 2: Google Cloud -->
+            <div class="bento-small-card relative overflow-hidden rounded-[2rem] shadow-lg group cursor-pointer hover:scale-[1.02] transition-all bg-black"
+                 data-img="https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&q=80&w=800"
+                 data-title="Bloqueo Google"
+                 data-desc="FRP (Factory Reset Protection) se activa al resetear sin cerrar sesión.">
+                 <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-40">
+                 <div class="absolute inset-0 flex flex-col justify-end p-6 z-20">
+                     <h4 class="text-xl font-bold text-white group-hover:text-xiaomi transition-colors leading-tight">Bloqueo Google</h4>
+                 </div>
+            </div>
+            
+             <!-- Card 3: Mi Cloud -->
+            <div class="bento-small-card relative overflow-hidden rounded-[2rem] shadow-lg group cursor-pointer hover:scale-[1.02] transition-all bg-black"
+                 data-img="https://images.unsplash.com/photo-1621330396167-b3d451b9d83b?auto=format&fit=crop&q=80&w=800"
+                 data-title="Cuenta Mi Cloud"
+                 data-desc="Seguridad exclusiva de Xiaomi. Si olvidas tu clave, el dispositivo queda inutilizable.">
+                 <img src="https://images.unsplash.com/photo-1621330396167-b3d451b9d83b?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-40">
+                 <div class="absolute inset-0 flex flex-col justify-end p-6 z-20">
+                     <h4 class="text-xl font-bold text-white group-hover:text-xiaomi transition-colors leading-tight">Cuenta Mi Cloud</h4>
+                 </div>
+            </div>
+            
+            <!-- Card 4: Bootloader -->
+            <div class="bento-small-card relative overflow-hidden rounded-[2rem] shadow-lg group cursor-pointer hover:scale-[1.02] transition-all bg-black"
+                 data-img="https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&q=80&w=800"
+                 data-title="Bootloader"
+                 data-desc="Gestor de arranque bloqueado por el fabricante. Necesario desbloquear para modificar software.">
+                 <img src="https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-40">
+                 <div class="absolute inset-0 flex flex-col justify-end p-6 z-20">
+                     <h4 class="text-xl font-bold text-white group-hover:text-xiaomi transition-colors leading-tight">Bootloader</h4>
+                 </div>
+            </div>
+
+            <!-- Dynamic Card Preview (from DB) using available products -->
+            {% for product in products|slice:":2" %}
+            <div class="bento-small-card relative overflow-hidden rounded-[2rem] shadow-lg group cursor-pointer hover:scale-[1.02] transition-all bg-white dark:bg-card-dark border border-gray-100 dark:border-gray-800"
+                 data-img="{% if product.image %}{% static 'assets/images/' %}{{ product.image }}{% else %}https://via.placeholder.com/400{% endif %}"
+                 data-title="{{ product.name }}"
+                 data-desc="{{ product.description|truncatechars:80 }}">
+                 <div class="absolute inset-0 p-4 flex items-center justify-center bg-gray-50 dark:bg-white/5">
+                     <img src="{% if product.image %}{% static 'assets/images/' %}{{ product.image }}{% else %}https://via.placeholder.com/400{% endif %}" class="w-3/4 h-auto object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3">
+                 </div>
+                 <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-white dark:from-black via-white/80 dark:via-black/80 to-transparent">
+                     <h4 class="text-lg font-bold text-gray-900 dark:text-white truncate">{{ product.name }}</h4>
+                 </div>
+            </div>
+            {% endfor %}
+
         </div>
     </section>
 
     <!-- Separator -->
     <div class="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 my-16">
-        <div
-            class="h-[1px] w-full bg-gradient-to-r from-xiaomi to-accent rounded-full opacity-80"
-        ></div>
+        <div class="h-[1px] w-full bg-gradient-to-r from-xiaomi to-accent rounded-full opacity-80"></div>
     </div>
 
     <!-- Testimonials Section -->
     <section class="pb-20 pt-4">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                <div>
-                    <span
-                        class="text-xiaomi font-bold uppercase tracking-widest text-xs mb-2 block"
-                        >Garantía Total</span
-                    >
-                    <h2
-                        class="text-3xl md:text-4xl font-bold text-primary dark:text-white mb-6 leading-tight"
-                    >
-                        Técnicos Certificados <br />
-                        <span class="text-gray-400 dark:text-gray-500"
-                            >Herramientas Oficiales.</span
-                        >
-                    </h2>
-                    <p
-                        class="text-gray-500 dark:text-gray-400 leading-relaxed mb-8 text-base"
-                    >
-                        Utilizamos software oficial como MiFlash Pro y
-                        esquemáticos originales. Tu dispositivo mantiene su
-                        garantía y funcionalidad intacta.
-                    </p>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div
-                            class="p-5 bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800"
-                        >
-                            <h4
-                                class="font-bold text-2xl text-primary dark:text-white mb-0.5"
-                            >
-                                20min
-                            </h4>
-                            <p
-                                class="text-xs text-gray-500 dark:text-gray-400 font-medium"
-                            >
-                                Tiempo promedio
-                            </p>
-                        </div>
-                        <div
-                            class="p-5 bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800"
-                        >
-                            <h4
-                                class="font-bold text-2xl text-primary dark:text-white mb-0.5"
-                            >
-                                90 Días
-                            </h4>
-                            <p
-                                class="text-xs text-gray-500 dark:text-gray-400 font-medium"
-                            >
-                                Garantía extendida
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <!-- Testimonial Card -->
-                    <div
-                        class="relative z-10 rounded-[2rem] p-[2px] bg-white dark:bg-gradient-to-r dark:from-xiaomi dark:to-accent shadow-xl transition-all duration-300 hover:shadow-2xl"
-                    >
-                        <div
-                            class="bg-white dark:bg-card-dark rounded-[2rem] p-8 h-full relative"
-                            id="testimonial-card"
-                        >
+             <div class="grid md:grid-cols-2 gap-16 items-center">
+                 <div>
+                     <span class="text-xiaomi font-bold uppercase tracking-widest text-xs mb-2 block">Garantía Total</span>
+                     <h2 class="text-3xl md:text-4xl font-bold text-primary dark:text-white mb-6 leading-tight">
+                         Técnicos Certificados <br/> <span class="text-gray-400 dark:text-gray-500">Herramientas Oficiales.</span>
+                     </h2>
+                     <p class="text-gray-500 dark:text-gray-400 leading-relaxed mb-8 text-base">
+                         Utilizamos software oficial como MiFlash Pro y esquemáticos originales. Tu dispositivo mantiene su garantía y funcionalidad intacta.
+                     </p>
+                     
+                     <div class="grid grid-cols-2 gap-4">
+                         <div class="p-5 bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800">
+                             <h4 class="font-bold text-2xl text-primary dark:text-white mb-0.5">20min</h4>
+                             <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Tiempo promedio</p>
+                         </div>
+                         <div class="p-5 bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800">
+                             <h4 class="font-bold text-2xl text-primary dark:text-white mb-0.5">90 Días</h4>
+                             <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Garantía extendida</p>
+                         </div>
+                     </div>
+                 </div>
+                 
+                 <div class="relative">
+                     <!-- Testimonial Card -->
+                     <div class="relative z-10 rounded-[2rem] p-[2px] bg-white dark:bg-gradient-to-r dark:from-xiaomi dark:to-accent shadow-xl transition-all duration-300 hover:shadow-2xl">
+                        <div class="bg-white dark:bg-card-dark rounded-[2rem] p-8 h-full relative" id="testimonial-card">
                             <div class="animate-fade-in">
                                 <div class="flex items-center gap-4 mb-6">
-                                    <img
-                                        id="testim-img"
-                                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"
-                                        class="w-14 h-14 rounded-xl object-cover shadow-md"
-                                        alt="User"
-                                    />
+                                    <img id="testim-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" class="w-14 h-14 rounded-xl object-cover shadow-md" alt="User" />
                                     <div>
-                                        <h4
-                                            id="testim-author"
-                                            class="font-bold text-lg text-primary dark:text-white"
-                                        >
-                                            Marcela V.
-                                        </h4>
-                                        <div
-                                            class="flex text-xiaomi text-xs mt-0.5"
-                                        >
-                                            <span
-                                                class="material-icons text-base"
-                                                >star</span
-                                            >
-                                            <span
-                                                class="material-icons text-base"
-                                                >star</span
-                                            >
-                                            <span
-                                                class="material-icons text-base"
-                                                >star</span
-                                            >
-                                            <span
-                                                class="material-icons text-base"
-                                                >star</span
-                                            >
-                                            <span
-                                                class="material-icons text-base"
-                                                >star</span
-                                            >
+                                        <h4 id="testim-author" class="font-bold text-lg text-primary dark:text-white">Marcela V.</h4>
+                                        <div class="flex text-xiaomi text-xs mt-0.5">
+                                            <span class="material-icons text-base">star</span>
+                                            <span class="material-icons text-base">star</span>
+                                            <span class="material-icons text-base">star</span>
+                                            <span class="material-icons text-base">star</span>
+                                            <span class="material-icons text-base">star</span>
                                         </div>
                                     </div>
                                 </div>
-                                <p
-                                    id="testim-text"
-                                    class="text-gray-600 dark:text-gray-300 italic mb-6 text-base leading-relaxed h-20"
-                                >
-                                    "La rapidez con la que liberaron mi iPhone
-                                    14 Pro fue impresionante. En 20 minutos ya
-                                    tenía señal."
-                                </p>
-                                <div
-                                    class="flex items-center gap-2 text-xs font-bold text-green-700 bg-green-100 dark:text-green-400 dark:bg-green-900/20 px-3 py-1.5 rounded-full w-max"
-                                >
-                                    <span class="material-icons text-xs"
-                                        >verified</span
-                                    >
-                                    Compra Verificada
+                                <p id="testim-text" class="text-gray-600 dark:text-gray-300 italic mb-6 text-base leading-relaxed h-20">"La rapidez con la que liberaron mi iPhone 14 Pro fue impresionante. En 20 minutos ya tenía señal."</p>
+                                <div class="flex items-center gap-2 text-xs font-bold text-green-700 bg-green-100 dark:text-green-400 dark:bg-green-900/20 px-3 py-1.5 rounded-full w-max">
+                                    <span class="material-icons text-xs">verified</span> Compra Verificada
                                 </div>
                             </div>
                         </div>
-                    </div>
+                     </div>
 
-                    <!-- Nav Buttons -->
-                    <div class="flex justify-center gap-4 mt-8 relative z-10">
-                        <button
-                            id="prev-testim"
-                            class="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-white hover:text-accent bg-white/50 backdrop-blur-sm flex items-center justify-center transition-all"
-                        >
-                            <span class="material-icons">chevron_left</span>
-                        </button>
-                        <button
-                            id="next-testim"
-                            class="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-white hover:text-accent bg-white/50 backdrop-blur-sm flex items-center justify-center transition-all"
-                        >
-                            <span class="material-icons">chevron_right</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+                     <!-- Nav Buttons -->
+                     <div class="flex justify-center gap-4 mt-8 relative z-10">
+                         <button id="prev-testim" class="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-white hover:text-accent bg-white/50 backdrop-blur-sm flex items-center justify-center transition-all">
+                             <span class="material-icons">chevron_left</span>
+                         </button>
+                         <button id="next-testim" class="w-12 h-12 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-white hover:text-accent bg-white/50 backdrop-blur-sm flex items-center justify-center transition-all">
+                             <span class="material-icons">chevron_right</span>
+                         </button>
+                     </div>
+                 </div>
+             </div>
         </div>
     </section>
 </div>
+{% endblock %}
 
-<script src="{% static 'js/home.js' %}" defer></script>
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- HERO SLIDER LOGIC ---
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.hero-dot');
+        let currentSlide = 0;
+        
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                const content = slide.querySelector('.slide-content');
+                if (i === index) {
+                    slide.classList.remove('opacity-0', 'z-0');
+                    slide.classList.add('opacity-100', 'z-10');
+                    content.classList.remove('translate-y-4', 'opacity-0');
+                    content.classList.add('translate-y-0', 'opacity-100');
+                    dots[i].classList.remove('bg-white/20', 'w-1.5');
+                    dots[i].classList.add('bg-xiaomi', 'w-6');
+                } else {
+                    slide.classList.remove('opacity-100', 'z-10');
+                    slide.classList.add('opacity-0', 'z-0');
+                    content.classList.remove('translate-y-0', 'opacity-100');
+                    content.classList.add('translate-y-4', 'opacity-0');
+                    dots[i].classList.remove('bg-xiaomi', 'w-6');
+                    dots[i].classList.add('bg-white/20', 'w-1.5');
+                }
+            });
+            currentSlide = index;
+        }
 
+        setInterval(() => {
+            let next = (currentSlide + 1) % slides.length;
+            showSlide(next);
+        }, 5000);
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showSlide(parseInt(dot.dataset.index));
+            });
+        });
+
+        // --- TABS LOGIC ---
+        const tabServices = document.getElementById('tab-services');
+        const tabProducts = document.getElementById('tab-products');
+        const contentServices = document.getElementById('content-services');
+        const contentProducts = document.getElementById('content-products');
+
+        function switchTab(tabName) {
+            if (tabName === 'products') {
+                tabProducts.classList.add('bg-primary', 'dark:bg-white', 'text-white', 'dark:text-black', 'shadow-md');
+                tabProducts.classList.remove('text-gray-500', 'dark:text-gray-400', 'hover:bg-gray-50');
+                
+                tabServices.classList.remove('bg-primary', 'dark:bg-white', 'text-white', 'dark:text-black', 'shadow-md');
+                tabServices.classList.add('text-gray-500', 'dark:text-gray-400');
+                
+                contentProducts.classList.remove('hidden');
+                contentServices.classList.add('hidden');
+            } else {
+                tabServices.classList.add('bg-primary', 'dark:bg-white', 'text-white', 'dark:text-black', 'shadow-md');
+                tabServices.classList.remove('text-gray-500', 'dark:text-gray-400', 'hover:bg-gray-50');
+                
+                tabProducts.classList.remove('bg-primary', 'dark:bg-white', 'text-white', 'dark:text-black', 'shadow-md');
+                tabProducts.classList.add('text-gray-500', 'dark:text-gray-400');
+                
+                contentServices.classList.remove('hidden');
+                contentProducts.classList.add('hidden');
+            }
+        }
+
+        if (tabServices && tabProducts) {
+             tabServices.addEventListener('click', () => switchTab('services'));
+             tabProducts.addEventListener('click', () => switchTab('products'));
+             // Default tab
+             switchTab('services');
+        }
+
+        // --- TESTIMONIALS LOGIC ---
+        const testimonials = [
+            {
+                text: "La rapidez con la que liberaron mi iPhone 14 Pro fue impresionante. En 20 minutos ya tenía señal.",
+                author: "Marcela V.",
+                image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150"
+            },
+            {
+                text: "Pensé que mi pantalla curva no tenía solución barata. Quedó original y mantuve mis 120Hz.",
+                author: "Jorge L.",
+                image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80&w=150"
+            }
+        ];
+        let currentTestim = 0;
+        const testimImg = document.getElementById('testim-img');
+        const testimAuthor = document.getElementById('testim-author');
+        const testimText = document.getElementById('testim-text');
+
+        function updateTestimonial(idx) {
+            const data = testimonials[idx];
+            testimImg.src = data.image;
+            testimAuthor.textContent = data.author;
+            testimText.textContent = `"${data.text}"`;
+        }
+
+        if (document.getElementById('next-testim')) {
+            document.getElementById('next-testim').addEventListener('click', () => {
+                currentTestim = (currentTestim + 1) % testimonials.length;
+                updateTestimonial(currentTestim);
+            });
+            document.getElementById('prev-testim').addEventListener('click', () => {
+                currentTestim = (currentTestim - 1 + testimonials.length) % testimonials.length;
+                updateTestimonial(currentTestim);
+            });
+        }
+
+        // --- BENTO GRID INTERACTION ---
+        const bLargImg = document.getElementById("bento-large-img-current");
+        const bLargTitle = document.getElementById("bento-large-title");
+        const bLargDesc = document.getElementById("bento-large-desc");
+        const bSmallCards = document.querySelectorAll(".bento-small-card");
+
+        if (bLargImg && bSmallCards.length > 0) {
+            bSmallCards.forEach(card => {
+                card.addEventListener("click", () => {
+                    // 1. Capture Current Large State
+                    const oldLargeImg = bLargImg.src;
+                    const oldLargeTitle = bLargTitle.innerText; // Use innerText for safety
+                    const oldLargeDesc = bLargDesc.innerText;
+
+                    // 2. Capture Clicked Small State (from dataset)
+                    const newLargeImg = card.dataset.img;
+                    const newLargeTitle = card.dataset.title;
+                    const newLargeDesc = card.dataset.desc;
+
+                    // 3. Update Large Card (with simple fade effect manually handled or direct swap)
+                    // Direct swap for instant responsiveness as requested
+                    bLargImg.src = newLargeImg;
+                    bLargTitle.textContent = newLargeTitle;
+                    bLargDesc.textContent = newLargeDesc;
+
+                    // 4. Update Small Card (Swap content to where it came from)
+                    // Update dataset for next click
+                    card.dataset.img = oldLargeImg;
+                    card.dataset.title = oldLargeTitle;
+                    card.dataset.desc = oldLargeDesc;
+                    
+                    // Update DOM elements of the small card
+                    const smallImg = card.querySelector("img");
+                    const smallTitle = card.querySelector("h4");
+                    
+                    if (smallImg) smallImg.src = oldLargeImg;
+                    if (smallTitle) smallTitle.textContent = oldLargeTitle;
+                });
+            });
+        }
+    });
+</script>
 {% endblock %}

@@ -1,439 +1,361 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Mi Perfil |
-MiXiaomiUnlock{% endblock %} {% block content %}
-<div
-    class="min-h-screen bg-background-light dark:bg-background-dark font-display animate-fade-in pb-20"
->
-    <!-- Header Background -->
-    <div
-        class="h-48 bg-gradient-to-r from-primary to-[#0F1C2E] relative overflow-hidden"
-    >
-        <div
-            class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"
-        ></div>
-        <div
-            class="absolute -bottom-10 -right-10 w-64 h-64 bg-accent/20 rounded-full blur-3xl"
-        ></div>
-    </div>
+{% extends 'base.html' %}
+{% load static %}
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
-        <div class="flex flex-col md:flex-row gap-8">
+{% block title %}Mi Perfil | MiXiaomiUnlock{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#F5F5F7] dark:bg-background-dark py-10 font-display">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Profile Header -->
+        <div class="bg-white dark:bg-card-dark rounded-3xl p-8 shadow-sm border border-gray-100 dark:border-gray-800 mb-8 flex flex-col md:flex-row items-center gap-6 animate-fade-in">
+            <!-- Avatar -->
+            <div class="w-24 h-24 rounded-full bg-gradient-to-br from-xiaomi to-orange-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg ring-4 ring-white dark:ring-[#1a1a1a]">
+                {{ user.first_name|first }}{{ user.last_name|first }}
+            </div>
+            
+            <!-- Info -->
+            <div class="text-center md:text-left flex-1">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ user.first_name }} {{ user.last_name }}</h1>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">{{ user.email }}</p>
+                <div class="flex items-center justify-center md:justify-start gap-4 mt-4">
+                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs font-bold">
+                        <span class="material-icons text-[14px]">verified</span>
+                        Cliente Verificado
+                    </span>
+                    <span class="text-xs text-gray-400">Miembro desde {{ user.date_joined|date:"M Y" }}</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="flex gap-8 border-t md:border-t-0 border-gray-100 dark:border-gray-800 pt-6 md:pt-0">
+                <div class="text-center">
+                    <span class="block text-2xl font-bold text-gray-900 dark:text-white">{{ orders.count }}</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider">Pedidos</span>
+                </div>
+                <div class="text-center">
+                    <span class="block text-2xl font-bold text-gray-900 dark:text-white">0</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider">Puntos</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
             <!-- Sidebar Navigation -->
-            <div class="w-full md:w-80 flex-shrink-0 space-y-6">
-                <!-- User Card -->
-                <div
-                    class="bg-white dark:bg-card-dark rounded-3xl shadow-lg p-6 text-center border border-gray-100 dark:border-gray-800"
-                >
-                    <div
-                        class="relative w-32 h-32 mx-auto mb-4 group cursor-pointer"
-                    >
-                        <div
-                            class="w-full h-full rounded-full overflow-hidden border-4 border-white dark:border-card-dark shadow-md"
-                        >
-                            <img
-                                id="user-avatar"
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=300"
-                                alt="Profile"
-                                class="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div
-                            class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                            <span class="material-icons text-white"
-                                >camera_alt</span
-                            >
-                        </div>
-                    </div>
-                    <h2
-                        id="display-name"
-                        class="text-2xl font-bold text-primary dark:text-white"
-                    >
-                        John Doe
-                    </h2>
-                    <p
-                        id="display-email"
-                        class="text-sm text-gray-500 dark:text-gray-400"
-                    >
-                        john.doe@example.com
-                    </p>
-                    <div class="mt-4 flex justify-center gap-2">
-                        <span
-                            class="px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-bold"
-                            >Cliente VIP</span
-                        >
-                    </div>
-                </div>
-
-                <!-- Navigation Menu -->
-                <div
-                    class="bg-white dark:bg-card-dark rounded-3xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-800"
-                >
-                    <nav class="flex flex-col">
-                        <button
-                            onclick="switchTab('profile')"
-                            id="nav-profile"
-                            class="nav-btn w-full flex items-center p-4 transition-colors border-l-4 border-accent bg-gray-50 dark:bg-gray-800 text-accent font-bold"
-                        >
-                            <span class="material-icons mr-4">person</span>
-                            Mi Información
-                            <span
-                                class="ml-auto material-icons text-sm opacity-50"
-                                >chevron_right</span
-                            >
-                        </button>
-                        <button
-                            onclick="switchTab('orders')"
-                            id="nav-orders"
-                            class="nav-btn w-full flex items-center p-4 transition-colors border-l-4 border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
-                        >
-                            <span class="material-icons mr-4">inventory_2</span>
-                            Mis Pedidos
-                            <span
-                                class="ml-auto material-icons text-sm opacity-50"
-                                >chevron_right</span
-                            >
-                        </button>
-                        <button
-                            onclick="switchTab('settings')"
-                            id="nav-settings"
-                            class="nav-btn w-full flex items-center p-4 transition-colors border-l-4 border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
-                        >
-                            <span class="material-icons mr-4">settings</span>
-                            Configuración
-                            <span
-                                class="ml-auto material-icons text-sm opacity-50"
-                                >chevron_right</span
-                            >
-                        </button>
-                    </nav>
-                    <div class="border-t border-gray-100 dark:border-gray-800">
-                        <button
-                            id="btn-logout"
-                            class="w-full flex items-center p-4 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors font-medium"
-                        >
-                            <span class="material-icons mr-4">logout</span>
-                            Cerrar Sesión
-                        </button>
-                    </div>
-                </div>
+            <div class="lg:col-span-1 space-y-2">
+                <button onclick="switchProfileTab('orders')" id="btn-orders" class="w-full flex items-center gap-3 px-4 py-3 bg-white dark:bg-card-dark text-xiaomi border-l-4 border-xiaomi font-bold rounded-r-xl shadow-sm transition-all text-left">
+                    <span class="material-icons">shopping_bag</span>
+                    Mis Pedidos
+                </button>
+                <button onclick="switchProfileTab('favorites')" id="btn-favorites" class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 rounded-xl transition-all text-left border-l-4 border-transparent">
+                    <span class="material-icons">favorite</span>
+                    Favoritos
+                </button>
+                <button onclick="switchProfileTab('info')" id="btn-info" class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 rounded-xl transition-all text-left border-l-4 border-transparent">
+                    <span class="material-icons">person</span>
+                    Información Personal
+                </button>
+                <button onclick="switchProfileTab('security')" id="btn-security" class="w-full flex items-center gap-3 px-4 py-3 text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 rounded-xl transition-all text-left border-l-4 border-transparent">
+                    <span class="material-icons">security</span>
+                    Seguridad
+                </button>
+                <a href="{% url 'users:logout' %}" class="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all mt-8 text-left">
+                    <span class="material-icons">logout</span>
+                    Cerrar Sesión
+                </a>
             </div>
 
             <!-- Main Content Area -->
-            <div class="flex-1">
-                <!-- TAB: PROFILE -->
-                <div
-                    id="tab-profile"
-                    class="tab-content bg-white dark:bg-card-dark rounded-3xl shadow-lg p-8 border border-gray-100 dark:border-gray-800 animate-slide-up"
-                >
-                    <h3
-                        class="text-xl font-bold text-primary dark:text-white mb-6 flex items-center gap-2"
-                    >
-                        <span class="material-icons text-accent"
-                            >edit_note</span
-                        >
-                        Editar Perfil
-                    </h3>
-                    <form id="profile-form" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label
-                                    class="text-xs font-bold text-gray-500 uppercase"
-                                    >Nombre</label
-                                >
-                                <input
-                                    type="text"
-                                    id="input-name"
-                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none transition-all"
-                                />
-                            </div>
-                            <div class="space-y-2">
-                                <label
-                                    class="text-xs font-bold text-gray-500 uppercase"
-                                    >Apellidos</label
-                                >
-                                <input
-                                    type="text"
-                                    id="input-lastname"
-                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none transition-all"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label
-                                    class="text-xs font-bold text-gray-500 uppercase"
-                                    >Teléfono</label
-                                >
-                                <input
-                                    type="tel"
-                                    id="input-phone"
-                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none transition-all"
-                                />
-                            </div>
-                            <div class="space-y-2">
-                                <label
-                                    class="text-xs font-bold text-gray-500 uppercase"
-                                    >Email</label
-                                >
-                                <input
-                                    type="email"
-                                    id="input-email"
-                                    disabled
-                                    class="w-full bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-gray-500 cursor-not-allowed"
-                                />
-                                <span class="text-[10px] text-gray-400"
-                                    >El email no se puede cambiar por
-                                    seguridad.</span
-                                >
-                            </div>
-                        </div>
-
-                        <div class="space-y-2">
-                            <label
-                                class="text-xs font-bold text-gray-500 uppercase"
-                                >Dirección de Envío</label
-                            >
-                            <textarea
-                                id="input-address"
-                                rows="3"
-                                class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none transition-all resize-none"
-                            ></textarea>
-                        </div>
-
-                        <div class="pt-4 flex justify-end">
-                            <button
-                                type="submit"
-                                class="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-accent/20 transition-transform active:scale-95"
-                            >
-                                Guardar Cambios
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- TAB: ORDERS -->
-                <div
-                    id="tab-orders"
-                    class="tab-content hidden space-y-6 animate-slide-up"
-                >
-                    <h3
-                        class="text-xl font-bold text-primary dark:text-white mb-6 flex items-center gap-2"
-                    >
-                        <span class="material-icons text-accent">history</span>
+            <div class="lg:col-span-3 min-h-[500px]">
+                
+                <!-- SECTION: ORDERS -->
+                <div id="content-orders" class="space-y-6 animate-fade-in">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="material-icons text-gray-400">history</span>
                         Historial de Pedidos
-                    </h3>
+                    </h2>
 
-                    <!-- Orders Container -->
-                    <div id="orders-list" class="space-y-4">
-                        <!-- Injected via JS -->
-                    </div>
+                    {% if orders %}
+                        {% for order in orders %}
+                        <div class="bg-white dark:bg-card-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-md transition-shadow group">
+                            <!-- Order Header -->
+                            <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex flex-wrap justify-between items-center gap-4 bg-gray-50/50 dark:bg-black/20">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center font-bold text-gray-500">
+                                        #
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-900 dark:text-white">Pedido #{{ order.id }}</h3>
+                                        <p class="text-xs text-gray-500">{{ order.created_at|date:"d M Y, h:i A" }}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold 
+                                        {% if order.status == 'PENDING' %}bg-yellow-100 text-yellow-700
+                                        {% elif order.status == 'COMPLETED' %}bg-green-100 text-green-700
+                                        {% elif order.status == 'CANCELLED' %}bg-red-100 text-red-700
+                                        {% else %}bg-gray-100 text-gray-700{% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                    {% if order.status != 'PENDING' and order.status != 'CANCELLED' and not order.testimonial %}
+                                        <button onclick="openReviewModal('{{ order.id }}')" class="flex items-center gap-1 text-xs font-bold text-xiaomi hover:text-orange-600 bg-orange-50 dark:bg-orange-900/10 px-3 py-1 rounded-full transition-colors">
+                                            <span class="material-icons text-sm">stars</span>
+                                            Calificar
+                                        </button>
+                                    {% endif %}
+                                    <span class="font-bold text-lg text-gray-900 dark:text-white">${{ order.total }}</span>
+                                </div>
+                            </div>
 
-                    <!-- Empty State -->
-                    <div
-                        id="no-orders"
-                        class="hidden p-8 text-center bg-white dark:bg-card-dark rounded-3xl border border-gray-100 dark:border-gray-800"
-                    >
-                        <div
-                            class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4"
-                        >
-                            <span class="material-icons text-gray-400 text-2xl"
-                                >local_mall</span
-                            >
+                            <!-- Order Items Preview -->
+                            <div class="p-6">
+                                <div class="space-y-4">
+                                    {% for item in order.items.all %}
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center p-1">
+                                                {% if item.product.image %}
+                                                    <img src="{% static 'assets/images/' %}{{ item.product.image }}" class="w-full h-full object-contain">
+                                                {% else %}
+                                                    <span class="material-icons text-gray-400 text-sm">image</span>
+                                                {% endif %}
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ item.product.name }}</p>
+                                                <p class="text-xs text-gray-500">Cant: {{ item.quantity }}</p>
+                                            </div>
+                                        </div>
+                                        <span class="text-sm font-bold text-gray-700 dark:text-gray-300">${{ item.price }}</span>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
-                        <p class="text-gray-500 dark:text-gray-400">
-                            No tienes pedidos recientes.
-                        </p>
-                        <a
-                            href="/catalog"
-                            class="mt-4 inline-block text-accent font-bold hover:underline"
-                            >Ir a comprar</a
-                        >
+                        {% endfor %}
+                    {% else %}
+                        <!-- Empty State for Orders -->
+                        <div class="text-center py-16 bg-white dark:bg-card-dark rounded-3xl border border-dashed border-gray-200 dark:border-gray-800">
+                            <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="material-icons text-3xl text-gray-400">receipt_long</span>
+                            </div>
+                            <p class="font-bold text-gray-900 dark:text-white">Aún no tienes pedidos</p>
+                            <p class="text-sm text-gray-500 mt-2 mb-6">¿Qué esperas para estrenar?</p>
+                            <a href="{% url 'products:product-list' %}" class="inline-block px-6 py-2 bg-xiaomi text-white rounded-full font-bold text-sm hover:shadow-lg transition-all">
+                                Ir al Catálogo
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- SECTION: FAVORITES -->
+                <div id="content-favorites" class="hidden space-y-6 animate-fade-in">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="material-icons text-gray-400">favorite</span>
+                        Mis Favoritos
+                    </h2>
+
+                    {% if favorites %}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {% for fav in favorites %}
+                            <div class="bg-white dark:bg-card-dark rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4 group">
+                                <div class="w-16 h-16 bg-gray-50 dark:bg-gray-800 rounded-xl p-1 flex-shrink-0">
+                                    {% if fav.product.image %}
+                                        <img src="{% static 'assets/images/' %}{{ fav.product.image }}" class="w-full h-full object-contain">
+                                    {% else %}
+                                        <span class="material-icons text-gray-400">image</span>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-bold text-gray-900 dark:text-white truncate">{{ fav.product.name }}</h4>
+                                    <p class="text-xiaomi font-bold text-sm">${{ fav.product.price }}</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <a href="{% url 'products:product-detail' fav.product.id %}" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-800 text-gray-400 hover:text-xiaomi transition-all" title="Ver detalle">
+                                        <span class="material-icons text-sm">visibility</span>
+                                    </a>
+                                    <button 
+                                        onclick="toggleFavorite(this, {{ fav.product.id }})" 
+                                        class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-50 dark:bg-gray-800 transition-all active:scale-95 {% if fav.product.id in user_favorites %}text-red-500{% else %}text-gray-400 hover:text-red-500{% endif %}"
+                                        title="Eliminar de favoritos"
+                                    >
+                                        <span class="material-icons text-sm">
+                                            {% if fav.product.id in user_favorites %}favorite{% else %}favorite_border{% endif %}
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-16 bg-white dark:bg-card-dark rounded-3xl border border-dashed border-gray-200 dark:border-gray-800">
+                            <span class="material-icons text-4xl text-gray-300 mb-2">favorite_border</span>
+                            <p class="text-gray-500">¿Aún no has guardado nada?</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- SECTION: PERSONAL INFO -->
+                <div id="content-info" class="hidden space-y-6 animate-fade-in">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="material-icons text-gray-400">person</span>
+                        Información Personal
+                    </h2>
+                    
+                    <div class="bg-white dark:bg-card-dark rounded-3xl p-8 shadow-sm border border-gray-100 dark:border-gray-800">
+                         <form class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Nombre</label>
+                                    <input type="text" value="{{ user.first_name }}" readonly class="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-[#1a1a1a] text-gray-900 dark:text-white font-medium cursor-not-allowed opacity-80">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Apellido</label>
+                                    <input type="text" value="{{ user.last_name }}" readonly class="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-[#1a1a1a] text-gray-900 dark:text-white font-medium cursor-not-allowed opacity-80">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Email</label>
+                                <input type="email" value="{{ user.email }}" readonly class="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-[#1a1a1a] text-gray-900 dark:text-white font-medium cursor-not-allowed opacity-80">
+                            </div>
+                             <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">ID de Usuario</label>
+                                <input type="text" value="#USER-{{ user.id|stringformat:'06d' }}" readonly class="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-[#1a1a1a] text-gray-500 font-mono text-sm cursor-not-allowed opacity-80">
+                            </div>
+                             
+                            <div class="pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+                                <button type="button" class="text-sm font-bold text-xiaomi hover:text-orange-600 transition-colors">
+                                    Solicitar cambio de datos
+                                </button>
+                            </div>
+                         </form>
                     </div>
                 </div>
 
-                <!-- TAB: SETTINGS -->
-                <div
-                    id="tab-settings"
-                    class="tab-content hidden bg-white dark:bg-card-dark rounded-3xl shadow-lg p-8 border border-gray-100 dark:border-gray-800 animate-slide-up"
-                >
-                    <h3
-                        class="text-xl font-bold text-primary dark:text-white mb-6 flex items-center gap-2"
-                    >
-                        <span class="material-icons text-accent">tune</span>
-                        Preferencias
-                    </h3>
-
-                    <div class="space-y-6">
-                        <!-- Dark Mode Toggle -->
-                        <div
-                            class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl"
-                        >
-                            <div class="flex items-center gap-4">
-                                <div
-                                    id="setting-theme-icon-bg"
-                                    class="w-10 h-10 rounded-full flex items-center justify-center bg-yellow-400 text-white transition-colors"
-                                >
-                                    <span
-                                        id="setting-theme-icon"
-                                        class="material-icons"
-                                        >light_mode</span
-                                    >
-                                </div>
-                                <div>
-                                    <h4
-                                        class="font-bold text-primary dark:text-white"
-                                    >
-                                        Modo Oscuro
-                                    </h4>
-                                    <p class="text-xs text-gray-500">
-                                        Cambia la apariencia de la aplicación
-                                    </p>
-                                </div>
-                            </div>
-                            <label
-                                class="relative inline-flex items-center cursor-pointer"
-                            >
-                                <input
-                                    type="checkbox"
-                                    id="setting-theme-toggle"
-                                    class="sr-only peer"
-                                />
-                                <div
-                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent/20 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"
-                                ></div>
-                            </label>
-                        </div>
-
-                        <!-- Notifications Toggle -->
-                        <div
-                            class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl opacity-70"
-                        >
-                            <div class="flex items-center gap-4">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center"
-                                >
-                                    <span class="material-icons"
-                                        >notifications</span
-                                    >
-                                </div>
-                                <div>
-                                    <h4
-                                        class="font-bold text-primary dark:text-white"
-                                    >
-                                        Notificaciones
-                                    </h4>
-                                    <p class="text-xs text-gray-500">
-                                        Recibir alertas de pedidos
-                                    </p>
-                                </div>
-                            </div>
-                            <label
-                                class="relative inline-flex items-center cursor-pointer"
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked
-                                    disabled
-                                    class="sr-only peer"
-                                />
-                                <div
-                                    class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:bg-accent after:translate-x-full after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5"
-                                ></div>
-                            </label>
-                        </div>
-                    </div>
+                <!-- SECTION: SECURITY (Placeholder) -->
+                <div id="content-security" class="hidden space-y-6 animate-fade-in">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <span class="material-icons text-gray-400">security</span>
+                        Seguridad
+                    </h2>
+                     <div class="bg-white dark:bg-card-dark rounded-3xl p-8 shadow-sm border border-gray-100 dark:border-gray-800 text-center py-16">
+                        <span class="material-icons text-4xl text-gray-300 mb-4">lock</span>
+                        <p class="text-gray-500">La gestión de contraseñas estará disponible próximamente.</p>
+                     </div>
                 </div>
+
             </div>
         </div>
+
     </div>
+</div>
 
-    <!-- REVIEW MODAL -->
-    <div
-        id="review-modal"
-        class="fixed inset-0 z-[60] flex items-center justify-center px-4 hidden"
-    >
-        <div
-            class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0"
-            id="review-modal-bg"
-        ></div>
-        <div
-            class="bg-white dark:bg-card-dark rounded-3xl shadow-2xl w-full max-w-lg relative z-10 p-8 transform translate-y-10 opacity-0 transition-all duration-300"
-            id="review-modal-content"
-        >
-            <div class="text-center mb-6">
-                <div
-                    class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/20 rounded-full flex items-center justify-center mx-auto mb-4 text-yellow-500"
-                >
-                    <span class="material-icons text-3xl">star</span>
+<!-- Modal de Calificación -->
+<div id="review-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+    <div class="bg-white dark:bg-card-dark rounded-3xl w-full max-w-lg p-8 shadow-2xl">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Califica tu pedido</h3>
+            <button onclick="closeReviewModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        
+        <form id="review-form" method="POST" action="">
+            {% csrf_token %}
+            <div class="mb-6 text-center">
+                <p class="text-sm text-gray-500 mb-2">¿Cómo fue tu experiencia con este servicio?</p>
+                <div class="flex justify-center gap-1">
+                    <button type="button" onclick="setRating(1)" class="star-btn transition-transform hover:scale-110"><span class="material-icons text-4xl text-yellow-400">star</span></button>
+                    <button type="button" onclick="setRating(2)" class="star-btn transition-transform hover:scale-110"><span class="material-icons text-4xl text-yellow-400">star</span></button>
+                    <button type="button" onclick="setRating(3)" class="star-btn transition-transform hover:scale-110"><span class="material-icons text-4xl text-yellow-400">star</span></button>
+                    <button type="button" onclick="setRating(4)" class="star-btn transition-transform hover:scale-110"><span class="material-icons text-4xl text-yellow-400">star</span></button>
+                    <button type="button" onclick="setRating(5)" class="star-btn transition-transform hover:scale-110"><span class="material-icons text-4xl text-yellow-400">star</span></button>
                 </div>
-                <h3 class="text-2xl font-bold text-primary dark:text-white">
-                    Califica tu Servicio
-                </h3>
-                <p
-                    class="text-gray-500 dark:text-gray-400 text-sm mt-1"
-                    id="review-order-id"
-                >
-                    Pedido #
-                </p>
+                <input type="hidden" name="rating" id="rating-input" value="5">
             </div>
-
-            <div class="flex justify-center gap-2 mb-8" id="star-container">
-                <!-- Stars injected via JS -->
-            </div>
-
+            
             <div class="mb-6">
-                <label
-                    class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2"
-                    >Cuéntanos tu experiencia</label
-                >
-                <textarea
-                    id="review-text"
-                    rows="4"
-                    placeholder="El servicio fue rápido y el desbloqueo funcionó perfectamente..."
-                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-primary dark:text-white focus:ring-2 focus:ring-accent outline-none resize-none"
-                ></textarea>
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Tu opinión es muy valiosa</label>
+                <textarea name="comment" required class="w-full px-4 py-3 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none min-h-[120px] dark:text-white resize-none" placeholder="Escribe aquí tu testimonio..."></textarea>
             </div>
-
-            <div class="flex gap-4">
-                <button
-                    id="btn-cancel-review"
-                    class="flex-1 px-4 py-3 rounded-xl font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                    Cancelar
-                </button>
-                <button
-                    id="btn-submit-review"
-                    class="flex-1 px-4 py-3 rounded-xl font-bold text-white transition-all shadow-lg bg-accent hover:bg-accent-hover transform hover:-translate-y-1"
-                >
-                    Enviar Reseña
-                </button>
-            </div>
-        </div>
+            
+            <button type="submit" class="w-full bg-xiaomi text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 transition-all">
+                Publicar Testimonio
+            </button>
+        </form>
     </div>
 </div>
 
-<!-- Success Toast -->
-<div
-    id="profile-toast"
-    class="fixed top-24 right-6 z-[100] transition-all duration-500 transform translate-x-10 opacity-0 pointer-events-none"
->
-    <div
-        class="bg-white dark:bg-card-dark border-l-4 border-accent text-primary dark:text-white pl-4 pr-6 py-4 rounded-r-xl shadow-2xl flex items-center gap-4 min-w-[300px]"
-    >
-        <div class="bg-accent/10 rounded-full p-2 text-accent">
-            <span class="material-icons text-xl">check_circle</span>
-        </div>
-        <div>
-            <h4 class="font-bold text-sm">Notificación</h4>
-            <span
-                class="text-sm text-gray-500 dark:text-gray-400 font-medium"
-                id="toast-msg"
-                >Mensaje</span
-            >
-        </div>
-    </div>
-</div>
+<script>
+    function openReviewModal(orderId) {
+        const modal = document.getElementById('review-modal');
+        const form = document.getElementById('review-form');
+        form.action = `/testimonial/submit/${orderId}/`;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
 
+    function closeReviewModal() {
+        const modal = document.getElementById('review-modal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    function setRating(val) {
+        const input = document.getElementById('rating-input');
+        input.value = val;
+        const stars = document.querySelectorAll('.star-btn .material-icons');
+        stars.forEach((star, index) => {
+            if (index < val) {
+                star.classList.replace('text-gray-200', 'text-yellow-400');
+                star.textContent = 'star';
+            } else {
+                star.classList.replace('text-yellow-400', 'text-gray-200');
+                star.textContent = 'star_outline';
+            }
+        });
+    }
+
+    // Inicializar estrellas en gris excepto la primera o cargar estado inicial
+    document.addEventListener('DOMContentLoaded', () => {
+        // ... switchProfileTab logic is already there ...
+        // Initialize Stars
+        setRating(5);
+    });
+
+    function switchProfileTab(tab) {
+        // Content Containers
+        const contents = {
+            'orders': document.getElementById('content-orders'),
+            'favorites': document.getElementById('content-favorites'),
+            'info': document.getElementById('content-info'),
+            'security': document.getElementById('content-security')
+        };
+        
+        // Buttons
+        const buttons = {
+            'orders': document.getElementById('btn-orders'),
+            'favorites': document.getElementById('btn-favorites'),
+            'info': document.getElementById('btn-info'),
+            'security': document.getElementById('btn-security')
+        };
+        
+        // Styles
+        const activeBtnClass = "bg-white dark:bg-card-dark text-xiaomi border-xiaomi shadow-sm";
+        const inactiveBtnClass = "text-gray-600 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800 border-transparent transition-all";
+
+        // Logic
+        for (const key in contents) {
+            if (key === tab) {
+                contents[key].classList.remove('hidden');
+                buttons[key].className = `w-full flex items-center gap-3 px-4 py-3 border-l-4 font-bold rounded-r-xl transition-all text-left ${activeBtnClass}`;
+            } else {
+                contents[key].classList.add('hidden');
+                buttons[key].className = `w-full flex items-center gap-3 px-4 py-3 border-l-4 rounded-xl transition-all text-left ${inactiveBtnClass}`;
+            }
+        }
+    }
+</script>
 {% endblock %}
-<script src="{% static 'js/profile.js' %}"></script>

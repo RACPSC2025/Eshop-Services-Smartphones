@@ -1,36 +1,84 @@
-<!-- FOOTER -->
-<footer
-    class="bg-white dark:bg-card-dark border-t border-gray-200 dark:border-gray-800 pt-16 pb-8 font-display mt-auto"
->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div class="col-span-1">
-                <div class="flex items-center gap-2 mb-4">
-                    <div
-                        class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center"
-                    >
-                        <span class="material-icons text-white text-sm"
-                            >phonelink_setup</span
-                        >
+<!-- FOOTER PREMIUM -->
+<footer class="bg-white dark:bg-[#0F1C2E] border-t border-gray-100 dark:border-gray-800 pt-20 pb-10 font-display mt-auto relative overflow-hidden">
+    <!-- Decorative Background -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-xiaomi via-orange-400 to-yellow-400"></div>
+    
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+            
+            <!-- Brand & About -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-xiaomi rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
+                        <span class="material-icons text-white">lock_open</span>
                     </div>
-                    <span class="font-bold text-xl text-primary dark:text-white"
-                        >MiXiaomi<span class="text-accent">Unlock</span></span
-                    >
+                    <span class="font-black text-2xl text-gray-900 dark:text-white tracking-tight">
+                        MiXiaomi<span class="text-xiaomi">Unlock</span>
+                    </span>
                 </div>
-                <p
-                    class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed"
-                >
-                    Soluciones profesionales para tus dispositivos móviles.
+                <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed max-w-sm">
+                    La plataforma líder en Latinoamérica para servicios remotos de desbloqueo, software y reparaciones certificadas para el ecosistema Xiaomi & POCO.
                 </p>
+                <div class="flex gap-4 pt-2">
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center text-gray-500 hover:bg-xiaomi hover:text-white transition-all duration-300">
+                        <img src="https://www.svgrepo.com/show/475654/facebook-color.svg" class="w-5 h-5 opacity-60 grayscale hover:grayscale-0 transition-all">
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center text-gray-500 hover:bg-xiaomi hover:text-white transition-all duration-300">
+                         <img src="https://www.svgrepo.com/show/475689/twitter-color.svg" class="w-5 h-5 opacity-60 grayscale hover:grayscale-0 transition-all">
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center text-gray-500 hover:bg-xiaomi hover:text-white transition-all duration-300">
+                         <img src="https://www.svgrepo.com/show/452229/instagram-1.svg" class="w-5 h-5 opacity-60 grayscale hover:grayscale-0 transition-all">
+                    </a>
+                </div>
             </div>
-            <!-- ... Links del footer simplificados ... -->
+
+            <!-- Links Column 1 -->
+            <div class="lg:col-span-2 lg:col-start-6">
+                <h4 class="font-bold text-gray-900 dark:text-white mb-6">Servicios</h4>
+                <ul class="space-y-4">
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Desbloqueo Bootloader</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Cuenta Mi Cloud</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">FRP Google</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Reparación IMEI</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Server Auth</a></li>
+                </ul>
+            </div>
+
+            <!-- Links Column 2 -->
+            <div class="lg:col-span-2">
+                <h4 class="font-bold text-gray-900 dark:text-white mb-6">Empresa</h4>
+                <ul class="space-y-4">
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Nosotros</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Contactar Soporte</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Términos y Condiciones</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Política de Privacidad</a></li>
+                    <li><a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-xiaomi transition-colors">Afiliados</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="lg:col-span-3">
+                <h4 class="font-bold text-gray-900 dark:text-white mb-6">Mantente al día</h4>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Suscríbete para recibir ofertas flash y novedades de Xiaomi.</p>
+                <form class="flex flex-col gap-3">
+                    <input type="email" placeholder="Tu correo electrónico" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-gray-700 text-sm focus:outline-none focus:border-xiaomi transition-colors">
+                    <button type="submit" class="w-full px-4 py-3 bg-gray-900 dark:bg-white text-white dark:text-black font-bold text-sm rounded-xl hover:opacity-90 transition-opacity">
+                        Suscribirse
+                    </button>
+                </form>
+            </div>
+
         </div>
-        <div
-            class="border-t border-gray-100 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
-        >
-            <p class="text-sm text-gray-400">
-                © 2024 MiXiaomiUnlock. Todos los derechos reservados.
+        
+        <div class="border-t border-gray-100 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-xs text-gray-400">
+                © 2026 MiXiaomiUnlock. No afiliado oficialmente a Xiaomi Inc.
             </p>
+            <div class="flex gap-6">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="h-5 opacity-50 grayscale hover:grayscale-0 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="h-5 opacity-50 grayscale hover:grayscale-0 transition-all">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-5 opacity-50 grayscale hover:grayscale-0 transition-all">
+            </div>
         </div>
     </div>
 </footer>

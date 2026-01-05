@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}404 - Página no encontrada | MiXiaomiUnlock{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center bg-[#F5F5F7] dark:bg-background-dark px-4 font-display">
+    <div class="text-center max-w-2xl mx-auto animate-fade-in">
+        
+        <!-- Mascota Enojada -->
+        <div class="relative w-64 h-64 mx-auto mb-8">
+            <div class="absolute inset-0 bg-red-500/10 dark:bg-red-500/20 rounded-full animate-pulse blur-3xl"></div>
+            <img 
+                src="{% static 'assets/images/Mascota-xiaomi-enojado.png' %}" 
+                alt="Xiaomi Mascot Angry" 
+                class="relative w-full h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+            >
+        </div>
+
+        <!-- Texto de Error -->
+        <h1 class="text-8xl font-black text-gray-200 dark:text-gray-800 mb-2 select-none">404</h1>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            ¡Rayos! Algo salió mal...
+        </h2>
+        <p class="text-gray-500 dark:text-gray-400 text-lg mb-10 max-w-md mx-auto leading-relaxed">
+            La página que buscas no existe o fue movida. Nuestra mascota está bastante molesta por este error.
+        </p>
+
+        <!-- Botones de Acción -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="{% url 'pages:home' %}" class="w-full sm:w-auto px-8 py-4 bg-primary dark:bg-white text-white dark:text-black rounded-xl font-bold hover:bg-opacity-90 transition-all shadow-lg shadow-orange-500/20 active:scale-95 flex items-center justify-center gap-2">
+                <span class="material-icons">home</span>
+                Volver al Inicio
+            </a>
+            <a href="{% url 'pages:contact' %}" class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all active:scale-95 flex items-center justify-center gap-2">
+                <span class="material-icons">support_agent</span>
+                Reportar Problema
+            </a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

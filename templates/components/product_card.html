@@ -1,0 +1,84 @@
+{% load static %}
+<!-- Product Card Component -->
+<div class="group bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800/50 overflow-hidden hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-300 flex flex-col h-full relative hover:shadow-xl dark:hover:shadow-black/30">
+    
+    <!-- Image Container -->
+    <div class="relative aspect-square w-full overflow-hidden bg-gray-50 dark:bg-[#0a0a0a]">
+        <a href="{% url 'products:product-detail' product.id %}" class="block h-full w-full">
+            {% if product.image %}
+            <img 
+                src="{% static 'assets/images/' %}{{ product.image }}" 
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                alt="{{ product.name }}"
+                loading="lazy"
+            >
+            {% else %}
+
+            <!-- Placeholder if no image -->
+            <div class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-700">
+                <span class="material-icons text-4xl">image_not_supported</span>
+            </div>
+            {% endif %}
+        </a>
+
+        <!-- Badges -->
+        {% if product.tag %}
+        <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide shadow-md z-10">
+            {{ product.tag }}
+        </span>
+        {% endif %}
+
+        <!-- Quick Actions -->
+        <button 
+            onclick="toggleFavorite(this, {{ product.id }})" 
+            class="absolute top-3 right-3 w-8 h-8 bg-white dark:bg-card-dark rounded-full flex items-center justify-center shadow-md transition-all duration-300 z-20 hover:scale-110 opacity-0 group-hover:opacity-100 translate-y-[-10px] group-hover:translate-y-0 {% if product.id in user_favorites %}text-red-500{% else %}text-gray-400 hover:text-red-500{% endif %}" 
+            title="Añadir a favoritos"
+        >
+            <span class="material-icons text-[16px]">
+                {% if product.id in user_favorites %}favorite{% else %}favorite_border{% endif %}
+            </span>
+        </button>
+    </div>
+
+    <!-- Content -->
+    <div class="p-4 flex flex-col flex-grow relative z-20">
+        <a href="{% url 'products:product-detail' product.id %}" class="group-hover:text-accent transition-colors">
+            <h3 class="font-bold text-gray-900 dark:text-white mb-1 truncate text-lg leading-tight">
+                {{ product.name }}
+            </h3>
+        </a>
+
+        <!-- Ratings -->
+        {% if product.rating %}
+        <div class="flex items-center gap-1 mb-2">
+            <div class="flex text-yellow-400 text-xs">
+                <span class="material-icons text-[14px]">star</span>
+                <span class="font-bold text-gray-600 dark:text-gray-400 ml-1">{{ product.rating }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2 mb-4">
+            {{ product.description }}
+        </p>
+
+        <!-- Footer: Price & Add Button -->
+        <div class="flex justify-between items-end pt-3 border-t border-gray-50 dark:border-gray-800 mt-auto">
+            <div class="flex flex-col">
+                <span class="text-xs text-gray-400 font-medium">Precio</span>
+                <span class="text-xl font-bold text-primary dark:text-white leading-none">
+                    ${{ product.price }}
+                </span>
+            </div>
+            
+            <button 
+                class="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 text-primary dark:text-white hover:bg-xiaomi hover:text-white transition-all shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-center active:scale-90 group/btn add-to-cart-btn" 
+                title="Añadir al carrito"
+                data-product-id="{{ product.id }}"
+            >
+                <span class="material-icons text-xl group-hover/btn:scale-110 transition-transform">add_shopping_cart</span>
+            </button>
+
+        </div>
+    </div>
+</div>

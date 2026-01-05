@@ -1,0 +1,83 @@
+{% load static %}
+<!-- Cart Items Table Partial -->
+<div class="bg-white dark:bg-card-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+    <!-- Desktop Header -->
+    <div class="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-black/20 text-xs font-bold text-gray-500 uppercase tracking-wider">
+        <div class="col-span-6">Producto</div>
+        <div class="col-span-2 text-center">Precio</div>
+        <div class="col-span-2 text-center">Cantidad</div>
+        <div class="col-span-2 text-right">Total</div>
+    </div>
+
+    <!-- Items Loop -->
+    <div class="divide-y divide-gray-100 dark:divide-gray-800">
+        {% for item in cart_items|default:cart.items.all %}
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center group hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
+            
+            <!-- Product Info -->
+            <div class="col-span-1 md:col-span-6 flex items-center gap-4">
+                <div class="w-20 h-20 bg-gray-50 dark:bg-black/20 rounded-xl flex items-center justify-center p-2 border border-gray-100 dark:border-gray-800">
+                    {% if item.product.image %}
+                        <img src="{% static 'assets/images/' %}{{ item.product.image }}" alt="{{ item.product.name }}" class="w-full h-full object-contain">
+                    {% else %}
+                        <span class="material-icons text-gray-400">image</span>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <div class="text-xs text-xiaomi font-bold uppercase mb-1">{{ item.product.category }}</div>
+                    <h3 class="font-bold text-gray-900 dark:text-white text-base leading-tight">{{ item.product.name }}</h3>
+                    <div class="md:hidden mt-1 font-bold text-primary dark:text-white">${{ item.product.price }}</div>
+                </div>
+            </div>
+
+            <!-- Price (Desktop) -->
+            <div class="hidden md:block col-span-2 text-center text-gray-500 dark:text-gray-400 font-medium">
+                ${{ item.product.price }}
+            </div>
+
+            <!-- Quantity Control -->
+            <div class="col-span-1 md:col-span-2 flex justify-center">
+                <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg h-10 bg-white dark:bg-black/20">
+                    <button 
+                        class="w-8 h-full flex items-center justify-center text-gray-500 hover:text-red-500 transition-colors"
+                        onclick="updateCartItem({{ item.id }}, 'decrease')"
+                    >
+                        <span class="material-icons text-sm">remove</span>
+                    </button>
+                    <span class="w-8 text-center text-sm font-bold text-gray-900 dark:text-white">{{ item.quantity }}</span>
+                    <button 
+                        class="w-8 h-full flex items-center justify-center text-gray-500 hover:text-green-500 transition-colors"
+                        onclick="updateCartItem({{ item.id }}, 'increase')"
+                    >
+                        <span class="material-icons text-sm">add</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Total & Remove -->
+            <div class="col-span-1 md:col-span-2 flex items-center justify-between md:justify-end gap-6">
+                <span class="font-bold text-lg text-primary dark:text-white">
+                    ${{ item.get_total_price }}
+                </span>
+                <button 
+                    onclick="removeFromCart({{ item.id }})" 
+                    class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all opacity-0 group-hover:opacity-100"
+                    title="Eliminar del carrito"
+                >
+                    <span class="material-icons text-lg">delete_outline</span>
+                </button>
+            </div>
+        </div>
+        {% empty %}
+        <div class="p-12 text-center text-gray-500">
+            <span class="material-icons text-6xl mb-4 opacity-30">shopping_cart_checkout</span>
+            <h3 class="text-xl font-bold mb-2">Tu carrito está vacío</h3>
+            <p class="mb-6">¡Descubre nuestros productos y empieza a comprar!</p>
+            <a href="{% url 'products:product-list' %}" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:opacity-90 transition-opacity">
+                Ir al Catálogo
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>

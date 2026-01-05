@@ -1,85 +1,209 @@
-<!-- NAVBAR (Simplificado y funcional) -->
+{% load static %}
+<!-- NAVBAR Premium -->
 <nav
-    class="sticky top-0 z-50 bg-white/50 dark:bg-[#0F1C2E]/50 backdrop-blur-sm border-b border-transparent transition-all duration-300"
+    class="sticky top-0 z-50 bg-white/80 dark:bg-[#0F1C2E]/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800/50 transition-all duration-300"
     id="navbar"
 >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-20 items-center">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center relative">
             <!-- Logo -->
-            <a
-                href="/"
-                class="flex items-center gap-3 cursor-pointer group z-50 select-none flex-shrink-0"
-            >
-                <div
-                    class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
-                >
-                    <img
-                        src="https://assets.stickpng.com/images/6102dadda849c40004f9a13b.png"
-                        alt="Xiaomi"
-                        class="w-full h-full object-contain"
-                    />
+            <a href="{% url 'pages:home' %}" class="flex items-center gap-3 cursor-pointer group select-none flex-shrink-0">
+                <div class="w-10 h-10 md:w-11 md:h-11 flex items-center justify-center p-1">
+                    <img src="https://assets.stickpng.com/images/6102dadda849c40004f9a13b.png" alt="Xiaomi" class="w-full h-full object-contain">
                 </div>
                 <div class="flex flex-col">
-                    <span
-                        class="font-bold text-lg md:text-2xl text-primary dark:text-white tracking-tight leading-none"
-                        >MiXiaomi<span class="text-accent">Unlock</span></span
-                    >
-                    <span
-                        class="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]"
-                        >Service</span
-                    >
+                    <span class="font-bold text-xl text-primary dark:text-white tracking-tight leading-none">MiXiaomi<span class="text-xiaomi">Unlock</span></span>
+                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-[0.2em]">Premium Service</span>
                 </div>
             </a>
 
+            <!-- Mobile Menu Button (LEFT on Mobile) -->
+            <div class="flex lg:hidden order-first">
+                <button id="mobile-menu-open" class="w-10 h-10 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors active:scale-95">
+                    <span class="material-icons text-2xl">menu</span>
+                </button>
+            </div>
+
             <!-- Desktop Nav -->
-            <div class="hidden md:flex items-center space-x-2">
-                <a
-                    href="{% url 'pages:home' %}"
-                    class="px-3 py-2 rounded-full text-sm font-medium text-accent bg-accent/10 flex items-center gap-2"
-                >
-                    Inicio
-                    <span
-                        class="w-1.5 h-1.5 bg-accent rounded-full animate-pulse"
-                    ></span>
-                </a>
-                <a
-                    href="{% url 'products:product-list' %}"
-                    class="px-3 py-2 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >Servicios</a
-                >
-                <a
-                    href="{% url 'pages:about' %}"
-                    class="px-3 py-2 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >Nosotros</a
-                >
-                <a
-                    href="{% url 'pages:contact' %}"
-                    class="px-3 py-2 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >Contacto</a
-                >
+            <div class="hidden lg:flex items-center space-x-1">
+                <a href="{% url 'pages:home' %}" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 {% if request.resolver_match.view_name == 'pages:home' %}bg-xiaomi text-white shadow-md{% else %}text-gray-700 dark:text-gray-300 hover:bg-xiaomi hover:text-white{% endif %}">Inicio</a>
+                
+                <a href="{% url 'products:product-list' %}" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 {% if 'products' in request.resolver_match.view_name %}bg-xiaomi text-white shadow-md{% else %}text-gray-700 dark:text-gray-300 hover:bg-xiaomi hover:text-white{% endif %}">Catálogo</a>
+                
+                <a href="{% url 'pages:about' %}" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 {% if request.resolver_match.view_name == 'pages:about' %}bg-xiaomi text-white shadow-md{% else %}text-gray-700 dark:text-gray-300 hover:bg-xiaomi hover:text-white{% endif %}">Nosotros</a>
+                
+                <a href="{% url 'pages:contact' %}" class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 {% if request.resolver_match.view_name == 'pages:contact' %}bg-xiaomi text-white shadow-md{% else %}text-gray-700 dark:text-gray-300 hover:bg-xiaomi hover:text-white{% endif %}">Contacto</a>
             </div>
 
             <!-- Actions -->
-            <div class="flex items-center gap-3">
-                <button
-                    id="theme-toggle"
-                    class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-yellow-500 dark:text-blue-300 transition-colors"
-                >
-                    <span class="material-icons" id="theme-icon"
-                        >light_mode</span
-                    >
+            <div class="flex items-center gap-2 sm:gap-3">
+                
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-yellow-500 dark:hover:text-blue-300 transition-all active:scale-95" title="Cambiar tema">
+                    <span class="material-icons text-xl" id="theme-icon">light_mode</span>
                 </button>
-                <a
-                    href="/cart"
-                    class="relative w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-800 hover:bg-accent hover:text-white text-gray-600 dark:text-gray-300 flex items-center justify-center transition-colors"
-                >
-                    <span class="material-icons text-xl">shopping_bag</span>
-                    <span
-                        class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full"
-                        >0</span
-                    >
+
+                <!-- Auth Button & Dropdown -->
+                {% if user.is_authenticated %}
+                <div class="relative z-50">
+                    <button id="user-menu-toggle" class="w-10 h-10 rounded-full bg-gradient-to-br from-xiaomi to-orange-600 text-white font-bold flex items-center justify-center hover:opacity-90 transition-all shadow-md active:scale-95 ring-2 ring-transparent hover:ring-orange-200 dark:hover:ring-orange-900">
+                        {{ user.first_name|first|default:user.username|first|upper }}
+                    </button>
+
+                    <!-- User Dropdown Menu -->
+                    <div id="user-dropdown" class="hidden absolute top-full right-0 mt-3 w-48 bg-white dark:bg-[#1a1a1a] rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 py-1 origin-top-right transition-all animate-fade-in z-50">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+                            <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ user.first_name|default:user.username }}</p>
+                            <p class="text-xs text-gray-500 truncate">{{ user.email }}</p>
+                        </div>
+                        
+                        <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-2">
+                            <span class="material-icons text-gray-400 text-sm">person</span>
+                            Mi Perfil
+                        </a>
+                        <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-2">
+                            <span class="material-icons text-gray-400 text-sm">shopping_bag</span>
+                            Mis Pedidos
+                        </a>
+                        
+                        <div class="border-t border-gray-100 dark:border-gray-800 mt-1">
+                            <a href="{% url 'users:logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center gap-2">
+                                <span class="material-icons text-sm">logout</span>
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <a href="{% url 'users:auth' %}" class="hidden sm:flex items-center gap-2 px-6 py-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black font-bold text-sm hover:bg-opacity-90 transition-all shadow-md active:scale-95 hover:-translate-y-0.5">
+                    <span class="material-icons text-lg">login</span>
+                    <span>Ingresar</span>
                 </a>
+                <a href="{% url 'users:auth' %}" class="sm:hidden w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                    <span class="material-icons text-xl">person_outline</span>
+                </a>
+                {% endif %}
+                
+                <!-- Cart Dropdown Container -->
+
+                <div class="relative">
+                    <button id="cart-toggle-btn" class="relative w-11 h-11 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-xiaomi hover:text-white dark:hover:bg-xiaomi text-gray-900 dark:text-white flex items-center justify-center transition-all shadow-sm active:scale-95">
+                        <span class="material-icons text-xl">shopping_cart</span>
+                        
+                        <!-- Badge Dinámico -->
+                        <span class="cart-count-badge absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full shadow-sm ring-2 ring-white dark:ring-[#0F1C2E] {% if cart_count == 0 %}hidden{% endif %}">
+                            {{ cart_count }}
+                        </span>
+
+                    </button>
+
+                    <!-- Mini Cart Dropdown -->
+                    <div id="mini-cart-dropdown" class="hidden absolute top-full right-0 mt-4 w-80 bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 origin-top-right transition-all duration-200 opacity-0 scale-95 z-50">
+                        <!-- Arrow -->
+                        <div class="absolute -top-2 right-4 w-4 h-4 bg-white dark:bg-[#1a1a1a] rotate-45 border-l border-t border-gray-100 dark:border-gray-800"></div>
+                        
+                        <!-- Content -->
+                        <div id="mini-cart-content" class="relative z-10 bg-white dark:bg-[#1a1a1a] rounded-2xl overflow-hidden">
+                            {% include 'components/mini_cart.html' %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </nav>
+
+<!-- Mobile Sidebar Overlay -->
+<div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden opacity-0 transition-opacity duration-300"></div>
+
+<!-- Mobile Sidebar -->
+<aside id="mobile-sidebar" class="fixed top-0 left-0 h-full w-[280px] bg-white dark:bg-[#0F1C2E] z-[101] shadow-2xl -translate-x-full transition-transform duration-300 ease-out flex flex-col">
+    <!-- Header -->
+    <div class="h-20 flex items-center justify-between px-6 border-b border-gray-100 dark:border-gray-800">
+        <span class="font-bold text-lg dark:text-white">Menú</span>
+        <button id="mobile-menu-close" class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-xiaomi rounded-full active:scale-90 transition-all">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="flex-grow overflow-y-auto py-6">
+        <nav class="flex flex-col px-4 gap-2">
+            <a href="{% url 'pages:home' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if request.resolver_match.view_name == 'pages:home' %}bg-xiaomi/10 text-xiaomi font-bold{% else %}text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800{% endif %} transition-colors">
+                <span class="material-icons text-xl">home</span>
+                Inicio
+            </a>
+            <a href="{% url 'products:product-list' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if 'products' in request.resolver_match.view_name %}bg-xiaomi/10 text-xiaomi font-bold{% else %}text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800{% endif %} transition-colors">
+                <span class="material-icons text-xl">grid_view</span>
+                Catálogo
+            </a>
+            <a href="{% url 'pages:about' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if request.resolver_match.view_name == 'pages:about' %}bg-xiaomi/10 text-xiaomi font-bold{% else %}text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800{% endif %} transition-colors">
+                <span class="material-icons text-xl">info</span>
+                Nosotros
+            </a>
+            <a href="{% url 'pages:contact' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if request.resolver_match.view_name == 'pages:contact' %}bg-xiaomi/10 text-xiaomi font-bold{% else %}text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800{% endif %} transition-colors">
+                <span class="material-icons text-xl">alternate_email</span>
+                Contacto
+            </a>
+        </nav>
+    </div>
+
+    <!-- Footer -->
+    <div class="p-6 border-t border-gray-100 dark:border-gray-800">
+        {% if not user.is_authenticated %}
+        <a href="{% url 'users:auth' %}" class="w-full flex items-center justify-center gap-2 bg-xiaomi text-white font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-all mb-4">
+            <span class="material-icons text-xl">login</span>
+            Ingresar
+        </a>
+        {% endif %}
+        <p class="text-center text-[10px] text-gray-400 font-bold uppercase tracking-widest">UnlockXiaomi Colombia</p>
+    </div>
+</aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const userMenuBtn = document.getElementById('user-menu-toggle');
+        const userDropdown = document.getElementById('user-dropdown');
+        const mobileMenuOpen = document.getElementById('mobile-menu-open');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileSidebar = document.getElementById('mobile-sidebar');
+        const sidebarOverlay = document.getElementById('mobile-sidebar-overlay');
+        
+        // --- Desktop User Menu ---
+        if (userMenuBtn && userDropdown) {
+            userMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userDropdown.classList.toggle('hidden');
+            });
+            document.addEventListener('click', (e) => {
+                if (!userMenuBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                    userDropdown.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- Mobile Sidebar Toggle ---
+        function openSidebar() {
+            sidebarOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                sidebarOverlay.classList.remove('opacity-0');
+                mobileSidebar.classList.remove('-translate-x-full');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            mobileSidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('opacity-0');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                sidebarOverlay.classList.add('hidden');
+            }, 300);
+        }
+
+        if (mobileMenuOpen) mobileMenuOpen.addEventListener('click', openSidebar);
+        if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+    });
+</script>
+

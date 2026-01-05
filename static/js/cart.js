@@ -1,191 +1,246 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // --- DATA ---
-    let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+/**
+ * cart.js for UnlockXiaomi
+ * Maneja la lógica asíncrona del carrito de compras.
+ */
 
-    // --- DOM ELEMENTS ---
-    const emptyView = document.getElementById("empty-cart-view");
-    const cartContent = document.getElementById("cart-content");
-    const itemsContainer = document.getElementById("cart-items-container");
-    const itemsCountHeader = document.getElementById("items-count-header");
-
-    // Summary Elements
-    const elSubtotal = document.getElementById("summary-subtotal");
-    const elFee = document.getElementById("summary-fee");
-    const elTax = document.getElementById("summary-tax");
-    const elTotal = document.getElementById("summary-total");
-
-    // Modal Elements
-    const loginModal = document.getElementById("login-modal");
-    const modalBg = document.getElementById("login-modal-bg");
-    const modalContent = document.getElementById("login-modal-content");
-    const btnCheckout = document.getElementById("btn-checkout");
-    const btnCloseModal = document.getElementById("btn-close-modal");
-    const btnClearCart = document.getElementById("btn-clear-cart");
-
-    // --- FUNCTIONS ---
-
-    function renderCart() {
-        if (cartItems.length === 0) {
-            emptyView.classList.remove("hidden");
-            cartContent.classList.add("hidden");
-            return;
-        }
-
-        emptyView.classList.add("hidden");
-        cartContent.classList.remove("hidden");
-        itemsCountHeader.textContent = `${cartItems.length} items agregados`;
-
-        itemsContainer.innerHTML = "";
-
-        cartItems.forEach((item) => {
-            const itemTotal = item.price * item.qty;
-            const html = `
-                <div class="group bg-white dark:bg-card-dark rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-5 transition-all hover:shadow-xl hover:-translate-y-0.5 relative overflow-hidden">
-                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center relative z-10">
-                        <!-- Product Info -->
-                        <div class="col-span-1 sm:col-span-6 flex items-center gap-5">
-                            <div class="relative w-24 h-24 flex-shrink-0 bg-gray-50 dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-600 group-hover:border-accent/50 transition-colors p-2">
-                                <img src="${item.image}" alt="${
-                item.name
-            }" class="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"/>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-base text-primary dark:text-white leading-tight group-hover:text-accent transition-colors">${
-                                    item.name
-                                }</h3>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">${
-                                    item.description || ""
-                                }</p>
-                                <div class="flex items-center gap-3 mt-2">
-                                    ${
-                                        item.tag
-                                            ? `<span class="text-[10px] font-bold text-white ${
-                                                  item.tagColor || "bg-gray-500"
-                                              } px-2 py-0.5 rounded-full uppercase tracking-wide">${
-                                                  item.tag
-                                              }</span>`
-                                            : ""
-                                    }
-                                    <button onclick="removeFromCart('${
-                                        item.id
-                                    }')" class="text-xs text-gray-400 hover:text-red-500 flex items-center gap-1 font-medium transition-colors">
-                                        <span class="material-icons text-[14px]">delete</span> Eliminar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Quantity -->
-                        <div class="col-span-1 sm:col-span-2 flex justify-center">
-                            <div class="flex items-center border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm">
-                                <button onclick="updateQty('${
-                                    item.id
-                                }', -1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-bold">-</button>
-                                <span class="w-8 text-center text-sm font-semibold text-primary dark:text-white">${
-                                    item.qty
-                                }</span>
-                                <button onclick="updateQty('${
-                                    item.id
-                                }', 1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-bold">+</button>
-                            </div>
-                        </div>
-                        <!-- Price -->
-                        <div class="col-span-1 sm:col-span-2 text-left sm:text-right">
-                            <span class="sm:hidden text-gray-500 text-sm mr-2">Precio:</span>
-                            <span class="text-gray-600 dark:text-gray-300 font-medium text-sm">$${item.price.toFixed(
-                                2
-                            )}</span>
-                        </div>
-                        <!-- Total -->
-                        <div class="col-span-1 sm:col-span-2 text-left sm:text-right">
-                            <span class="sm:hidden text-gray-500 text-sm mr-2">Total:</span>
-                            <span class="text-primary dark:text-white font-bold text-base">$${itemTotal.toFixed(
-                                2
-                            )}</span>
-                        </div>
-                    </div>
-                </div>
-                `;
-            itemsContainer.insertAdjacentHTML("beforeend", html);
-        });
-
-        calculateTotals();
-    }
-
-    function calculateTotals() {
-        const subtotal = cartItems.reduce(
-            (acc, item) => acc + item.price * item.qty,
-            0
-        );
-        const serviceFee = cartItems.length > 0 ? 15.0 : 0;
-        const tax = subtotal * 0.085;
-        const total = subtotal + serviceFee + tax;
-
-        elSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-        elFee.textContent = `$${serviceFee.toFixed(2)}`;
-        elTax.textContent = `$${tax.toFixed(2)}`;
-        elTotal.textContent = `$${total.toFixed(2)}`;
-    }
-
-    function saveCart() {
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-        renderCart();
-        // Update Navbar badge if exists (dispatch event)
-        window.dispatchEvent(new Event("storage"));
-    }
-
-    // --- GLOBAL SCOPE FUNCTIONS (for inline onclicks) ---
-    window.updateQty = (id, change) => {
-        cartItems = cartItems.map((item) => {
-            // Type check because localStorage ids are strings but sometimes comparisons fail
-            if (String(item.id) === String(id)) {
-                const newQty = Math.max(1, item.qty + change);
-                return { ...item, qty: newQty };
+// Obtener CSRF Token de las cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
-            return item;
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
+/**
+ * Agrega un producto al carrito
+ * @param {number} productId 
+ */
+async function addToCart(productId) {
+    try {
+        const response = await fetch(`/orders/api/add/${productId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json'
+            }
         });
-        saveCart();
-    };
 
-    window.removeFromCart = (id) => {
-        cartItems = cartItems.filter((item) => String(item.id) !== String(id));
-        saveCart();
-    };
-
-    // --- EVENT LISTENERS ---
-
-    btnClearCart.addEventListener("click", () => {
-        if (confirm("¿Estás seguro de vaciar el carrito?")) {
-            cartItems = [];
-            saveCart();
+        // 🛑 Guest restriction check
+        if (response.status === 403) {
+            const data = await response.json();
+            if (data.error === 'login_required') {
+                if (typeof openLoginModal === 'function') {
+                    openLoginModal();
+                } else {
+                    window.location.href = '/users/auth/';
+                }
+                return;
+            }
         }
-    });
 
-    btnCheckout.addEventListener("click", () => {
-        if (isLoggedIn) {
-            window.location.href = "/checkout";
+        const data = await response.json();
+
+        if (data.success) {
+            updateCartUI(data);
+            showNotification('success', data.message);
+            // ... mini cart auto-open logic ...
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+/**
+ * Elimina un item del carrito
+ * @param {number} itemId 
+ */
+async function removeFromCart(itemId) {
+    try {
+        const response = await fetch(`/orders/api/remove/${itemId}/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrftoken }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            updateCartUI(data);
+            if(data.cart_html) updateFullCartTable(data.cart_html); // Si estamos en page cart
+            showNotification('info', data.message);
+            
+            // Si el carrito se vació en la página full, recargar para mostrar empty state
+            if (data.cart_count === 0 && document.getElementById('cart-items-container')) {
+                location.reload();
+            }
+
         } else {
-            // Show Modal
-            loginModal.classList.remove("hidden");
-            // Small delay for animation
-            setTimeout(() => {
-                modalBg.classList.remove("opacity-0");
-                modalContent.classList.remove("translate-y-10", "opacity-0");
-            }, 10);
+            showNotification('error', 'Error al eliminar');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+/**
+ * Actualiza la cantidad de un item (+/-)
+ * @param {number} itemId 
+ * @param {string} action 'increase' or 'decrease'
+ */
+async function updateCartItem(itemId, action) {
+    const formData = new FormData();
+    formData.append('action', action);
+
+    try {
+        const response = await fetch(`/orders/api/update/${itemId}/`, {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-CSRFToken': csrftoken }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            updateCartUI(data);
+            if(data.cart_html) updateFullCartTable(data.cart_html);
+            
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+/**
+ * Actualiza los elementos comunes de la UI (Badges, Mini-Cart)
+ */
+function updateCartUI(data) {
+    // 1. Update Badge Counts
+    const badges = document.querySelectorAll('.cart-count-badge');
+    badges.forEach(badge => {
+        badge.innerText = data.cart_count;
+        // Ocultar si es 0
+        if(data.cart_count > 0) badge.classList.remove('hidden');
+        else badge.classList.add('hidden');
+    });
+
+    // 2. Update Mini Cart HTML
+    const miniCartContent = document.getElementById('mini-cart-content');
+    if (miniCartContent && data.mini_cart_html) {
+        miniCartContent.innerHTML = data.mini_cart_html;
+    }
+    
+    // 3. Update Summary Totals (if on full page)
+    if(document.getElementById('cart-summary-subtotal')) {
+        document.getElementById('cart-summary-subtotal').innerText = `$${data.cart_subtotal}`;
+        document.getElementById('cart-summary-tax').innerText = `$${data.cart_tax}`;
+        document.getElementById('cart-summary-total').innerText = `$${data.cart_total}`;
+    }
+}
+
+/**
+ * Inyecta el nuevo HTML de la tabla en la página de carrito
+ */
+function updateFullCartTable(html) {
+    const container = document.getElementById('cart-items-container');
+    if(container) {
+        container.innerHTML = html;
+        container.classList.add('animate-pulse'); // Efecto visual
+        setTimeout(() => container.classList.remove('animate-pulse'), 500);
+    }
+}
+
+/**
+ * Muestra notificación Toast
+ */
+function showNotification(type, message) {
+    // Crear elemento
+    const toast = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+    
+    toast.className = `fixed bottom-5 right-5 ${bgColor} text-white px-6 py-3 rounded-xl shadow-lg transform translate-y-10 opacity-0 transition-all duration-300 z-50 flex items-center gap-2 font-bold text-sm`;
+    toast.innerHTML = `
+        <span class="material-icons text-sm">${type === 'success' ? 'check_circle' : 'info'}</span>
+        ${message}
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Animate In
+    setTimeout(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+    }, 10);
+    
+    // Remove after 3s
+    setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Global Event Listeners (Delegation)
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Cart JS Loaded');
+
+    // Add to Cart Buttons
+    document.body.addEventListener('click', (e) => {
+        const btn = e.target.closest('.add-to-cart-btn');
+        if (btn) {
+            e.preventDefault(); // Prevenir navegación si es un <a> o submit
+            const productId = btn.dataset.productId;
+            console.log('Add to cart clicked:', productId);
+            if(productId) addToCart(productId);
         }
     });
 
-    const closeModal = () => {
-        modalBg.classList.add("opacity-0");
-        modalContent.classList.add("translate-y-10", "opacity-0");
-        setTimeout(() => {
-            loginModal.classList.add("hidden");
-        }, 300);
-    };
+    // Toggle Mini Cart
+    const toggleBtn = document.getElementById('cart-toggle-btn');
+    const miniCart = document.getElementById('mini-cart-dropdown');
+    
+    if (toggleBtn && miniCart) {
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = miniCart.classList.contains('hidden');
+            console.log('Cart Toggle Clicked. Is hidden?', isHidden);
+            
+            if (isHidden) {
+                miniCart.classList.remove('hidden');
+                // Small delay to allow display:block to apply before transition
+                requestAnimationFrame(() => {
+                    miniCart.classList.remove('opacity-0', 'scale-95');
+                    miniCart.classList.add('opacity-100', 'scale-100');
+                });
+            } else {
+                miniCart.classList.add('opacity-0', 'scale-95');
+                miniCart.classList.remove('opacity-100', 'scale-100');
+                
+                // Wait for transition to finish
+                setTimeout(() => {
+                    miniCart.classList.add('hidden');
+                }, 200);
+            }
+        });
 
-    btnCloseModal.addEventListener("click", closeModal);
-    modalBg.addEventListener("click", closeModal);
-
-    // --- INIT ---
-    renderCart();
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!miniCart.classList.contains('hidden') && !miniCart.contains(e.target) && !toggleBtn.contains(e.target)) {
+                miniCart.classList.add('opacity-0', 'scale-95');
+                miniCart.classList.remove('opacity-100', 'scale-100');
+                setTimeout(() => {
+                    miniCart.classList.add('hidden');
+                }, 200);
+            }
+        });
+    } else {
+        console.error('Cart toggle elements NOT found in DOM');
+    }
 });
+

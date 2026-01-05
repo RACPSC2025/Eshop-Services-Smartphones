@@ -1,265 +1,97 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Tu Carrito |
-MiXiaomiUnlock{% endblock %} {% block content %}
-<div
-    class="font-poppins bg-background-light dark:bg-background-dark min-h-screen text-text-main dark:text-text-dark animate-fade-in relative pb-20"
->
-    <!-- Empty State (Hidden by default, toggled by JS) -->
-    <div
-        id="empty-cart-view"
-        class="hidden min-h-[60vh] flex items-center justify-center px-4"
-    >
-        <div class="text-center max-w-md">
-            <div
-                class="w-32 h-32 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 relative"
-            >
-                <span
-                    class="material-icons text-6xl text-gray-300 dark:text-gray-600"
-                    >shopping_cart_checkout</span
-                >
-                <div
-                    class="absolute top-0 right-0 w-8 h-8 bg-accent rounded-full animate-bounce"
-                ></div>
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block title %}Mi Carrito | MiXiaomiUnlock{% endblock %} 
+
+{% block content %}
+<div class="font-display animate-fade-in bg-[#F5F5F7] dark:bg-background-dark min-h-screen pt-8 pb-20">
+    <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-primary dark:text-white">Carrito de Compras</h1>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">Revisa tus items antes de finalizar la compra.</p>
             </div>
-            <h2 class="text-3xl font-bold text-primary dark:text-white mb-3">
-                Tu carrito está vacío
-            </h2>
-            <p class="text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
-                Parece que aún no has agregado servicios o productos. Explora
-                nuestro catálogo para encontrar la solución que necesitas.
-            </p>
-            <a
-                href="/catalog"
-                class="bg-accent hover:bg-accent-hover text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-accent/30 transition-all hover:-translate-y-1 flex items-center gap-2 mx-auto w-max"
-            >
-                <span class="material-icons">manage_search</span> Explorar
-                Servicios
+            <a href="{% url 'products:product-list' %}" class="hidden sm:flex items-center gap-2 text-sm font-medium text-xiaomi hover:underline">
+                <span class="material-icons text-sm">arrow_back</span>
+                Seguir Comprando
             </a>
         </div>
-    </div>
 
-    <!-- Cart Content -->
-    <main
-        id="cart-content"
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 hidden"
-    >
-        <div
-            class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4"
-        >
-            <div>
-                <h1
-                    class="text-4xl font-bold text-primary dark:text-white tracking-tight"
-                >
-                    Tu Carrito
-                </h1>
-                <div class="flex items-center gap-2 mt-2">
-                    <div class="h-1.5 w-16 bg-accent rounded-full"></div>
-                    <span
-                        id="items-count-header"
-                        class="text-sm text-gray-500 font-medium"
-                        >0 items agregados</span
-                    >
-                </div>
+        {% if cart_count == 0 %}
+        <!-- Empty State -->
+        <div class="text-center py-20 animate-fade-in bg-white dark:bg-card-dark rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800">
+            <div class="w-24 h-24 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="material-icons text-4xl text-gray-400">shopping_cart_checkout</span>
             </div>
-            <button
-                id="btn-clear-cart"
-                class="text-red-500 hover:text-red-600 text-sm font-medium flex items-center gap-1 hover:bg-red-50 dark:hover:bg-red-900/20 px-4 py-2 rounded-xl transition-colors bg-white dark:bg-card-dark shadow-sm"
-            >
-                <span class="material-icons text-sm">remove_shopping_cart</span>
-                Vaciar Carrito
-            </button>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Tu carrito está vacío</h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">Parece que aún no has agregado nada. Explora nuestro catálogo y encuentra lo mejor para tu Xiaomi.</p>
+            <a href="{% url 'products:product-list' %}" class="inline-flex items-center gap-2 px-8 py-4 bg-xiaomi text-white rounded-xl font-bold hover:bg-opacity-90 transition-all shadow-lg shadow-orange-500/20">
+                <span class="material-icons">storefront</span>
+                Ir a la Tienda
+            </a>
         </div>
-
-        <div class="flex flex-col lg:flex-row gap-10">
-            <!-- Items List -->
-            <div class="flex-1 space-y-6">
-                <!-- Table Header -->
-                <div
-                    class="hidden sm:grid grid-cols-12 gap-4 text-xs font-bold uppercase tracking-wider text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-3 pl-6"
-                >
-                    <div class="col-span-6">Producto / Servicio</div>
-                    <div class="col-span-2 text-center">Cant.</div>
-                    <div class="col-span-2 text-right">Precio</div>
-                    <div class="col-span-2 text-right">Total</div>
+        
+        {% else %}
+        <!-- Cart Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start animate-slide-up">
+            <!-- Cart Items -->
+            <div class="lg:col-span-8 bg-white dark:bg-card-dark rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+                <div class="p-6 md:p-8 border-b border-gray-100 dark:border-gray-800">
+                    <div class="flex items-center gap-3">
+                         <span class="material-icons text-xiaomi">shopping_bag</span>
+                         <span class="font-bold text-gray-900 dark:text-white">{{ cart_count }} Productos</span>
+                    </div>
                 </div>
-
-                <!-- Container for Dynamic Items -->
-                <div id="cart-items-container" class="space-y-6">
-                    <!-- Items will be injected here by JS -->
-                </div>
-
-                <div class="pt-4 flex justify-start">
-                    <a
-                        href="/catalog"
-                        class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-accent font-medium transition-all group py-2"
-                    >
-                        <span
-                            class="material-icons text-lg transition-transform group-hover:-translate-x-1"
-                            >arrow_back</span
-                        >
-                        Continuar Comprando
-                    </a>
+                
+                <div id="cart-table-container">
+                    {% include 'orders/partials/cart_table.html' %}
                 </div>
             </div>
 
-            <!-- Order Summary -->
-            <div class="lg:w-96 flex-shrink-0">
-                <div
-                    class="bg-white dark:bg-card-dark rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 p-8 sticky top-28"
-                >
-                    <h2
-                        class="text-lg font-bold text-primary dark:text-white mb-6 flex items-center gap-2"
-                    >
-                        <span class="material-icons text-accent"
-                            >receipt_long</span
-                        >
-                        Resumen de Orden
-                    </h2>
-
-                    <div
-                        class="space-y-3 mb-6 pb-6 border-b border-gray-100 dark:border-gray-700"
-                    >
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400"
-                                >Subtotal</span
-                            >
-                            <span
-                                id="summary-subtotal"
-                                class="font-semibold text-primary dark:text-white"
-                                >$0.00</span
-                            >
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400"
-                                >Tarifa de Servicio</span
-                            >
-                            <span
-                                id="summary-fee"
-                                class="font-semibold text-primary dark:text-white"
-                                >$0.00</span
-                            >
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-500 dark:text-gray-400"
-                                >Impuestos (8.5%)</span
-                            >
-                            <span
-                                id="summary-tax"
-                                class="font-semibold text-primary dark:text-white"
-                                >$0.00</span
-                            >
-                        </div>
+            <!-- Columna Derecha: Summary -->
+            <div class="lg:col-span-4 bg-white dark:bg-card-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 sticky top-24">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Resumen del Pedido</h3>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between text-gray-500 dark:text-gray-400">
+                        <span>Subtotal</span>
+                        <span id="cart-summary-subtotal" class="font-medium text-gray-900 dark:text-white">${{ cart.get_subtotal }}</span>
                     </div>
-
-                    <div class="mb-6">
-                        <div class="flex gap-2 relative">
-                            <input
-                                type="text"
-                                placeholder="Código de Cupón"
-                                class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all placeholder-gray-400"
-                            />
-                            <button
-                                class="absolute right-2 top-1.5 bottom-1.5 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 rounded-lg text-xs font-bold hover:bg-accent hover:text-white transition-colors"
-                            >
-                                APLICAR
-                            </button>
-                        </div>
+                    <div class="flex justify-between text-gray-500 dark:text-gray-400">
+                        <span>IVA (19%)</span>
+                        <span id="cart-summary-tax" class="font-medium text-gray-900 dark:text-white">${{ cart.get_tax }}</span>
                     </div>
-
-                    <div class="flex justify-between items-end mb-8">
-                        <div>
-                            <span class="text-sm text-gray-400 block mb-1"
-                                >Total a Pagar</span
-                            >
-                            <span
-                                id="summary-total"
-                                class="text-3xl font-bold text-primary dark:text-white"
-                                >$0.00</span
-                            >
-                        </div>
-                        <span
-                            class="text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded"
-                            >USD</span
-                        >
+                    <div class="flex justify-between text-gray-500 dark:text-gray-400 pb-4 border-b border-gray-100 dark:border-gray-800">
+                        <span>Envío</span>
+                        <span class="text-green-500 font-bold">Gratis</span>
                     </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">Total</span>
+                        <span id="cart-summary-total" class="text-2xl font-bold text-primary dark:text-white">${{ cart.get_total }}</span>
+                    </div>
+                </div>
 
-                    <button
-                        id="btn-checkout"
-                        class="w-full bg-accent hover:bg-accent-hover text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-accent/25 transform transition-all hover:-translate-y-1 hover:shadow-xl flex justify-center items-center gap-2 group relative overflow-hidden"
-                    >
-                        <div
-                            class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 skew-y-12"
-                        ></div>
-                        <span class="relative z-10 flex items-center gap-2"
-                            >Proceder al Pago
-                            <span
-                                class="material-icons text-sm transition-transform group-hover:translate-x-1"
-                                >arrow_forward</span
-                            ></span
-                        >
-                    </button>
+                <a href="{% url 'orders:checkout' %}" class="w-full py-4 bg-primary dark:bg-white text-white dark:text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-opacity-90 shadow-lg shadow-blue-500/20 active:scale-95 transition-all group">
+                    Pagar Ahora
+                    <span class="material-icons group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
 
-                    <p
-                        class="text-center text-[10px] text-gray-400 mt-4 flex items-center justify-center gap-1"
-                    >
-                        <span class="material-icons text-[12px]">lock</span>
-                        Checkout Encriptado SSL 256-bit
+                <div class="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 text-center">
+                    <p class="text-xs text-gray-400 flex items-center justify-center gap-2">
+                        <span class="material-icons text-sm">lock</span>
+                        Pagos procesados de forma segura
                     </p>
                 </div>
             </div>
         </div>
-    </main>
-
-    <!-- LOGIN REQUIRED MODAL -->
-    <div
-        id="login-modal"
-        class="fixed inset-0 z-[60] flex items-center justify-center px-4 hidden"
-    >
-        <div
-            class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0"
-            id="login-modal-bg"
-        ></div>
-        <div
-            class="bg-white dark:bg-card-dark rounded-3xl shadow-2xl w-full max-w-sm relative z-10 p-8 transform transition-all translate-y-10 opacity-0 border border-gray-100 dark:border-gray-700"
-            id="login-modal-content"
-        >
-            <div class="text-center">
-                <div
-                    class="w-16 h-16 bg-xiaomi rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-xiaomi/30 rotate-12"
-                >
-                    <span class="material-icons text-white text-3xl"
-                        >lock_person</span
-                    >
-                </div>
-                <h3
-                    class="text-2xl font-bold text-primary dark:text-white mb-2"
-                >
-                    Inicia Sesión
-                </h3>
-                <p
-                    class="text-gray-500 dark:text-gray-400 text-sm mb-8 leading-relaxed"
-                >
-                    Para asegurar tu compra y vincular los servicios a tu
-                    cuenta, necesitas estar registrado.
-                </p>
-
-                <div class="space-y-3">
-                    <a
-                        href="/login"
-                        class="w-full bg-xiaomi hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-xiaomi/20 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
-                    >
-                        <span class="material-icons text-sm">login</span>
-                        Iniciar Sesión / Registrarse
-                    </a>
-                    <button
-                        id="btn-close-modal"
-                        class="w-full text-gray-500 hover:text-primary dark:hover:text-white font-bold py-3 transition-colors text-sm"
-                    >
-                        Cancelar
-                    </button>
-                </div>
-            </div>
-        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
-<script src="{% static 'js/cart.js' %}" defer></script>
+
+{% block extra_js %}
+<!-- No cargamos cart.js aquí porque ya se carga en base.html globalmente -->
+{% endblock %}

@@ -3,7 +3,7 @@ version: '3.8'
 services:
   web:
     build: .
-    command: gunicorn --bind 0.0.0.0:8000 --workers 3 core.wsgi:application
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
@@ -12,6 +12,8 @@ services:
       - db
     env_file:
       - ./.env
+    environment:
+      - DEBUG=True
 
   db:
     image: postgres:15

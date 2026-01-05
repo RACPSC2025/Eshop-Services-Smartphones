@@ -1,0 +1,264 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Servicios y
+Productos | MiXiaomiUnlock{% endblock %} {% block content %}
+<div
+    class="font-display animate-fade-in bg-background-light dark:bg-background-dark min-h-screen pt-4 pb-20"
+>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header & Controls -->
+        <div
+            class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4"
+        >
+            <div>
+                <h1 class="text-3xl font-bold text-primary dark:text-white">
+                    Nuestros Servicios
+                </h1>
+                <p class="text-gray-500 dark:text-gray-400">
+                    Explora nuestro catálogo de soluciones de software y
+                    hardware.
+                </p>
+                <!-- Active Search Tag (Hidden by default) -->
+                <div
+                    id="active-search-tag"
+                    class="hidden mt-2 inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-bold animate-fade-in"
+                >
+                    <span class="material-icons text-sm">search</span>
+                    <span id="search-query-text"></span>
+                    <button onclick="clearSearch()" class="hover:text-red-500">
+                        <span class="material-icons text-sm">close</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sorting Dropdown -->
+            <div class="relative group min-w-[200px]">
+                <div
+                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                    <span class="material-icons text-gray-400">sort</span>
+                </div>
+                <select
+                    id="sort-select"
+                    onchange="filterAndRender()"
+                    class="appearance-none w-full bg-white dark:bg-card-dark border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-white py-2.5 pl-10 pr-8 rounded-xl leading-tight focus:outline-none focus:border-accent cursor-pointer shadow-sm text-sm font-medium"
+                >
+                    <option value="default">Relevancia</option>
+                    <option value="price_asc">Precio: Menor a Mayor</option>
+                    <option value="price_desc">Precio: Mayor a Menor</option>
+                    <option value="rating">Mejor Calificados</option>
+                    <option value="name">Nombre (A-Z)</option>
+                </select>
+                <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500"
+                >
+                    <span class="material-icons text-sm">expand_more</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!--  SIDEBAR FILTERS  -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div
+                    class="bg-white dark:bg-card-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-4 sticky top-24"
+                >
+                    <h3
+                        class="font-bold text-sm text-gray-400 uppercase tracking-wider mb-4 px-2"
+                    >
+                        Categorías
+                    </h3>
+
+                    <ul class="space-y-1">
+                        <!-- Todo -->
+                        <li>
+                            <button
+                                onclick="setCategory('all', this)"
+                                class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors bg-primary dark:bg-white text-white dark:text-black"
+                                data-cat="all"
+                            >
+                                <span>Todo</span>
+                            </button>
+                        </li>
+
+                        <!-- Productos -->
+                        <li>
+                            <button
+                                onclick="setCategory('products', this)"
+                                class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                                data-cat="products"
+                            >
+                                <span>Productos</span>
+                            </button>
+                        </li>
+
+                        <!-- Servicios (Collapsible) -->
+                        <li>
+                            <button
+                                onclick="toggleServices()"
+                                id="services-btn"
+                                class="category-btn w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                            >
+                                <span>Servicios</span>
+                                <span
+                                    id="services-chevron"
+                                    class="material-icons text-sm transition-transform duration-300"
+                                    >expand_more</span
+                                >
+                            </button>
+
+                            <!-- Submenu -->
+                            <div
+                                id="services-submenu"
+                                class="overflow-hidden transition-all duration-300 max-h-0 opacity-0"
+                            >
+                                <ul
+                                    class="pl-4 space-y-1 border-l-2 border-gray-100 dark:border-gray-800 ml-3 mt-1"
+                                >
+                                    <li>
+                                        <button
+                                            onclick="setSubcategory('frp', this)"
+                                            class="subcat-btn w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white"
+                                            data-sub="frp"
+                                        >
+                                            FRP Google
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onclick="setSubcategory('imei', this)"
+                                            class="subcat-btn w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white"
+                                            data-sub="imei"
+                                        >
+                                            Limpieza IMEI
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onclick="setSubcategory('icloud', this)"
+                                            class="subcat-btn w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white"
+                                            data-sub="icloud"
+                                        >
+                                            iCloud
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onclick="setSubcategory('mi_account', this)"
+                                            class="subcat-btn w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-white"
+                                            data-sub="mi_account"
+                                        >
+                                            Xiaomi Mi Account
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- - MAIN GRID - -->
+            <main class="flex-1">
+                <div
+                    id="products-grid"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                    {% for product in product_list %}
+                    <a
+                        href="{% url 'products:product-detail' pk=product.id %}"
+                        class="group bg-white dark:bg-card-dark rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden cursor-pointer hover:shadow-xl hover:border-accent/30 dark:hover:border-accent/30 transition-all duration-300 flex flex-col relative"
+                    >
+                        <div
+                            class="relative aspect-[4/3] bg-gray-100 dark:bg-black/40 overflow-hidden"
+                        >
+                            <img
+                                src="/static/assets/images/{{ product.image|default:product.image }}"
+                                alt="{{ product.name }}"
+                                loading="lazy"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            />
+                            {% if product.tag %}
+                            <span
+                                class="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase shadow-md"
+                                >{{ product.tag }}</span
+                            >
+                            {% endif %}
+                        </div>
+
+                        <div class="p-4 flex-1 flex flex-col">
+                            <div class="mb-2">
+                                <span
+                                    class="text-[10px] font-bold text-gray-400 uppercase tracking-wide"
+                                    >{{ product.category|slice:":-1"|capfirst
+                                    }}</span
+                                >
+                                <h3
+                                    class="font-bold text-gray-900 dark:text-white leading-tight group-hover:text-accent transition-colors mt-1"
+                                >
+                                    {{ product.name }}
+                                </h3>
+                            </div>
+
+                            {% if product.rating %}
+                            <div class="flex items-center gap-1 mb-2">
+                                <span
+                                    class="material-icons text-yellow-400 text-sm"
+                                    >star</span
+                                >
+                                <span
+                                    class="text-xs font-bold text-gray-700 dark:text-gray-300"
+                                    >{{ product.rating }}</span
+                                >
+                            </div>
+                            {% endif %}
+
+                            <p
+                                class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-4"
+                            >
+                                {{ product.description }}
+                            </p>
+
+                            <div
+                                class="mt-auto flex items-center justify-between border-t border-gray-50 dark:border-gray-800 pt-3"
+                            >
+                                <span
+                                    class="text-lg font-bold text-primary dark:text-white"
+                                    >${{ product.price }}</span
+                                >
+                                <button
+                                    class="w-8 h-8 rounded-full bg-gray-50 dark:bg-gray-800 hover:bg-xiaomi hover:text-white transition-all flex items-center justify-center"
+                                >
+                                    <span class="material-icons text-sm"
+                                        >add_shopping_cart</span
+                                    >
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <div
+                        class="col-span-full flex flex-col items-center justify-center py-20 bg-white dark:bg-card-dark rounded-3xl border border-gray-100 dark:border-gray-800 text-center"
+                    >
+                        <div
+                            class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4"
+                        >
+                            <span class="material-icons text-4xl text-gray-400"
+                                >search_off</span
+                            >
+                        </div>
+                        <h3
+                            class="text-xl font-bold text-gray-900 dark:text-white mb-2"
+                        >
+                            Sin Productos
+                        </h3>
+                        <p class="text-gray-500 dark:text-gray-400 max-w-sm">
+                            No hay productos disponibles en este momento. Vuelve
+                            a intentarlo más tarde.
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+{% endblock %}

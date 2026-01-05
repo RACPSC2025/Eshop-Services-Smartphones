@@ -34,7 +34,7 @@
             <!-- Desktop Nav -->
             <div class="hidden md:flex items-center space-x-2">
                 <a
-                    href="/"
+                    href="{% url 'pages:home' %}"
                     class="px-3 py-2 rounded-full text-sm font-medium text-accent bg-accent/10 flex items-center gap-2"
                 >
                     Inicio
@@ -43,12 +43,17 @@
                     ></span>
                 </a>
                 <a
-                    href="/catalog"
+                    href="{% url 'products:product-list' %}"
                     class="px-3 py-2 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     >Servicios</a
                 >
                 <a
-                    href="/contact"
+                    href="{% url 'pages:about' %}"
+                    class="px-3 py-2 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >Nosotros</a
+                >
+                <a
+                    href="{% url 'pages:contact' %}"
                     class="px-3 py-2 rounded-full text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     >Contacto</a
                 >

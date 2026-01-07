@@ -29,15 +29,34 @@
                 <p class="text-[10px] text-gray-400 uppercase tracking-wider mt-1">{{ item.product.category|default:'Producto' }}</p>
             </div>
             
-            <div class="flex items-center justify-between mt-auto">
-                 <div class="text-xs text-gray-500 dark:text-gray-400 font-mono">
-                    {{ item.quantity }} x <span class="font-bold text-xiaomi">${{ item.product.price }}</span>
+              <div class="flex items-center justify-between mt-auto">
+                 <div class="flex items-center gap-2">
+                    <div class="flex items-center border border-gray-100 dark:border-gray-800 rounded-md h-7 bg-gray-50 dark:bg-black/20">
+                        <button 
+                            class="w-6 h-full flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors qty-btn"
+                            data-item-id="{{ item.id }}"
+                            data-action="decrease"
+                        >
+                            <span class="material-icons text-[10px]">remove</span>
+                        </button>
+                        <span class="w-6 text-center text-[10px] font-bold text-gray-900 dark:text-white">{{ item.quantity }}</span>
+                        <button 
+                            class="w-6 h-full flex items-center justify-center text-gray-400 hover:text-green-500 transition-colors qty-btn"
+                            data-item-id="{{ item.id }}"
+                            data-action="increase"
+                        >
+                            <span class="material-icons text-[10px]">add</span>
+                        </button>
+                    </div>
+                    <div class="text-[10px] text-gray-500 dark:text-gray-400 font-mono">
+                        x <span class="font-bold text-xiaomi">${{ item.product.price|floatformat:2 }}</span>
+                    </div>
                  </div>
                  
                  <!-- Remove Button -->
                  <button 
-                    onclick="removeFromCart({{ item.id }}); event.stopPropagation();" 
-                    class="text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100"
+                    class="text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 opacity-0 group-hover:opacity-100 remove-item-btn"
+                    data-item-id="{{ item.id }}"
                     title="Eliminar"
                 >
                     <span class="material-icons text-[16px]">delete_outline</span>
@@ -61,7 +80,7 @@
 <div class="p-5 border-t border-gray-100 dark:border-gray-800 bg-gray-50/80 dark:bg-black/40 backdrop-blur-md">
     <div class="flex justify-between items-end mb-5">
         <span class="text-xs text-gray-500 font-medium uppercase tracking-wider">Total Estimado</span>
-        <span class="font-black text-2xl text-gray-900 dark:text-white font-display">${{ cart_total }}</span>
+        <span class="font-black text-2xl text-gray-900 dark:text-white font-display">${{ cart_total|floatformat:2 }}</span>
     </div>
     
     <div class="grid grid-cols-2 gap-3">

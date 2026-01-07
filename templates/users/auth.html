@@ -1,245 +1,379 @@
-{% load static %}
-{% load socialaccount %}
+{% load static  socialaccount %}
+{% load tailwind_cli %}
+
 <!DOCTYPE html>
-<html lang="es" class="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceder | MiXiaomiUnlock</title>
-    
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="Acceder | MiXiaomiUnlock">
-    <meta name="description" content="Ingresa a tu cuenta premium de MiXiaomi para gestionar tus pedidos y favoritos.">
+<html lang="es" class="light scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Tailwind & Fonts -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+        <title>Acceder | MiXiaomiUnlock</title>
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        xiaomi: '#FF6900',
-                        accent: '#FF4D00',
-                        'background-dark': '#0f0f0f',
-                        'card-dark': '#1a1a1a',
-                    },
-                    fontFamily: {
-                        display: ['Outfit', 'sans-serif'],
-                    },
-                    animation: {
-                        'bounce-slow': 'bounce 3s infinite',
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
+        {% tailwind_css %}
 
-        // Initialize theme
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
-    <style>
-        body { font-family: 'Outfit', sans-serif; }
-    </style>
-</head>
-<body class="bg-[#F5F5F7] dark:bg-background-dark min-h-screen flex items-center justify-center p-4">
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="Acceder | MiXiaomiUnlock" />
+        <meta
+            name="description"
+            content="Ingresa a tu cuenta premium de MiXiaomi para gestionar tus pedidos y favoritos."
+        />
+    </head>
 
-    <!-- Auth Card Container -->
-    <div class="w-full max-w-5xl bg-white dark:bg-card-dark rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row min-h-[680px] animate-fade-in border border-white/20 relative z-10">
-        
-        <!-- Left Panel: Branding & Mascot -->
-        <div class="lg:w-5/12 bg-gradient-to-br from-[#FF6900] to-[#FF4D00] relative overflow-hidden flex flex-col items-center justify-center text-white p-12">
-            <!-- Pattern Overlay -->
-            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-            
-            <div class="relative z-10 text-center">
-                <!-- Logo removed per user request -->
-                <div class="mb-8"></div>
+    <body
+        class="bg-[#F5F5F7] dark:bg-background-dark min-h-screen flex items-center justify-center p-4 antialiased"
+    >
+        <!-- Auth Card Container -->
+        <div
+            class="w-full max-w-5xl bg-white dark:bg-card-dark rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row min-h-[680px] animate-fade-in border border-white/20 relative z-10"
+        >
+            <!-- Left Panel: Branding & Mascot -->
+            <div
+                class="lg:w-5/12 bg-gradient-to-br from-[#FF6900] to-[#FF4D00] relative overflow-hidden flex flex-col items-center justify-center text-white p-12"
+            >
+                <!-- Pattern Overlay -->
+                <div
+                    class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"
+                ></div>
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"
+                ></div>
 
-                <div class="mb-8 relative mx-auto w-64 h-64 flex items-center justify-center">
-                    <div class="absolute inset-0 bg-white/10 rounded-full blur-3xl"></div>
-                    <img src="{% static 'assets/images/mascota-auth.png' %}" alt="Xiaomi Mascota" class="relative w-full h-full object-contain mb-4 drop-shadow-2xl">
-                </div>
-                
-                <h2 class="text-3xl font-black mb-2 tracking-tight">Bienvenido a MiXiaomi</h2>
-                <p class="text-white/90 text-lg font-medium">La plataforma premium de desbloqueo.</p>
-                
-                <div class="mt-8 flex justify-center gap-4">
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 text-center w-24">
-                        <span class="material-icons text-2xl">verified_user</span>
-                        <p class="text-[10px] font-bold mt-1 uppercase">Seguro</p>
+                <div class="relative z-10 text-center">
+                    <div class="mb-8"></div>
+                    <!-- Espacio reservado para logo si se agrega después -->
+
+                    <div
+                        class="mb-8 relative mx-auto w-64 h-64 flex items-center justify-center"
+                    >
+                        <div
+                            class="absolute inset-0 bg-white/10 rounded-full blur-3xl"
+                        ></div>
+                        <img
+                            src="{% static 'assets/images/mascota-auth.png' %}"
+                            alt="Xiaomi Mascota"
+                            class="relative w-full h-full object-contain mb-4 drop-shadow-2xl"
+                        />
                     </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 text-center w-24">
-                        <span class="material-icons text-2xl">bolt</span>
-                        <p class="text-[10px] font-bold mt-1 uppercase">Rápido</p>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 text-center w-24">
-                        <span class="material-icons text-2xl">support_agent</span>
-                        <p class="text-[10px] font-bold mt-1 uppercase">24/7</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Right Panel: Forms -->
-        <div class="lg:w-7/12 p-8 lg:p-12 relative bg-white dark:bg-[#1a1a1a] flex flex-col justify-center">
-            
-            <div class="w-full max-w-md mx-auto">
-                <div class="text-center mb-10">
-                    <h3 id="form-title" class="text-3xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">Iniciar Sesión</h3>
-                    <p id="form-subtitle" class="text-gray-500 dark:text-gray-400 font-medium">Accede a tu cuenta MiXiaomi</p>
-                </div>
+                    <h2 class="text-3xl font-black mb-2 tracking-tight">
+                        Bienvenido a MiXiaomi
+                    </h2>
+                    <p class="text-white/90 text-lg font-medium">
+                        La plataforma premium de desbloqueo.
+                    </p>
 
-                <!-- Social Auth Button (Resiliente) -->
-                <div class="mb-8">
-                    {% get_providers as socialaccount_providers %}
-                    {% if socialaccount_providers %}
-                        {% for provider in socialaccount_providers %}
-                            {% if provider.id == "google" %}
-                            <a href="{% provider_login_url provider.id %}" class="w-full flex items-center justify-center gap-3 bg-white dark:bg-black/20 border-2 border-gray-100 dark:border-gray-800 hover:border-xiaomi hover:bg-gray-50 dark:hover:bg-black/40 py-4 rounded-2xl transition-all group active:scale-[0.98]">
-                                <svg class="w-6 h-6" viewBox="0 0 48 48">
-                                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z"/>
-                                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                                    <path fill="none" d="M0 0h48v48H0z"/>
-                                </svg>
-                                <span class="font-bold text-gray-700 dark:text-gray-300">Continuar con Google</span>
-                            </a>
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        <div class="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-xl text-center">
-                            <p class="text-orange-700 dark:text-orange-400 text-xs font-bold">
-                                <span class="material-icons text-sm align-middle">warning</span>
-                                Configuración de Google Auth pendiente en el Admin.
+                    <div class="mt-8 flex justify-center gap-4">
+                        <div
+                            class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 text-center w-24"
+                        >
+                            <span class="material-icons text-base"
+                                >Trabajos</span
+                            >
+                            <p class="text-lg font-bold mt-1 uppercase">
+                                Calidad
                             </p>
                         </div>
-                    {% endif %}
+                        <div
+                            class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 text-center w-24"
+                        >
+                            <span class="material-icons text-base">Atencion</span>
+                            <p class="text-lg font-bold mt-1 uppercase">
+                                Rápido
+                            </p>
+                        </div>
+                        <div
+                            class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 text-center w-24"
+                        >
+                            <span class="material-icons text-base"
+                                >Soporte</span
+                            >
+                            <p class="text-lg font-bold mt-1 uppercase">
+                                24/7
+                            </p>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <div class="relative flex py-5 items-center">
-                    <div class="flex-grow border-t border-gray-100 dark:border-gray-800"></div>
-                    <span class="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase tracking-widest">o con tu email</span>
-                    <div class="flex-grow border-t border-gray-100 dark:border-gray-800"></div>
-                </div>
+            <!-- Right Panel: Forms -->
+            <div
+                class="lg:w-7/12 p-8 lg:p-12 relative bg-white dark:bg-[#1a1a1a] flex flex-col justify-center"
+            >
+                <div class="w-full max-w-md mx-auto">
+                    <div class="text-center mb-10">
+                        <h3
+                            id="form-title"
+                            class="text-3xl font-black text-gray-900 dark:text-white mb-2 tracking-tight"
+                        >
+                            Iniciar Sesión
+                        </h3>
+                        <p
+                            id="form-subtitle"
+                            class="text-gray-500 dark:text-gray-400 font-medium"
+                        >
+                            Accede a tu cuenta MiXiaomi
+                        </p>
+                    </div>
 
-                <!-- LOGIN FORM -->
-                <div id="form-login" class="transition-all duration-300">
-                    <form class="space-y-4" method="POST" action="{% url 'users:auth' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="login">
-                        
-                        <div>
+                    <!-- Social Auth Button -->
+                    <div class="mb-8">
+                        {% get_providers as socialaccount_providers %}
+                        {% for provider in socialaccount_providers %}
+                            {% if provider.id == "google" %}
+                                <a
+                                    href="{% provider_login_url provider.id %}"
+                                    class="w-full flex items-center justify-center gap-3 bg-white dark:bg-black/20 border-2 border-gray-100 dark:border-gray-800 hover:border-xiaomi hover:bg-gray-50 dark:hover:bg-black/40 py-4 rounded-2xl transition-all group active:scale-[0.98]"
+                                >
+                                    <!-- SVG Google -->
+                                    <svg
+                                        class="w-6 h-6"
+                                        viewBox="0 0 48 48"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            fill="#EA4335"
+                                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                                        />
+                                        <path
+                                            fill="#4285F4"
+                                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                                        />
+                                        <path
+                                            fill="#FBBC05"
+                                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z"
+                                        />
+                                        <path
+                                            fill="#34A853"
+                                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                                        />
+                                        <path fill="none" d="M0 0h48v48H0z" />
+                                    </svg>
+        
+                                    <span
+                                        class="font-bold text-gray-700 dark:text-gray-300"
+                                    >
+                                        Continuar con Google
+                                    </span>
+                                a>
+                            {% endif %}
+                        {% empty %}
+                            <div
+                                class="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-xl text-center"
+                            >
+                                <p
+                                    class="text-orange-700 dark:text-orange-400 text-xs font-bold"
+                                >
+                                    <span
+                                        class="material-icons text-sm align-middle"
+                                        >warning</span
+                                    >
+                                    Configuración de Google Auth pendiente en el
+                                    Admin.
+                                </p>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Separador -->
+                    <div class="relative flex py-5 items-center">
+                        <div
+                            class="flex-grow border-t border-gray-100 dark:border-gray-800"
+                        ></div>
+                        <span
+                            class="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase tracking-widest"
+                        >
+                            o con tu email
+                        </span>
+                        <div
+                            class="flex-grow border-t border-gray-100 dark:border-gray-800"
+                        ></div>
+                    </div>
+
+                    <!-- LOGIN FORM -->
+                    <div id="form-login" class="transition-all duration-300">
+                        <form
+                            class="space-y-4"
+                            method="POST"
+                            action="{% url 'users:auth' %}"
+                        >
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="login" />
+
+                            <!-- Email -->
                             <div class="relative">
-                                <span class="absolute left-4 top-3.5 text-gray-400 material-icons text-xl">email</span>
-                                <input name="email" type="email" required class="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none transition-all font-medium text-gray-900 dark:text-white placeholder-gray-400" placeholder="usuario@ejemplo.com">
+                                <span
+                                    class="absolute left-4 top-3.5 text-gray-400 material-icons text-xl"
+                                    ></span
+                                >
+                                <input
+                                    name="email"
+                                    type="email"
+                                    required
+                                    class="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none transition-all font-medium text-gray-900 dark:text-white placeholder-gray-400"
+                                    placeholder="usuario@ejemplo.com"
+                                />
                             </div>
-                        </div>
-                        
-                        <div>
+
+                            <!-- Password -->
                             <div class="relative">
-                                <span class="absolute left-4 top-3.5 text-gray-400 material-icons text-xl">lock</span>
-                                <input name="password" type="password" required class="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none transition-all font-medium text-gray-900 dark:text-white placeholder-gray-400" placeholder="••••••••">
+                                <span
+                                    class="absolute left-4 top-3.5 text-gray-400 material-icons text-xl"
+                                    ></span
+                                >
+                                <input
+                                    name="password"
+                                    type="password"
+                                    required
+                                    class="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none transition-all font-medium text-gray-900 dark:text-white placeholder-gray-400"
+                                    placeholder="••••••••"
+                                />
+                                <div class="text-right mt-2">
+                                    <a
+                                        href="{% url 'account_reset_password' %}"
+                                        class="text-xs font-bold text-xiaomi hover:underline"
+                                    >
+                                        ¿Olvidaste tu contraseña?
+                                    </a>
+                                </div>
                             </div>
-                            <div class="text-right mt-2">
-                                <a href="{% url 'account_reset_password' %}" class="text-xs font-bold text-xiaomi hover:underline">¿Olvidaste tu contraseña?</a>
+
+                            <button
+                                type="submit"
+                                class="w-full bg-xiaomi hover:bg-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+                            >
+                                <span>Ingresar</span>
+                                <span
+                                    class="material-icons group-hover:translate-x-1 transition-transform"
+                                    >arrow_forward</span
+                                >
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- REGISTER FORM -->
+                    <div
+                        id="form-register"
+                        class="hidden transition-all duration-300"
+                    >
+                        <form
+                            class="space-y-4"
+                            method="POST"
+                            action="{% url 'users:auth' %}"
+                        >
+                            {% csrf_token %}
+                            <input
+                                type="hidden"
+                                name="action"
+                                value="register"
+                            />
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <input
+                                    name="first_name"
+                                    type="text"
+                                    placeholder="Nombre"
+                                    required
+                                    class="w-full px-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none font-medium dark:text-white"
+                                />
+                                <input
+                                    name="last_name"
+                                    type="text"
+                                    placeholder="Apellido"
+                                    required
+                                    class="w-full px-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none font-medium dark:text-white"
+                                />
                             </div>
-                        </div>
 
-                        <button type="submit" class="w-full bg-xiaomi hover:bg-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group">
-                            <span>Ingresar</span>
-                            <span class="material-icons group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </button>
-                    </form>
+                            <input
+                                name="email"
+                                type="email"
+                                required
+                                class="w-full px-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none font-medium dark:text-white"
+                                placeholder="tu@email.com"
+                            />
+
+                            <input
+                                name="password"
+                                type="password"
+                                required
+                                class="w-full px-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none font-medium dark:text-white"
+                                placeholder="Crea una contraseña"
+                            />
+
+                            <button
+                                type="submit"
+                                class="w-full bg-gray-900 dark:bg-white dark:text-black hover:bg-gray-800 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-[0.98] transition-all mt-4"
+                            >
+                                Crear Cuenta
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Toggle Login/Register -->
+                    <div class="mt-8 text-center">
+                        <p
+                            id="toggle-text"
+                            class="text-gray-500 dark:text-gray-400 text-sm"
+                        >
+                            ¿No tienes una cuenta?
+                            <button
+                                onclick="switchTab('register')"
+                                class="text-xiaomi font-bold hover:underline"
+                            >
+                                Regístrate gratis
+                            </button>
+                        </p>
+                    </div>
                 </div>
-
-                <!-- REGISTER FORM -->
-                <div id="form-register" class="hidden transition-all duration-300">
-                    <form class="space-y-4" method="POST" action="{% url 'users:auth' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="register">
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <input name="first_name" type="text" placeholder="Nombre" required class="w-full px-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none font-medium dark:text-white">
-                            <input name="last_name" type="text" placeholder="Apellido" required class="w-full px-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none font-medium dark:text-white">
-                        </div>
-
-                        <input name="email" type="email" required class="w-full px-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none font-medium dark:text-white" placeholder="tu@email.com">
-                        <input name="password" type="password" required class="w-full px-4 py-4 bg-gray-50 dark:bg-black/20 border-2 border-transparent focus:border-xiaomi rounded-2xl outline-none font-medium dark:text-white" placeholder="Crea una contraseña">
-
-                        <button type="submit" class="w-full bg-gray-900 dark:bg-white dark:text-black hover:bg-gray-800 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-[0.98] transition-all mt-4">
-                            Crear Cuenta
-                        </button>
-                    </form>
-                </div>
-
-                <div class="mt-8 text-center">
-                    <p id="toggle-text" class="text-gray-500 dark:text-gray-400 text-sm">
-                        ¿No tienes una cuenta? 
-                        <button onclick="switchTab('register')" class="text-xiaomi font-bold hover:underline">Regístrate gratis</button>
-                    </p>
-                </div>
-
             </div>
         </div>
-    </div>
 
-    <!-- Background Elements -->
-    <div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none overflow-hidden">
-        <div class="absolute -top-24 -left-24 w-96 h-96 bg-xiaomi/5 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/2 -right-24 w-64 h-64 bg-accent/5 rounded-full blur-3xl"></div>
-    </div>
+        <!-- Background Decorations -->
+        <div
+            class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none overflow-hidden"
+        >
+            <div
+                class="absolute -top-24 -left-24 w-96 h-96 bg-xiaomi/5 rounded-full blur-3xl"
+            ></div>
+            <div
+                class="absolute top-1/2 -right-24 w-64 h-64 bg-accent/5 rounded-full blur-3xl"
+            ></div>
+        </div>
 
-    <script>
-        function switchTab(tab) {
-            const loginForm = document.getElementById('form-login');
-            const registerForm = document.getElementById('form-register');
-            const title = document.getElementById('form-title');
-            const subtitle = document.getElementById('form-subtitle');
-            const toggleText = document.getElementById('toggle-text');
+        <!-- JavaScript para toggle de formularios -->
+        <script>
+            function switchTab(tab) {
+                const loginForm = document.getElementById('form-login');
+                const registerForm = document.getElementById('form-register');
+                const title = document.getElementById('form-title');
+                const subtitle = document.getElementById('form-subtitle');
+                const toggleText = document.getElementById('toggle-text');
 
-            if (tab === 'login') {
-                loginForm.classList.remove('hidden');
-                registerForm.classList.add('hidden');
-                title.innerText = "Iniciar Sesión";
-                subtitle.innerText = "Accede a tu cuenta MiXiaomi";
-                toggleText.innerHTML = '¿No tienes una cuenta? <button onclick="switchTab(\'register\')" class="text-xiaomi font-bold hover:underline">Regístrate gratis</button>';
-            } else {
-                loginForm.classList.add('hidden');
-                registerForm.classList.remove('hidden');
-                title.innerText = "Crea tu cuenta";
-                subtitle.innerText = "Únete a la mejor comunidad premium";
-                toggleText.innerHTML = '¿Ya tienes una cuenta? <button onclick="switchTab(\'login\')" class="text-xiaomi font-bold hover:underline">Inicia Sesión</button>';
+                if (tab === 'login') {
+                    loginForm.classList.remove('hidden');
+                    registerForm.classList.add('hidden');
+                    title.textContent = "Iniciar Sesión";
+                    subtitle.textContent = "Accede a tu cuenta MiXiaomi";
+                    toggleText.innerHTML = '¿No tienes una cuenta? <button onclick="switchTab(\'register\')" class="text-xiaomi font-bold hover:underline">Regístrate gratis</button>';
+                } else {
+                    loginForm.classList.add('hidden');
+                    registerForm.classList.remove('hidden');
+                    title.textContent = "Crea tu cuenta";
+                    subtitle.textContent = "Únete a la mejor comunidad premium";
+                    toggleText.innerHTML = '¿Ya tienes una cuenta? <button onclick="switchTab(\'login\')" class="text-xiaomi font-bold hover:underline">Inicia Sesión</button>';
+                }
             }
-        }
 
-        // Show Django Messages as Toasts if needed (Optional for standalone)
-        window.addEventListener('load', () => {
-            {% if messages %}
-                {% for message in messages %}
-                    if (typeof showToast === 'function') {
-                        showToast("{{ message }}", "{{ message.tags }}");
-                    } else {
-                        console.log("{{ message }}");
-                    }
-                {% endfor %}
-            {% endif %}
-        });
-    </script>
-</body>
+            // Mostrar mensajes de Django (opcional - puedes usar una librería de toast)
+            window.addEventListener('load', () => {
+                {% if messages %}
+                    {% for message in messages %}
+                        // Ejemplo básico - reemplazar con tu sistema de notificaciones
+                        console.log("{{ message.tags }}: {{ message }}");
+                        // showToast("{{ message }}", "{{ message.tags }}"); // si tienes función showToast
+                    {% endfor %}
+                {% endif %}
+            });
+        </script>
+    </body>
 </html>

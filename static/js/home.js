@@ -150,3 +150,44 @@ document.addEventListener("DOMContentLoaded", () => {
         updateTestimonial(currentTestim);
     });
 });
+
+// --- BENTO GRID INTERACTION ---
+const bLargImg = document.getElementById("bento-large-img-current");
+const bLargTitle = document.getElementById("bento-large-title");
+const bLargDesc = document.getElementById("bento-large-desc");
+const bSmallCards = document.querySelectorAll(".bento-small-card");
+
+if (bLargImg && bSmallCards.length > 0) {
+    bSmallCards.forEach((card) => {
+        card.addEventListener("click", () => {
+            // 1. Capture Current Large State
+            const oldLargeImg = bLargImg.src;
+            const oldLargeTitle = bLargTitle.innerText; // Use innerText for safety
+            const oldLargeDesc = bLargDesc.innerText;
+
+            // 2. Capture Clicked Small State (from dataset)
+            const newLargeImg = card.dataset.img;
+            const newLargeTitle = card.dataset.title;
+            const newLargeDesc = card.dataset.desc;
+
+            // 3. Update Large Card (with simple fade effect manually handled or direct swap)
+            // Direct swap for instant responsiveness as requested
+            bLargImg.src = newLargeImg;
+            bLargTitle.textContent = newLargeTitle;
+            bLargDesc.textContent = newLargeDesc;
+
+            // 4. Update Small Card (Swap content to where it came from)
+            // Update dataset for next click
+            card.dataset.img = oldLargeImg;
+            card.dataset.title = oldLargeTitle;
+            card.dataset.desc = oldLargeDesc;
+
+            // Update DOM elements of the small card
+            const smallImg = card.querySelector("img");
+            const smallTitle = card.querySelector("h4");
+
+            if (smallImg) smallImg.src = oldLargeImg;
+            if (smallTitle) smallTitle.textContent = oldLargeTitle;
+        });
+    });
+}

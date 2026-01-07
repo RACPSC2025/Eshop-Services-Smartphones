@@ -41,7 +41,7 @@
                 <div class="p-6 md:p-8 border-b border-gray-100 dark:border-gray-800">
                     <div class="flex items-center gap-3">
                          <span class="material-icons text-xiaomi">shopping_bag</span>
-                         <span class="font-bold text-gray-900 dark:text-white">{{ cart_count }} Productos</span>
+                         <span id="cart-header-count" class="font-bold text-gray-900 dark:text-white">{{ cart_count }} Productos</span>
                     </div>
                 </div>
                 
@@ -57,11 +57,7 @@
                 <div class="space-y-4 mb-6">
                     <div class="flex justify-between text-gray-500 dark:text-gray-400">
                         <span>Subtotal</span>
-                        <span id="cart-summary-subtotal" class="font-medium text-gray-900 dark:text-white">${{ cart.get_subtotal }}</span>
-                    </div>
-                    <div class="flex justify-between text-gray-500 dark:text-gray-400">
-                        <span>IVA (19%)</span>
-                        <span id="cart-summary-tax" class="font-medium text-gray-900 dark:text-white">${{ cart.get_tax }}</span>
+                        <span id="cart-summary-subtotal" class="font-medium text-gray-900 dark:text-white">${{ cart.get_subtotal|floatformat:2 }}</span>
                     </div>
                     <div class="flex justify-between text-gray-500 dark:text-gray-400 pb-4 border-b border-gray-100 dark:border-gray-800">
                         <span>Envío</span>
@@ -70,7 +66,7 @@
                     
                     <div class="flex justify-between items-center">
                         <span class="text-lg font-bold text-gray-900 dark:text-white">Total</span>
-                        <span id="cart-summary-total" class="text-2xl font-bold text-primary dark:text-white">${{ cart.get_total }}</span>
+                        <span id="cart-summary-total" class="text-2xl font-bold text-primary dark:text-white">${{ cart.get_total|floatformat:2 }}</span>
                     </div>
                 </div>
 

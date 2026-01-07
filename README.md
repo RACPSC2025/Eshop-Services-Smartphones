@@ -14,9 +14,9 @@
 
 </div>
 
-# UnlockXiaomi Colombia - Plataforma E-commerce
+# UnlockXiaomi - Plataforma E-commerce
 
-**UnlockXiaomi Colombia** es una plataforma e-commerce premium especializada en servicios técnicos certificados y venta de productos para dispositivos Xiaomi, Samsung y mas.
+**UnlockXiaomi** es una plataforma e-commerce premium especializada en servicios técnicos certificados y venta de productos para dispositivos Xiaomi, Samsung y mas.
 
 El proyecto utiliza tecnologías de vanguardia: Django 6.0, Tailwind CSS 4.1.18, PostgreSQL 15 y Python 3.13.
 

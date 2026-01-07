@@ -1,60 +1,119 @@
 {% load static %} {% load tailwind_cli %}
 <!DOCTYPE html>
-<html lang="es" class="light">
+<html lang="es">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
+
         <!-- Senior SEO & Meta Tags -->
-        <meta name="description" content="UnlockXiaomi Colombia - Expertos en desbloqueo, servicios premium y accesorios para tu ecosistema Xiaomi." />
-        <meta name="keywords" content="Xiaomi, Desbloqueo, Colombia, Celulares, Mi Account, Bootloader" />
+        <meta
+            name="description"
+            content="UnlockXiaomi Colombia - Expertos en desbloqueo, servicios premium y accesorios para tu ecosistema Xiaomi."
+        />
+        <meta
+            name="keywords"
+            content="Xiaomi, Desbloqueo, Colombia, Celulares, Mi Account, Bootloader"
+        />
         <meta name="author" content="UnlockXiaomi" />
-        
+
         <!-- Open Graph / Social Media -->
         <meta property="og:type" content="website" />
         <meta property="og:url" content="{{ request.build_absolute_uri }}" />
         <meta property="og:title" content="UnlockXiaomi | Servicios Premium" />
-        <meta property="og:description" content="Gestiona tu Xiaomi con los mejores expertos de Colombia." />
-        <meta property="og:image" content="{% static 'assets/images/og-image.jpg' %}" />
+        <meta
+            property="og:description"
+            content="Gestiona tu Xiaomi con los mejores expertos de Colombia."
+        />
+        <meta
+            property="og:image"
+            content="{% static 'assets/images/og-image.jpg' %}"
+        />
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-        
+        <!-- Preconexiones Críticas -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://upload.wikimedia.org" />
+
+        <!-- Fuentes combinadas con display=swap -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Icons&family=Outfit:wght@300;400;600;700;900&display=swap"
+            rel="stylesheet"
+        />
+
         {% tailwind_css %}
         <title>{% block title %}UnlockXiaomi{% endblock %}</title>
 
+        <script src="{% static 'js/theme.js' %}" defer></script>
+
         <style>
-            :root { scroll-behavior: smooth; }
-            .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+            :root {
+                scroll-behavior: smooth;
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.4s ease-out forwards;
+            }
             @keyframes fadeIn {
-                0% { opacity: 0; transform: translateY(10px); }
-                100% { opacity: 1; transform: translateY(0); }
+                0% {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         </style>
     </head>
-    <body class="bg-[#F5F5F7] dark:bg-background-dark text-gray-900 dark:text-gray-100 transition-colors duration-500 font-display flex flex-col min-h-screen">
-
+    <body
+        class="bg-[#F5F5F7] dark:bg-background-dark text-gray-900 dark:text-gray-100 transition-colors duration-500 font-display flex flex-col min-h-screen"
+    >
         {% include 'components/navbar.html' %}
-        
-        <main class="flex-grow">
-            {% block content %}{% endblock %}
-        </main>
+
+        <main class="flex-grow">{% block content %}{% endblock %}</main>
 
         <!-- Modal: Login Required (Premium UX) -->
-        <div id="login-required-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-            <div class="bg-white dark:bg-card-dark rounded-[2.5rem] w-full max-w-md p-10 shadow-2xl border border-white/10 relative overflow-hidden">
-                <div class="absolute -top-12 -right-12 w-32 h-32 bg-xiaomi/10 rounded-full blur-2xl"></div>
+        <div
+            id="login-required-modal"
+            class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+        >
+            <div
+                class="bg-white dark:bg-card-dark rounded-[2.5rem] w-full max-w-md p-10 shadow-2xl border border-white/10 relative overflow-hidden"
+            >
+                <div
+                    class="absolute -top-12 -right-12 w-32 h-32 bg-xiaomi/10 rounded-full blur-2xl"
+                ></div>
                 <div class="relative z-10 text-center">
-                    <div class="w-20 h-20 bg-orange-50 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="material-icons text-4xl text-xiaomi">lock</span>
+                    <div
+                        class="w-20 h-20 bg-orange-50 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-6"
+                    >
+                        <span class="material-icons text-4xl text-xiaomi"
+                            >lock</span
+                        >
                     </div>
-                    <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2">Contenido Exclusivo</h3>
-                    <p class="text-gray-500 dark:text-gray-400 font-medium mb-8">Únete a la comunidad de MiXiaomi para añadir productos y comprar.</p>
+                    <h3
+                        class="text-2xl font-black text-gray-900 dark:text-white mb-2"
+                    >
+                        Contenido Exclusivo
+                    </h3>
+                    <p
+                        class="text-gray-500 dark:text-gray-400 font-medium mb-8"
+                    >
+                        Únete a la comunidad de MiXiaomi para añadir productos y
+                        comprar.
+                    </p>
                     <div class="flex flex-col gap-3">
-                        <a href="{% url 'users:auth' %}" class="w-full bg-xiaomi hover:bg-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-[0.98]">Ingresar / Registrarse</a>
-                        <button onclick="closeLoginModal()" class="text-xs font-bold text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors py-2">Cerrar</button>
+                        <a
+                            href="{% url 'users:auth' %}"
+                            class="w-full bg-xiaomi hover:bg-orange-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-[0.98]"
+                            >Ingresar / Registrarse</a
+                        >
+                        <button
+                            onclick="closeLoginModal()"
+                            class="text-xs font-bold text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors py-2"
+                        >
+                            Cerrar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -64,11 +123,19 @@
 
         <!-- Global Scripts -->
         <script>
-            function openLoginModal() { document.getElementById('login-required-modal').classList.remove('hidden'); }
-            function closeLoginModal() { document.getElementById('login-required-modal').classList.add('hidden'); }
+            function openLoginModal() {
+                document
+                    .getElementById("login-required-modal")
+                    .classList.remove("hidden");
+            }
+            function closeLoginModal() {
+                document
+                    .getElementById("login-required-modal")
+                    .classList.add("hidden");
+            }
         </script>
         <script src="{% static 'js/theme_toggle.js' %}" defer></script>
-        <script src="{% static 'js/notifications.js' %}"></script>
+        <script src="{% static 'js/notifications.js' %}" defer></script>
         <script src="{% static 'js/cart.js' %}" defer></script>
         <script src="{% static 'js/favorites.js' %}" defer></script>
         {% block scripts %}{% endblock %}

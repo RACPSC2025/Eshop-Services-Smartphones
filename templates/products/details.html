@@ -93,15 +93,15 @@
                     <!-- Actions -->
                     <div class="mt-auto">
                         <div class="flex flex-col sm:flex-row gap-4 mb-6">
-                            <!-- Qty Selector (Visual only for now) -->
+                            <!-- Qty Selector -->
                             <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded-xl h-12 w-max px-2">
-                                <button class="w-8 h-full flex items-center justify-center text-gray-500 hover:text-primary dark:hover:text-white">-</button>
-                                <span class="w-8 text-center font-bold dark:text-white">1</span>
-                                <button class="w-8 h-full flex items-center justify-center text-gray-500 hover:text-primary dark:hover:text-white">+</button>
+                                <button class="w-8 h-full flex items-center justify-center text-gray-500 hover:text-primary dark:hover:text-white qty-minus" type="button">-</button>
+                                <span id="quantity" class="w-8 text-center font-bold dark:text-white">1</span>
+                                <button class="w-8 h-full flex items-center justify-center text-gray-500 hover:text-primary dark:hover:text-white qty-plus" type="button">+</button>
                             </div>
 
                             <!-- Add to Cart -->
-                            <button 
+                            <button
                                 class="flex-1 bg-primary dark:bg-white text-white dark:text-black font-bold h-12 rounded-xl flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl active:scale-95 add-to-cart-btn"
                                 data-product-id="{{ product.id }}"
                             >
@@ -111,7 +111,7 @@
 
 
                             <!-- Wishlist -->
-                            <button 
+                            <button
                                 onclick="toggleFavorite(this, {{ product.id }})"
                                 class="w-12 h-12 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center justify-center transition-all active:scale-90 hover:shadow-md {% if product.id in user_favorites %}text-red-500 border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-900/10{% else %}text-gray-400 hover:text-red-500 hover:border-red-200{% endif %}"
                                 title="Añadir a favoritos"
@@ -139,4 +139,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/details.js' %}"></script>
 {% endblock %}

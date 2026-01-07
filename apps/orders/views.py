@@ -27,13 +27,18 @@ def _get_cart(request):
 
 def _get_cart_context(cart):
     """Helper para generar contexto consistente del carrito"""
-    cart_items = list(cart.items.select_related('product').all().order_by('id'))
+    # Forzar refresco de los items para evitar caché de objeto
+    cart_items = list(CartItem.objects.filter(cart=cart).select_related('product').order_by('added_at'))
+    cart_count = sum(item.quantity for item in cart_items)
+    
+    # Recalcular totales manualmente por si el objeto cart tiene valores viejos
+    subtotal = sum(item.get_total_price() for item in cart_items)
+    
     return {
-
         'cart': cart,
         'cart_items': cart_items,
-        'cart_count': cart.get_total_items(),
-        'cart_total': cart.get_total(),
+        'cart_count': cart_count,
+        'cart_total': subtotal,
     }
 
 
@@ -47,6 +52,13 @@ def add_to_cart(request, product_id):
             'message': 'Debes iniciar sesión para comprar.'
         }, status=403)
 
+    import json
+    try:
+        data = json.loads(request.body)
+        quantity = int(data.get('quantity', 1))
+    except (json.JSONDecodeError, ValueError):
+        quantity = 1
+
     cart = _get_cart(request)
     product = get_object_or_404(Product, id=product_id)
     
@@ -55,7 +67,7 @@ def add_to_cart(request, product_id):
         product=product,
         defaults={'quantity': 0}
     )
-    cart_item.increase_quantity()
+    cart_item.increase_quantity(quantity)
     
     # Contexto actualizado
     ctx = _get_cart_context(cart)
@@ -64,6 +76,9 @@ def add_to_cart(request, product_id):
     return JsonResponse({
         'success': True,
         'cart_count': ctx['cart_count'],
+        'cart_subtotal': str(cart.get_subtotal()),
+        'cart_tax': str(cart.get_tax()),
+        'cart_total': str(ctx['cart_total']),
         'mini_cart_html': mini_cart_html,
         'message': f'{product.name} agregado al carrito'
     })
@@ -82,13 +97,16 @@ def remove_from_cart(request, item_id):
         
         try:
             cart_html = render_to_string('orders/partials/cart_table.html', ctx, request=request)
-        except:
+        except Exception as e:
+            print(f"Error rendering cart_table: {e}")
             cart_html = None
         
         return JsonResponse({
             'success': True,
             'cart_count': ctx['cart_count'],
-            'cart_total': float(ctx['cart_total']),
+            'cart_subtotal': str(cart.get_subtotal()),
+            'cart_tax': str(cart.get_tax()),
+            'cart_total': str(ctx['cart_total']),
             'mini_cart_html': mini_cart_html,
             'cart_html': cart_html,
             'message': 'Producto eliminado'
@@ -123,16 +141,17 @@ def update_cart_item(request, item_id):
         
         try:
             cart_html = render_to_string('orders/partials/cart_table.html', ctx, request=request)
-        except:
+        except Exception as e:
+            print(f"Error rendering cart_table: {e}")
             cart_html = None
 
         return JsonResponse({
             'success': True,
             'cart_count': ctx['cart_count'],
             'item_total': item_total,
-            'cart_subtotal': float(cart.get_subtotal()),
-            'cart_tax': float(cart.get_tax()),
-            'cart_total': float(ctx['cart_total']),
+            'cart_subtotal': str(cart.get_subtotal()),
+            'cart_tax': str(cart.get_tax()),
+            'cart_total': str(ctx['cart_total']),
             'mini_cart_html': mini_cart_html,
             'cart_html': cart_html
         })

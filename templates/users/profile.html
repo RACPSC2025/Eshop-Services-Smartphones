@@ -118,7 +118,7 @@
                                         <div class="flex items-center gap-4">
                                             <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center p-1">
                                                 {% if item.product.image %}
-                                                    <img src="{% static 'assets/images/' %}{{ item.product.image }}" class="w-full h-full object-contain">
+                                                    <img src="{{ item.product.image.url }}" class="w-full h-full object-contain">
                                                 {% else %}
                                                     <span class="material-icons text-gray-400 text-sm">image</span>
                                                 {% endif %}
@@ -163,7 +163,7 @@
                             <div class="bg-white dark:bg-card-dark rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4 group">
                                 <div class="w-16 h-16 bg-gray-50 dark:bg-gray-800 rounded-xl p-1 flex-shrink-0">
                                     {% if fav.product.image %}
-                                        <img src="{% static 'assets/images/' %}{{ fav.product.image }}" class="w-full h-full object-contain">
+                                        <img src="{{ fav.product.image.url }}" class="w-full h-full object-contain">
                                     {% else %}
                                         <span class="material-icons text-gray-400">image</span>
                                     {% endif %}

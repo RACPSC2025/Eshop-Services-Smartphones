@@ -96,10 +96,10 @@
            <div class="flex animate-marquee hover:[animation-play-state:paused] items-center whitespace-nowrap">
                <!-- Repeated items for marquee effect -->
                {% for i in "012345" %} 
-                  <div class="mx-8 md:mx-12 shrink-0"><img src="https://upload.wikimedia.org/wikipedia/commons/2/29/Xiaomi_logo.svg" class="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 dark:invert" alt="Xiaomi" width="100" height="48" loading="lazy"></div>
-                  <div class="mx-8 md:mx-12 shrink-0"><img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" class="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 dark:invert" alt="Apple" width="48" height="48" loading="lazy"></div>
-                  <div class="mx-8 md:mx-12 shrink-0"><img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" class="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 dark:invert" alt="Samsung" width="150" height="48" loading="lazy"></div>
-                  <div class="mx-8 md:mx-12 shrink-0"><img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Huawei_logo_icon_1.svg" class="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300" alt="Huawei" width="48" height="48" loading="lazy"></div>
+                  <div class="mx-8 md:mx-12 shrink-0"><img src="{% static 'assets/icons/xiaomi.svg' %}" class="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 dark:invert" alt="Xiaomi" width="100" height="48" loading="lazy"></div>
+                  <div class="mx-8 md:mx-12 shrink-0"><img src="{% static 'assets/icons/apple.svg' %}" class="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 dark:invert" alt="Apple" width="48" height="48" loading="lazy"></div>
+                  <div class="mx-8 md:mx-12 shrink-0"><img src="{% static 'assets/icons/samsung.svg' %}" class="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 dark:invert" alt="Samsung" width="150" height="48" loading="lazy"></div>
+                  <div class="mx-8 md:mx-12 shrink-0"><img src="{% static 'assets/icons/huawei.svg' %}" class="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 dark:invert" alt="Huawei" width="48" height="48" loading="lazy"></div>
                {% endfor %}
            </div>
          </div>
@@ -136,7 +136,7 @@
                 <div class="relative h-72 w-full overflow-hidden bg-white dark:bg-[#0a0a0a]">
                     <a href="{% url 'products:product-detail' service.id %}" class="block h-full w-full">
                         {% if service.image %}
-                        <img src="{% static 'assets/images/' %}{{ service.image }}" class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" alt="{{ service.name }}">
+                        <img src="{{ service.image.url }}" class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" alt="{{ service.name }}">
                         {% else %}
                         <div class="w-full h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-white/5 text-gray-300">
                             <span class="material-icons text-6xl mb-2" aria-hidden="true">build_circle</span>
@@ -194,7 +194,7 @@
                 <div class="relative h-72 w-full overflow-hidden bg-white dark:bg-[#0a0a0a]">
                     <a href="{% url 'products:product-detail' product.id %}" class="block h-full w-full">
                         {% if product.image %}
-                        <img src="{% static 'assets/images/' %}{{ product.image }}" class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" alt="{{ product.name }}">
+                        <img src="{{ product.image.url }}" class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" alt="{{ product.name }}">
                         {% else %}
                         <img src="https://via.placeholder.com/300?text=No+Image" class="w-full h-full object-cover grayscale opacity-50" alt="No image">
                         {% endif %}
@@ -314,10 +314,10 @@
             
              <!-- Card 3: Mi Cloud -->
             <div class="bento-small-card relative overflow-hidden rounded-[2rem] shadow-lg group cursor-pointer hover:scale-[1.02] transition-all bg-black"
-                 data-img="https://images.unsplash.com/photo-1621330396167-b3d451b9d83b?auto=format&fit=crop&q=80&w=800"
+                 data-img="{% static 'assets/images/micloud.png' %}"
                  data-title="Cuenta Mi Cloud"
                  data-desc="Seguridad exclusiva de Xiaomi. Si olvidas tu clave, el dispositivo queda inutilizable.">
-                 <img src="https://images.unsplash.com/photo-1621330396167-b3d451b9d83b?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-40">
+                 <img src="{% static 'assets/images/micloud.png' %}" class="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-40">
                  <div class="absolute inset-0 flex flex-col justify-end p-6 z-20">
                      <h4 class="text-xl font-bold text-white group-hover:text-xiaomi transition-colors leading-tight">Cuenta Mi Cloud</h4>
                  </div>
@@ -337,11 +337,11 @@
             <!-- Dynamic Card Preview (from DB) using available products -->
             {% for product in products|slice:":2" %}
             <div class="bento-small-card relative overflow-hidden rounded-[2rem] shadow-lg group cursor-pointer hover:scale-[1.02] transition-all bg-white dark:bg-card-dark border border-gray-100 dark:border-gray-800"
-                 data-img="{% if product.image %}{% static 'assets/images/' %}{{ product.image }}{% else %}https://via.placeholder.com/400{% endif %}"
+                 data-img="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/400{% endif %}"
                  data-title="{{ product.name }}"
                  data-desc="{{ product.description|truncatechars:80 }}">
                  <div class="absolute inset-0 p-4 flex items-center justify-center bg-gray-50 dark:bg-white/5">
-                     <img src="{% if product.image %}{% static 'assets/images/' %}{{ product.image }}{% else %}https://via.placeholder.com/400{% endif %}" class="w-3/4 h-auto object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3">
+                     <img src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/400{% endif %}" class="w-3/4 h-auto object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3">
                  </div>
                  <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-white dark:from-black via-white/80 dark:via-black/80 to-transparent">
                      <h4 class="text-lg font-bold text-gray-900 dark:text-white truncate">{{ product.name }}</h4>

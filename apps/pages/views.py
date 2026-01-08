@@ -10,11 +10,8 @@ from apps.products.models import Product, Favorite
 # Create your views here.
 def home(request):
     # Fetch latest services and products separately
-    # Usamos icontains para ser más flexibles (ej: "Servicio Técnico", "Servicios", "servicio")
-    services = Product.objects.filter(category__icontains='Servicio').order_by('-id')[:4]
-    
-    # Todo lo que NO contenga "Servicio" es producto
-    products = Product.objects.exclude(category__icontains='Servicio').order_by('-id')[:4]
+    services = Product.objects.filter(catalog_type=Product.CatalogType.SERVICE).order_by('-id')[:4]
+    products = Product.objects.filter(catalog_type=Product.CatalogType.PRODUCT).order_by('-id')[:4]
     
     # Obtener IDs de favoritos del usuario si está autenticado
     user_favorites = []

@@ -125,19 +125,14 @@
     --default-mono-font-family: var(--font-mono);
     --color-primary: #1a2c42;
     --color-primary-dark: #0f1c2e;
-    --color-secondary: #bdc3c7;
     --color-accent: #007bff;
     --color-accent-hover: #0056b3;
     --color-xiaomi: #ff6700;
-    --color-success: #2ecc71;
     --color-background-light: #f8f8f8;
     --color-background-dark: #050505;
-    --color-surface-dark: #1e1e1e;
-    --color-text-dark: #e0e0e0;
     --color-muted-dark: #9ca3af;
     --color-card-dark: #141414;
     --font-display: "Outfit", sans-serif;
-    --font-poppins: "Poppins", sans-serif;
     --animate-fade-in: fadeIn 0.5s ease-out forwards;
     --animate-slide-up: slideUp 0.5s ease-out forwards;
     --animate-marquee: marquee 30s linear infinite;
@@ -628,9 +623,6 @@
   .inline-flex {
     display: inline-flex;
   }
-  .field-sizing-content {
-    field-sizing: content;
-  }
   .aspect-square {
     aspect-ratio: 1 / 1;
   }
@@ -997,6 +989,9 @@
   }
   .flex-col {
     flex-direction: column;
+  }
+  .flex-row {
+    flex-direction: row;
   }
   .flex-wrap {
     flex-wrap: wrap;
@@ -1997,6 +1992,9 @@
     &::placeholder {
       color: transparent;
     }
+  }
+  .accent-primary {
+    accent-color: var(--color-primary);
   }
   .opacity-0 {
     opacity: 0%;
@@ -3479,11 +3477,6 @@
   .dark\:text-primary {
     @media (prefers-color-scheme: dark) {
       color: var(--color-primary);
-    }
-  }
-  .dark\:text-red-500 {
-    @media (prefers-color-scheme: dark) {
-      color: var(--color-red-500);
     }
   }
   .dark\:text-white {

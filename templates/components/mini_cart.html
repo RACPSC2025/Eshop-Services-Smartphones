@@ -16,7 +16,7 @@
         <!-- Image -->
         <div class="w-16 h-16 bg-gray-50 dark:bg-gray-900 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden border border-gray-100 dark:border-gray-800">
             {% if item.product.image %}
-                <img src="{% static 'assets/images/' %}{{ item.product.image }}" alt="{{ item.product.name }}" class="w-full h-full object-contain p-1 group-hover:scale-110 transition-transform duration-300">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-contain p-1 group-hover:scale-110 transition-transform duration-300">
             {% else %}
                 <span class="material-icons text-gray-300">image</span>
             {% endif %}

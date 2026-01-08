@@ -2,12 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Testimonial(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='testimonials')
-    order = models.OneToOneField('orders.Order', on_delete=models.SET_NULL, null=True, blank=True, related_name='testimonial')
-    comment = models.TextField()
-    rating = models.PositiveSmallIntegerField(default=5)  # 1-5 stars
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='testimonials', verbose_name="usuario")
+    order = models.OneToOneField('orders.Order', on_delete=models.SET_NULL, null=True, blank=True, related_name='testimonial', verbose_name="pedido")
+    comment = models.TextField(verbose_name="comentario")
+    rating = models.PositiveSmallIntegerField(default=5, verbose_name="calificación")  # 1-5 stars
+    is_active = models.BooleanField(default=True, verbose_name="¿está activo?")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creación")
 
     class Meta:
         verbose_name = 'Testimonio'

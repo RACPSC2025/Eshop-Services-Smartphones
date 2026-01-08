@@ -74,3 +74,7 @@ tzdata==2025.3
     #   psycopg
 urllib3==2.6.2
     # via requests
+cloudinary==1.44.1
+django-cloudinary-storage==0.3.0
+django-jazzmin==3.0.1
+six==1.17.0

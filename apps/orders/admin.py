@@ -19,9 +19,10 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'user', 'status', 'payment_status', 'total', 
+        'id', 'user', 'status', 'payment_method', 'payment_status', 'total', 
         'created_at', 'get_items_count'
     ]
+    list_editable = ['status', 'payment_method', 'payment_status']
     list_filter = ['status', 'payment_status', 'payment_method', 'created_at']
     search_fields = [
         'id', 'user__username', 'user__email', 

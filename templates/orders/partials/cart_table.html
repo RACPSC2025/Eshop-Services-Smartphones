@@ -18,7 +18,7 @@
             <div class="col-span-1 md:col-span-6 flex items-center gap-4">
                 <div class="w-20 h-20 bg-gray-50 dark:bg-black/20 rounded-xl flex items-center justify-center p-2 border border-gray-100 dark:border-gray-800">
                     {% if item.product.image %}
-                        <img src="{% static 'assets/images/' %}{{ item.product.image }}" alt="{{ item.product.name }}" class="w-full h-full object-contain" loading="lazy">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-full h-full object-contain" loading="lazy">
                     {% else %}
                         <span class="material-icons text-gray-400">image</span>
                     {% endif %}

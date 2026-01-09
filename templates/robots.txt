@@ -1,0 +1,54 @@
+# robots.txt for UnlockXiaomi Colombia
+# Propiedad de UnlockXiaomi - Servicio Técnico Garantizado
+# Optimizado para SEO Premium y Seguridad
+
+User-agent: *
+# Permitir rastreo general
+Allow: /
+Allow: /products/
+Allow: /static/
+Allow: /media/
+
+# Bloquear áreas sensibles
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /users/
+Disallow: /orders/cart/
+Disallow: /orders/checkout/
+Disallow: /orders/order-success/
+Disallow: /testimonial/submit/
+
+# Bloquear parámetros de búsqueda para evitar contenido duplicado
+Disallow: /*?q=
+Disallow: /*?sort=
+Disallow: /*?page=
+
+# Bots específicos - Máxima Eficiencia
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+
+# Bloquear bots maliciosos o de raspado agresivo
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: Pinterestbot
+Allow: /
+
+# Parámetro de eficiencia para bots secundarios
+Crawl-delay: 10
+
+# Futuro Sitemap
+# Sitemap: https://unlockxiaomi.com/sitemap.xml
+
+# End of robots.txt

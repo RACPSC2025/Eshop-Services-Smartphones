@@ -3,12 +3,12 @@ from django.contrib.auth.decorators import login_required
 from apps.products.models import Product
 from apps.orders.models import Order
 from .models import Testimonial
-
-# Create your views here.
-from apps.products.models import Product, Favorite
+from apps.pages.models import About, Banner
+from apps.products.models import Favorite
 
 # Create your views here.
 def home(request):
+    banners = Banner.objects.all()
     # Fetch latest services and products separately
     services = Product.objects.filter(catalog_type=Product.CatalogType.SERVICE).order_by('-id')[:4]
     products = Product.objects.filter(catalog_type=Product.CatalogType.PRODUCT).order_by('-id')[:4]
@@ -19,6 +19,7 @@ def home(request):
         user_favorites = Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
     
     return render(request, 'pages/home.html', {
+        'banners': banners,
         'products': products,
         'services': services,
         'user_favorites': user_favorites
@@ -28,7 +29,11 @@ def contact(request):
     return render(request, 'pages/contact.html')
 
 def about(request):
-    return render(request, 'pages/about.html')
+    about = About.objects.all()
+    context = {
+        'about': about
+    }
+    return render(request, 'pages/about.html', context)
 
 @login_required
 def submit_testimonial(request, order_id):

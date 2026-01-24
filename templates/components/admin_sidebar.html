@@ -1,0 +1,137 @@
+<!-- ========== SIDEBAR ========== -->
+<aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+  <!-- Logo -->
+  <div class="h-16 flex items-center px-6 border-b border-gray-200">
+    <div class="flex items-center gap-2">
+      <div
+        class="w-10 h-10 bg-gradient-to-br from-xiaomi to-orange-600 rounded-xl flex items-center justify-center"
+      >
+        <span
+          class="material-icons text-white text-2xl"
+          onclick="window.location.href = '{% url 'admin:admin_dashboard' %}';"
+          style="cursor: pointer"
+          >dashboard</span
+        >
+      </div>
+      <div>
+        <h1 class="text-lg font-bold text-gray-900 leading-none">
+          Admin Panel
+        </h1>
+        <p class="text-[10px] text-gray-500 leading-none">MiXiaomiUnlock</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+    <a
+      href="{% url 'admin:admin_dashboard' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">home</span>
+      <span>Dashboard</span>
+    </a>
+
+    <a
+      href="{% url 'admin:admin_products' %}"
+      class="flex items-center gap-3 px-4 py-3 bg-xiaomi/10 text-xiaomi rounded-xl transition-colors font-bold"
+    >
+      <span class="material-icons">inventory_2</span>
+      <span>Productos</span>
+    </a>
+
+    <a
+      href="{% url 'admin:admin_users' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">people</span>
+      <span>Usuarios</span>
+    </a>
+
+    <a
+      href="{% url 'admin:admin_orders' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">shopping_bag</span>
+      <span>Pedidos</span>
+    </a>
+
+    <div class="h-px bg-gray-200 my-4"></div>
+    <p
+      class="text-xs font-bold text-gray-400 uppercase tracking-wider px-4 mb-2"
+    >
+      Contenido
+    </p>
+
+    <a
+      href="{% url 'admin:admin_banners' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">view_carousel</span>
+      <span>Banner</span>
+    </a>
+
+    <a
+      href="{% url 'admin:admin_media' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">folder</span>
+      <span>Archivos</span>
+    </a>
+
+    <a
+      href="{% url 'admin:admin_categories' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">category</span>
+      <span>Categorías</span>
+    </a>
+
+    <a
+      href="{% url 'admin:admin_about' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">info</span>
+      <span>Acerca De</span>
+    </a>
+
+    <a
+      href="{% url 'admin:admin_testimonials' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">rate_review</span>
+      <span>Testimonios</span>
+    </a>
+
+    <a
+      href="{% url 'admin:admin_social' %}"
+      class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
+    >
+      <span class="material-icons">share</span>
+      <span>Redes Sociales</span>
+    </a>
+  </nav>
+
+  <!-- User Profile & Logout -->
+  <div class="p-4 border-t border-gray-200">
+    <div class="flex items-center gap-3 mb-3">
+      <div
+        class="w-10 h-10 rounded-full bg-gradient-to-br from-xiaomi to-orange-600 flex items-center justify-center text-white font-bold"
+      >
+        R
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="font-bold text-sm text-gray-900 truncate">
+          {{ request.user.username }}
+        </p>
+        <p class="text-xs text-gray-500">Administrador</p>
+      </div>
+    </div>
+    <button
+      class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors font-medium"
+    >
+      <span class="material-icons text-sm">logout</span>
+      <span>Cerrar Sesión</span>
+    </button>
+  </div>
+</aside>

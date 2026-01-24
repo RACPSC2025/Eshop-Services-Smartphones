@@ -53,3 +53,18 @@ class Favorite(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.product.name}"
 
+class FileResource(models.Model):
+    title = models.CharField(max_length=255, verbose_name="título")
+    file = models.FileField(upload_to='file_resources/', null=True, default=None)
+    is_active = models.BooleanField(default=True, verbose_name="activo")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creación")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
+    
+    class Meta:
+        verbose_name = "archivo"
+        verbose_name_plural = "archivos"
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.title} ({'Activo' if self.is_active else 'Inactivo'})"
+    

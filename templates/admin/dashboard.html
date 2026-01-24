@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Administrativo | MiXiaomiUnlock</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              xiaomi: "#FF6700",
+              "xiaomi-dark": "#e05a00",
+              "background-light": "#F5F5F7",
+              "card-light": "#FFFFFF",
+              "card-dark": "#1a1a1a",
+              "background-dark": "#0F1C2E",
+              "text-dark": "#1a1a1a",
+              surface: "#FAFAFA",
+            },
+            fontFamily: {
+              display: ["Outfit", "Inter", "sans-serif"],
+              body: ["Inter", "sans-serif"],
+            },
+            animation: {
+              "fade-in": "fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              "slide-up": "slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              "scale-in": "scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              float: "float 6s ease-in-out infinite",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideUp: {
+                "0%": { opacity: "0", transform: "translateY(40px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              scaleIn: {
+                "0%": { opacity: "0", transform: "scale(0.95)" },
+                "100%": { opacity: "1", transform: "scale(1)" },
+              },
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+            },
+            boxShadow: {
+              glow: "0 0 20px rgba(255, 103, 0, 0.15)",
+              card: "0 10px 30px -10px rgba(0, 0, 0, 0.05)",
+              "card-hover": "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .font-display {
+        font-family: "Outfit", sans-serif;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ff6700;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #e05a00;
+      }
+    </style>
+  </head>
+  <body class="bg-[#F5F5F7] text-gray-800 antialiased">
+    <div class="flex h-screen overflow-hidden">
+      {% include "components/admin_sidebar.html" %}
+      <!-- ========== MAIN CONTENT ========== -->
+      <main class="flex-1 overflow-y-auto" id="admin-main">
+        <!-- Header -->
+        <header
+          class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-50"
+        >
+          <div>
+            <h2 class="text-2xl font-black text-gray-900">Panel de Control</h2>
+            <p class="text-sm text-gray-500">
+              Bienvenido de vuelta, {{ request.user.username }}
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <!-- Notifications -->
+            <button
+              class="relative p-2 text-gray-600 hover:text-xiaomi transition-colors"
+            >
+              <span class="material-icons">notifications</span>
+              <span
+                class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"
+              ></span>
+            </button>
+          </div>
+        </header>
+
+        <div class="p-8">
+          <!-- Stats Cards -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          >
+            <!-- Total Revenue -->
+            <div
+              class="bg-white rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-all"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div
+                  class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center"
+                >
+                  <span class="material-icons text-green-600"
+                    >attach_money</span
+                  >
+                </div>
+                <span class="text-green-600 text-sm font-bold">+12.5%</span>
+              </div>
+              <h3 class="text-gray-500 text-sm font-medium mb-1">
+                Ingresos Totales
+              </h3>
+              <p id="stat-revenue" class="text-3xl font-black text-gray-900">
+                  ${{ total_revenue }}
+              </p>
+            </div>
+
+            <!-- Total Orders -->
+            <div
+              class="bg-white rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-all"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div
+                  class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
+                >
+                  <span class="material-icons text-blue-600">shopping_bag</span>
+                </div>
+                <span class="text-blue-600 text-sm font-bold">+8.2%</span>
+              </div>
+              <h3 class="text-gray-500 text-sm font-medium mb-1">
+                Total Pedidos
+              </h3>
+              <p id="stat-orders" class="text-3xl font-black text-gray-900">
+                {{ total_orders }}
+              </p>
+            </div>
+
+            <!-- Total Users -->
+            <div
+              class="bg-white rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-all"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div
+                  class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center"
+                >
+                  <span class="material-icons text-purple-600">people</span>
+                </div>
+                <span class="text-purple-600 text-sm font-bold">+15.3%</span>
+              </div>
+              <h3 class="text-gray-500 text-sm font-medium mb-1">
+                Total Usuarios
+              </h3>
+              <p id="stat-users" class="text-3xl font-black text-gray-900">
+                {{ total_users }}
+              </p>
+            </div>
+
+            <!-- Total Products -->
+            <div
+              class="bg-white rounded-2xl p-6 shadow-card hover:shadow-card-hover transition-all"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div
+                  class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center"
+                >
+                  <span class="material-icons text-xiaomi">inventory_2</span>
+                </div>
+                <span class="text-xiaomi text-sm font-bold">+3.1%</span>
+              </div>
+              <h3 class="text-gray-500 text-sm font-medium mb-1">
+                Total Productos
+              </h3>
+              <p id="stat-products" class="text-3xl font-black text-gray-900">
+                {{ total_products }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Recent Orders & Quick Actions -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Recent Orders -->
+            <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-card">
+              <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-gray-900">
+                  Pedidos Recientes
+                </h3>
+                <a
+                  href="{% url 'admin:admin_orders' %}"
+                  class="text-xiaomi text-sm font-bold hover:underline"
+                  >Ver Todos</a
+                >
+              </div>
+
+              <div id="recent-orders-list" class="space-y-4">
+                {% for order in recent_orders %}
+                <div
+                  class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                >
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold"
+                    >
+                      #{{ order.id }}
+                    </div>
+                    <div>
+                      <p class="font-bold text-gray-900">
+                        {{ order.user.username }}
+                      </p>
+                      <p class="text-xs text-gray-500">
+                        {{ order.created_at|date:"d M Y" }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <p class="font-bold text-xiaomi">
+                      ${{ order.total }}
+                    </p>
+                    <span
+                      class="text-xs px-2 py-1 rounded-full {% if order.status == 'PENDING' %}bg-yellow-100 text-yellow-700 {% elif order.status == 'PROCESSING' %}bg-blue-100 text-blue-700 {% elif order.status == 'SHIPPED' %}bg-purple-100 text-purple-700 {% elif order.status == 'DELIVERED' %}bg-green-100 text-green-700 {% else %}bg-gray-100 text-gray-700{% endif %}"
+                    >
+                      {{ order.get_status_display }}
+                    </span>
+                  </div>
+                </div>
+                {% empty %}
+                <p class="text-gray-500 text-center py-4">
+                  No hay pedidos recientes.
+                </p>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-2xl p-6 shadow-card">
+              <h3 class="text-xl font-bold text-gray-900 mb-6">
+                Acciones Rápidas
+              </h3>
+              <div class="space-y-3">
+                <a
+                  href="{% url 'admin:admin_products' %}"
+                  class="w-full flex items-center gap-3 p-4 bg-xiaomi text-white rounded-xl hover:bg-xiaomi-dark transition-colors font-bold shadow-lg text-center justify-center"
+                >
+                  <span class="material-icons">add_circle</span>
+                  <span>Nuevo Producto</span>
+                </a>
+                <a
+                  href="{% url 'admin:admin_users' %}"
+                  class="w-full flex items-center gap-3 p-4 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors font-bold shadow-lg text-center justify-center"
+                >
+                  <span class="material-icons">person_add</span>
+                  <span>Nuevo Usuario</span>
+                </a>
+                <a
+                  href="{% url 'admin:admin_media' %}"
+                  class="w-full flex items-center gap-3 p-4 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition-colors font-bold shadow-lg text-center justify-center"
+                >
+                  <span class="material-icons">folder</span>
+                  <span>Archivos</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/state.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

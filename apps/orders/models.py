@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models import Manager, QuerySet
+from django.db.models import Manager
 
 from apps.products.models import Product
 
@@ -29,6 +29,7 @@ class Order(models.Model):
         TRANSFER = "TRANSFER", "Transferencia"
         MERCADOPAGO = "MERCADOPAGO", "MercadoPago"
         PSE = "PSE", "PSE"
+        PAYPAL = "PAYPAL", "PayPal"
 
     # Relaciones
     user = models.ForeignKey(
@@ -131,7 +132,9 @@ class Order(models.Model):
     def calculate_totals(self) -> None:
         """Calcula y actualiza subtotal, tax, total basado en los items"""
         items = self.items.all()
-        self.subtotal = sum((item.get_total_price() for item in items), start=Decimal("0.00"))
+        self.subtotal = sum(
+            (item.get_total_price() for item in items), start=Decimal("0.00")
+        )
         self.tax = Decimal("0.00")  # IVA deshabilitado
         self.total = self.subtotal + self.tax + self.shipping_cost - self.discount
         self.save(update_fields=["subtotal", "tax", "total"])
@@ -222,11 +225,13 @@ class Cart(models.Model):
 
     def get_subtotal(self) -> Decimal:
         """Subtotal sin impuestos ni envío"""
-        return sum((item.get_total_price() for item in self.items.all()), start=Decimal("0.00"))
+        return sum(
+            (item.get_total_price() for item in self.items.all()), start=Decimal("0.00")
+        )
 
     def get_tax(self) -> Decimal:
         """IVA 19% sobre el subtotal"""
-        return Decimal("0.00") # IVA deshabilitado temporalmente
+        return Decimal("0.00")  # IVA deshabilitado temporalmente
 
     def get_total(self) -> Decimal:
         """Total con IVA (sin envío ni descuento)"""

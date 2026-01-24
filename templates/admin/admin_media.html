@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media | Admin MiXiaomiUnlock</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              xiaomi: "#FF6700",
+              "xiaomi-dark": "#e05a00",
+              "background-light": "#F5F5F7",
+              "card-light": "#FFFFFF",
+              "card-dark": "#1a1a1a",
+              "background-dark": "#0F1C2E",
+              "text-dark": "#1a1a1a",
+              surface: "#FAFAFA",
+            },
+            fontFamily: {
+              display: ["Outfit", "Inter", "sans-serif"],
+              body: ["Inter", "sans-serif"],
+            },
+            boxShadow: {
+              card: "0 10px 30px -10px rgba(0, 0, 0, 0.05)",
+              "card-hover": "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .font-display {
+        font-family: "Outfit", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-[#F5F5F7] text-gray-800 antialiased">
+    <div class="flex h-screen overflow-hidden">
+      <!-- ========== SIDEBAR ========== -->
+      {% include "components/admin_sidebar.html" %}
+      <!-- ========== MAIN CONTENT ========== -->
+      <main class="flex-1 overflow-y-auto">
+        <!-- Header -->
+        <header
+          class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-50"
+        >
+          <div>
+            <h2 class="text-2xl font-black text-gray-900">
+              Gestor de Archivos
+            </h2>
+            <p class="text-sm text-gray-500">
+              Administra imágenes y archivos multimedia
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <button
+              onclick="
+                document
+                  .getElementById('media-modal')
+                  .classList.remove('hidden')
+              "
+              class="px-4 py-2 bg-purple-500 text-white rounded-xl hover:bg-purple-600 transition-colors font-bold flex items-center gap-2 shadow-lg"
+            >
+              <span class="material-icons text-sm">upload_file</span>
+              <span>Subir Archivos</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="p-8">
+          {% if files %}
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {% for file in files %}
+            <div
+              class="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-shadow group relative"
+            >
+              <div
+                class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-3 text-gray-400"
+              >
+                <span class="material-icons text-4xl">insert_drive_file</span>
+              </div>
+              <p
+                class="font-bold text-gray-900 text-sm truncate"
+                title="{{ file.title }}"
+              >
+                {{ file.title }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ file.created_at|date:"d M Y" }}
+              </p>
+              <div
+                class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <a
+                  href="{{ file.file.url }}"
+                  target="_blank"
+                  class="p-1.5 bg-white rounded-full text-blue-600 shadow-sm hover:bg-blue-50"
+                >
+                  <span class="material-icons text-sm">download</span>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="bg-white rounded-2xl shadow-card p-12 text-center">
+            <div
+              class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <span class="material-icons text-gray-400 text-4xl"
+                >cloud_upload</span
+              >
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">
+              Biblioteca Multimedia Vacía
+            </h3>
+            <p class="text-gray-500 mb-8">
+              Arrastra archivos aquí o haz clic en el botón de arriba para
+              comenzar.
+            </p>
+          </div>
+          {% endif %}
+        </div>
+      </main>
+    </div>
+
+    <!-- Media Modal -->
+    <div id="media-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in zoom-in duration-300"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50"
+          >
+            <h3 id="modal-title" class="text-xl font-black text-gray-900">
+              Subir Archivo
+            </h3>
+            <button
+              onclick="
+                document.getElementById('media-modal').classList.add('hidden')
+              "
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+
+          <form
+            method="post"
+            enctype="multipart/form-data"
+            action="{% url 'admin:create_media' %}"
+            class="p-6 space-y-6"
+          >
+            {% csrf_token %}
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Título</label>
+              {{ form.title }}
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Archivo</label>
+              {{ form.file }}
+            </div>
+
+            <div class="space-y-2 flex items-center gap-2">
+              {{ form.is_active }}
+              <label class="text-sm font-bold text-gray-700">Activo</label>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onclick="
+                  document.getElementById('media-modal').classList.add('hidden')
+                "
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="px-8 py-2.5 bg-xiaomi text-white font-bold rounded-xl hover:bg-xiaomi-dark transition-colors shadow-lg"
+              >
+                Subir Archivo
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/state.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.AdminDashboard) {
+          window.AdminDashboard.init();
+        }
+      });
+    </script>
+  </body>
+</html>

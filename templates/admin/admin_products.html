@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productos | Admin MiXiaomiUnlock</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              xiaomi: "#FF6700",
+              "xiaomi-dark": "#e05a00",
+              "background-light": "#F5F5F7",
+              "card-light": "#FFFFFF",
+              "card-dark": "#1a1a1a",
+              "background-dark": "#0F1C2E",
+              "text-dark": "#1a1a1a",
+              surface: "#FAFAFA",
+            },
+            fontFamily: {
+              display: ["Outfit", "Inter", "sans-serif"],
+              body: ["Inter", "sans-serif"],
+            },
+            boxShadow: {
+              card: "0 10px 30px -10px rgba(0, 0, 0, 0.05)",
+              "card-hover": "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .font-display {
+        font-family: "Outfit", sans-serif;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ff6700;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body class="bg-[#F5F5F7] text-gray-800 antialiased">
+    <div class="flex h-screen overflow-hidden">
+      <!-- ========== SIDEBAR ========== -->
+      {% include "components/admin_sidebar.html" %}
+      <!-- ========== MAIN CONTENT ========== -->
+      <main class="flex-1 overflow-y-auto">
+        <!-- Header -->
+        <header
+          class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-50"
+        >
+          <div>
+            <h2 class="text-2xl font-black text-gray-900">
+              Gestión de Productos
+            </h2>
+            <p class="text-sm text-gray-500">
+              Administra el catálogo de dispositivos y servicios
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="relative hidden md:block">
+              <input
+                id="product-search"
+                type="text"
+                placeholder="Buscar productos..."
+                class="pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi w-64"
+              />
+              <span
+                class="material-icons absolute left-3 top-2.5 text-gray-400 text-sm"
+                >search</span
+              >
+            </div>
+            <button
+              onclick="
+                document
+                  .getElementById('product-modal')
+                  .classList.remove('hidden')
+              "
+              class="px-4 py-2 bg-xiaomi text-white rounded-xl hover:bg-xiaomi-dark transition-colors font-bold flex items-center gap-2 shadow-lg"
+            >
+              <span class="material-icons text-sm">add</span>
+              <span>Nuevo Producto</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="p-8">
+          <!-- Products Table -->
+          <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Producto
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Categoría
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Precio
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Rating
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Estado
+                    </th>
+                    <th
+                      class="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="products-table-body"
+                  class="divide-y divide-gray-200"
+                >
+                  {% for product in products %}
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="h-10 w-10 flex-shrink-0">
+                          {% if product.image %}
+                          <img
+                            class="h-10 w-10 rounded-full object-cover"
+                            src="{{ product.image.url }}"
+                            alt="{{ product.name }}"
+                          />
+                          {% else %}
+                          <div
+                            class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400"
+                          >
+                            <span class="material-icons text-sm">image</span>
+                          </div>
+                          {% endif %}
+                        </div>
+                        <div class="ml-4">
+                          <div class="text-sm font-medium text-gray-900">
+                            {{ product.name }}
+                          </div>
+                          <div class="text-sm text-gray-500">
+                            {{ product.get_catalog_type_display }}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"
+                      >
+                        {{ product.category.name }}
+                      </span>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
+                      ${{ product.price }}
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
+                      <div class="flex items-center text-yellow-400">
+                        <span class="material-icons text-sm">star</span>
+                        <span class="ml-1 text-gray-600"
+                          >{{ product.rating|default:"-" }}</span
+                        >
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      >
+                        Activo
+                      </span>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                    >
+                      <button
+                        class="text-indigo-600 hover:text-indigo-900 mr-3"
+                      >
+                        <span class="material-icons text-lg">edit</span>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900">
+                        <span class="material-icons text-lg">delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                      No hay productos registrados.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-300"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50"
+          >
+            <h3 id="modal-title" class="text-xl font-black text-gray-900">
+              Nuevo Producto
+            </h3>
+            <button
+              onclick="
+                document.getElementById('product-modal').classList.add('hidden')
+              "
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+
+          <form
+            method="post"
+            enctype="multipart/form-data"
+            action="{% url 'admin:create_product' %}"
+            class="p-6 space-y-6"
+          >
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700"
+                  >Nombre del Producto</label
+                >
+                {{ form.name }}
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Categoría</label>
+                {{ form.category }}
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Precio</label>
+                {{ form.price }}
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700"
+                  >Tipo de Catálogo</label
+                >
+                {{ form.catalog_type }}
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Etiqueta</label>
+                {{ form.tag }}
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Imagen</label>
+                {{ form.image }}
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Descripción</label>
+              {{ form.description }}
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onclick="
+                  document
+                    .getElementById('product-modal')
+                    .classList.add('hidden')
+                "
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="px-8 py-2.5 bg-xiaomi text-white font-bold rounded-xl hover:bg-xiaomi-dark transition-colors shadow-lg"
+              >
+                Guardar Producto
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/state.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/admin-products.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.AdminDashboard) {
+          window.AdminDashboard.init();
+        }
+      });
+    </script>
+  </body>
+</html>

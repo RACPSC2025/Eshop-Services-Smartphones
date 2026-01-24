@@ -1,0 +1,241 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pedidos | Admin MiXiaomiUnlock</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              xiaomi: "#FF6700",
+              "xiaomi-dark": "#e05a00",
+              "background-light": "#F5F5F7",
+              "card-light": "#FFFFFF",
+              "card-dark": "#1a1a1a",
+              "background-dark": "#0F1C2E",
+              "text-dark": "#1a1a1a",
+              surface: "#FAFAFA",
+            },
+            fontFamily: {
+              display: ["Outfit", "Inter", "sans-serif"],
+              body: ["Inter", "sans-serif"],
+            },
+            boxShadow: {
+              card: "0 10px 30px -10px rgba(0, 0, 0, 0.05)",
+              "card-hover": "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .font-display {
+        font-family: "Outfit", sans-serif;
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ff6700;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body class="bg-[#F5F5F7] text-gray-800 antialiased">
+    <div class="flex h-screen overflow-hidden">
+      <!-- ========== SIDEBAR ========== -->
+      {% include "components/admin_sidebar.html" %}
+      <!-- ========== MAIN CONTENT ========== -->
+      <main class="flex-1 overflow-y-auto">
+        <!-- Header -->
+        <header
+          class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-50"
+        >
+          <div>
+            <h2 class="text-2xl font-black text-gray-900">
+              Gestión de Pedidos
+            </h2>
+            <p class="text-sm text-gray-500">
+              Controla las órdenes y su cumplimiento
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div
+              class="flex bg-white rounded-xl border border-gray-200 overflow-hidden"
+            >
+              <button
+                id="filter-all"
+                class="filter-btn px-4 py-2 bg-xiaomi text-white font-bold text-sm"
+              >
+                Todos
+              </button>
+              <button
+                id="filter-pending"
+                class="filter-btn px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-50"
+              >
+                Pendientes
+              </button>
+              <button
+                id="filter-completed"
+                class="filter-btn px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-50"
+              >
+                Completados
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <div class="p-8">
+          <!-- Orders Table -->
+          <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Orden
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Cliente
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Fecha
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Total
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Estado
+                    </th>
+                    <th
+                      class="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body" class="divide-y divide-gray-200">
+                  {% for order in orders %}
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      #{{ order.id }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <!-- Avatar if available, or initial -->
+                        <div
+                          class="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold mr-3"
+                        >
+                          {{ order.user.username|slice:":1"|upper }}
+                        </div>
+                        <div>
+                          <div class="text-sm font-medium text-gray-900">
+                            {{
+                            order.user.get_full_name|default:order.user.username
+                            }}
+                          </div>
+                          <div class="text-sm text-gray-500">
+                            @{{ order.user.username }}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
+                      {{ order.created_at|date:"d M Y" }}
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900"
+                    >
+                      ${{ order.total }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {% if order.status == 'PENDING' %}bg-yellow-100 text-yellow-800 {% elif order.status == 'PROCESSING' %}bg-blue-100 text-blue-800 {% elif order.status == 'SHIPPED' %}bg-purple-100 text-purple-800 {% elif order.status == 'DELIVERED' %}bg-green-100 text-green-800 {% elif order.status == 'CANCELLED' %}bg-red-100 text-red-800 {% else %}bg-gray-100 text-gray-800{% endif %}"
+                      >
+                        {{ order.get_status_display }}
+                      </span>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                    >
+                      <button class="text-indigo-600 hover:text-indigo-900">
+                        Ver Detalles
+                      </button>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                      No hay pedidos registrados.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/state.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+    <script src="{% static 'js/admin-orders.js' %}"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.AdminDashboard) {
+          window.AdminDashboard.init();
+        }
+      });
+    </script>
+  </body>
+</html>

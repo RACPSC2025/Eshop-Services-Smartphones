@@ -1,28 +1,5 @@
 from django.db import models
-from cloudinary.models import CloudinaryField
 
-class Banner(models.Model):
-    """
-    Modelo para gestionar banners promocionales
-    - Imágenes almacenadas en Cloudinary
-    - Posicionamiento para ordenar banners
-    - Enlaces personalizables para campañas
-    """
-    title = models.CharField(max_length=255, verbose_name="título")
-    image = CloudinaryField('banners/', null=True, default=None)
-    link = models.URLField(blank=True, null=True, verbose_name="enlace")
-    is_active = models.BooleanField(default=True, verbose_name="activo")
-    position = models.IntegerField(default=0, verbose_name="posición")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creación")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
-    
-    class Meta:
-        verbose_name = "banner"
-        verbose_name_plural = "banners"
-        ordering = ['position', '-created_at']
-    
-    def __str__(self):
-        return f"{self.title} ({'Activo' if self.is_active else 'Inactivo'})"
 
 class SocialMedia(models.Model):
     """

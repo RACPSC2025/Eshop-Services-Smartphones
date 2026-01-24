@@ -1,0 +1,229 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testimonios | Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-[#F5F5F7] text-gray-800 antialiased">
+    <div class="flex h-screen overflow-hidden">
+      {% include "components/admin_sidebar.html" %}
+      <main class="flex-1 overflow-y-auto">
+        <header
+          class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-50"
+        >
+          <div>
+            <h2 class="text-2xl font-black text-gray-900">
+              Gestión de Testimonios
+            </h2>
+            <p class="text-sm text-gray-500">
+              Administra las reseñas de clientes
+            </p>
+          </div>
+          <button
+            onclick="
+              document
+                .getElementById('testimonial-modal')
+                .classList.remove('hidden')
+            "
+            class="px-4 py-2 bg-xiaomi text-white rounded-xl hover:bg-xiaomi-dark transition-colors font-bold flex items-center gap-2 shadow-lg"
+          >
+            <span class="material-icons text-sm">add</span>
+            <span>Nuevo Testimonio</span>
+          </button>
+        </header>
+
+        <div class="p-8">
+          <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Usuario
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Comentario
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Calificación
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Estado
+                    </th>
+                    <th
+                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Fecha
+                    </th>
+                    <th
+                      class="px-6 py-4 text-right text-xs font-bold text-gray-600 uppercase tracking-wider"
+                    >
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  {% for testimonial in testimonials %}
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+                    >
+                      {{ testimonial.user.username }}
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate"
+                    >
+                      {{ testimonial.comment }}
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
+                      <div class="flex items-center text-yellow-400">
+                        <span class="material-icons text-sm">star</span>
+                        <span class="ml-1 text-gray-600"
+                          >{{ testimonial.rating }}</span
+                        >
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {% if testimonial.is_active %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}"
+                      >
+                        {% if testimonial.is_active %}Activo{% else %}Inactivo{% endif %}
+                      </span>
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                    >
+                      {{ testimonial.created_at|date:"d M Y" }}
+                    </td>
+                    <td
+                      class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                    >
+                      <a
+                        href="{% url 'admin:edit_testimonial' testimonial.pk %}"
+                        class="text-indigo-600 hover:text-indigo-900 mr-3"
+                      >
+                        <span class="material-icons text-lg">edit</span>
+                      </a>
+                      <a
+                        href="{% url 'admin:delete_testimonial' testimonial.pk %}"
+                        class="text-red-600 hover:text-red-900"
+                      >
+                        <span class="material-icons text-lg">delete</span>
+                      </a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                      No hay testimonios registrados.
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Testimonial Modal -->
+    <div id="testimonial-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50"
+          >
+            <h3 class="text-xl font-black text-gray-900">Nuevo Testimonio</h3>
+            <button
+              onclick="
+                document
+                  .getElementById('testimonial-modal')
+                  .classList.add('hidden')
+              "
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <form
+            method="post"
+            action="{% url 'admin:create_testimonial' %}"
+            class="p-6 space-y-6"
+          >
+            {% csrf_token %}
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Usuario</label>
+              {{ form.user }}
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Comentario</label>
+              {{ form.comment }}
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700"
+                >Calificación (1-5)</label
+              >
+              {{ form.rating }}
+            </div>
+            <div class="flex items-center space-x-2">
+              {{ form.is_active }}
+              <label class="text-sm font-bold text-gray-700">Activo</label>
+            </div>
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onclick="
+                  document
+                    .getElementById('testimonial-modal')
+                    .classList.add('hidden')
+                "
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="px-8 py-2.5 bg-xiaomi text-white font-bold rounded-xl hover:bg-xiaomi-dark transition-colors shadow-lg"
+              >
+                Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.AdminDashboard) {
+          window.AdminDashboard.init();
+        }
+      });
+    </script>
+  </body>
+</html>

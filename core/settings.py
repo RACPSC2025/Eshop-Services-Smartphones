@@ -173,16 +173,30 @@ TAILWIND_CLI_DIST_CSS = "css/styles.css"
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# --- ALLAUTH CONFIGURATION ---
+# --- ALLAUTH CONFIGURATION (Updated to new syntax) ---
 
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
-ACCOUNT_LOGOUT_ON_GET = True
+# Login methods (replaces ACCOUNT_AUTHENTICATION_METHOD)
+ACCOUNT_LOGIN_METHODS = {"email"}  # Login with email only
+ACCOUNT_UNIQUE_EMAIL = True
+
+# Signup fields (replaces old ACCOUNT_EMAIL_REQUIRED, etc.)
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_LOGIN_METHODS = {"email"}
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+
+# Email verification
+ACCOUNT_EMAIL_VERIFICATION = "optional"  # Change to 'mandatory' for production
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[MiXiaomi] "
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+
+# Login/Logout behavior
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_SESSION_REMEMBER = True
+
+# Forms and adapters
+ACCOUNT_FORMS = {
+    "signup": "apps.users.forms.CustomSignupForm",
+}
 
 # Email Backend (Using console for development, CLIENT should configure SMTP)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

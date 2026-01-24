@@ -67,7 +67,7 @@
                         </a>
                         
                         <div class="border-t border-gray-100 dark:border-gray-800 mt-1">
-                            <a href="{% url 'users:logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center gap-2">
+                            <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center gap-2">
                                 <span class="material-icons text-sm">logout</span>
                                 Cerrar Sesión
                             </a>
@@ -75,11 +75,11 @@
                     </div>
                 </div>
                 {% else %}
-                <a href="{% url 'users:auth' %}" class="hidden sm:flex items-center gap-2 px-6 py-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black font-bold text-sm hover:bg-opacity-90 transition-all shadow-md active:scale-95 hover:-translate-y-0.5">
+                <a href="{% url 'account_login' %}" class="hidden sm:flex items-center gap-2 px-6 py-2 rounded-full bg-gray-900 dark:bg-white text-white dark:text-black font-bold text-sm hover:bg-opacity-90 transition-all shadow-md active:scale-95 hover:-translate-y-0.5">
                     <span class="material-icons text-lg">login</span>
                     <span>Ingresar</span>
                 </a>
-                <a href="{% url 'users:auth' %}" class="sm:hidden w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                <a href="{% url 'account_login' %}" class="sm:hidden w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
                     <span class="material-icons text-xl">person_outline</span>
                 </a>
                 {% endif %}
@@ -151,7 +151,7 @@
     <!-- Footer -->
     <div class="p-6 border-t border-gray-100 dark:border-gray-800">
         {% if not user.is_authenticated %}
-        <a href="{% url 'users:auth' %}" class="w-full flex items-center justify-center gap-2 bg-xiaomi text-white font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-all mb-4">
+        <a href="{% url 'account_login' %}" class="w-full flex items-center justify-center gap-2 bg-xiaomi text-white font-bold py-4 rounded-xl shadow-lg active:scale-95 transition-all mb-4">
             <span class="material-icons text-xl">login</span>
             Ingresar
         </a>

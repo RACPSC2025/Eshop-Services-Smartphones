@@ -1,10 +1,10 @@
 from django.urls import path
-from .views import profile, auth, logout_view
+from .views import profile
 
 app_name = 'users'
 
 urlpatterns = [
     path('profile/', profile, name='profile'),
-    path('auth/', auth, name='auth'),
-    path('logout/', logout_view, name='logout'),
+    # auth y logout ahora usan allauth:
+    # /accounts/login/, /accounts/signup/, /accounts/logout/
 ]

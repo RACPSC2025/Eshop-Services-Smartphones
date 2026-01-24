@@ -31,6 +31,7 @@ django-allauth==65.13.1
 django-tailwind-cli==4.5.1
     # via unlockxiaomi-colombia (pyproject.toml)
 django-typer==3.5.0
+django-ckeditor-5
     # via django-tailwind-cli
 gunicorn==23.0.0
     # via unlockxiaomi-colombia (pyproject.toml)

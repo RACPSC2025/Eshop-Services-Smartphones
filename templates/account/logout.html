@@ -1,0 +1,50 @@
+{% load static %}
+{% load tailwind_cli %}
+
+<!DOCTYPE html>
+<html lang="es" class="light scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cerrar Sesión | MiXiaomiUnlock</title>
+    {% tailwind_css %}
+</head>
+
+<body class="bg-[#F5F5F7] dark:bg-background-dark min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-card-dark rounded-3xl shadow-2xl p-8 text-center">
+        <div class="mb-6">
+            <div class="w-20 h-20 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FF6900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+            </div>
+            <h1 class="text-2xl font-black text-gray-900 dark:text-white mb-2">
+                ¿Cerrar Sesión?
+            </h1>
+            <p class="text-gray-500 dark:text-gray-400">
+                ¿Estás seguro que deseas cerrar tu sesión?
+            </p>
+        </div>
+
+        <form method="POST" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            
+            <div class="space-y-3">
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-2xl transition-all active:scale-95">
+                    Sí, Cerrar Sesión
+                </button>
+                <a href="/" class="block w-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold py-4 rounded-2xl transition-all">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

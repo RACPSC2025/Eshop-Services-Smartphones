@@ -1,130 +1,169 @@
+"""
+Vistas de autenticación - Arquitectura modular y minimalista.
+Lógica separada en forms, services y utils para mejor mantenibilidad.
+"""
+
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
+
 from apps.orders.models import Order
-from allauth.account.models import EmailAddress
+from apps.products.models import Favorite
+from .services import AuthService
+from .utils import get_display_name
+
 
 def auth(request):
-    """Maneja el inicio de sesión y registro de usuarios con Allauth Integration"""
+    """
+    Vista unificada de autenticación (login y registro).
+    Usa arquitectura modular con forms, services y utils separados.
+    """
+    # Redirigir usuarios ya autenticados
     if request.user.is_authenticated:
-        return redirect('users:profile')
+        return redirect("users:profile")
 
-    if request.method == 'POST':
-        action = request.POST.get('action')
+    if request.method == "POST":
+        action = request.POST.get("action")
 
-        # --- LOGIN LOGIC ---
-        if action == 'login':
-            email = request.POST.get('email')
-            password = request.POST.get('password')
+        if action == "login":
+            return _handle_login(request)
+        elif action == "register":
+            return _handle_register(request)
 
-            try:
-                # Find all users with this email (handle duplicates like admin vs regular)
-                users_with_email = User.objects.filter(email=email)
-                
-                if not users_with_email.exists():
-                    messages.error(request, "No existe una cuenta con ese correo.")
-                    return redirect('users:auth')
+    # GET request - mostrar formularios vacíos
+    return render(request, "users/auth.html")
 
-                authenticated_user = None
-                for u in users_with_email:
-                    user = authenticate(request, username=u.username, password=password)
-                    if user is not None:
-                        authenticated_user = user
-                        break
-                
-                if authenticated_user is not None:
-                    # Sync EmailAddress for allauth resilience
-                    email_address, created = EmailAddress.objects.get_or_create(
-                        user=authenticated_user,
-                        email=authenticated_user.email,
-                        defaults={'primary': True, 'verified': False}
-                    )
 
-                    # Check if email is verified
-                    if not email_address.verified and getattr(settings, 'ACCOUNT_EMAIL_VERIFICATION', None) == 'mandatory':
-                        login(request, authenticated_user)
-                        messages.warning(request, "Tu correo aún no ha sido verificado. Por favor, revisa tu bandeja de entrada.")
-                        return redirect('pages:home')
-                    else:
-                        login(request, authenticated_user)
-                        messages.success(request, f"¡Bienvenido de nuevo, {authenticated_user.first_name or authenticated_user.username}!")
-                        return redirect('pages:home')
-                else:
-                    messages.error(request, "Credenciales inválidas. Por favor verifica tu contraseña.")
-            except Exception as e:
-                messages.error(request, f"Error en el inicio de sesión: {str(e)}")
+def _handle_login(request):
+    """
+    Maneja el proceso de login usando AuthService.
+    Separado en función privada para mejor organización.
+    """
+    email = request.POST.get("email")
+    password = request.POST.get("password")
 
-        # --- REGISTER LOGIC ---
-        elif action == 'register':
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            first_name = request.POST.get('first_name')
-            last_name = request.POST.get('last_name')
+    # Validar campos requeridos
+    if not email or not password:
+        messages.error(request, "Por favor completa todos los campos")
+        return redirect("users:auth")
 
-            # Strict check for existing email to prevent future duplicates
-            if User.objects.filter(email=email).exists():
-                messages.error(request, "Este correo ya está registrado. Si olvidaste tu contraseña, usa la opción de recuperación.")
-                return redirect('users:auth')
+    # Autenticar usando el servicio
+    user = AuthService.authenticate_user(request, email, password)
 
-            try:
-                # Use email as username for new registrations
-                user = User.objects.create_user(
-                    username=email,
-                    email=email,
-                    password=password,
-                    first_name=first_name,
-                    last_name=last_name
-                )
+    if user:
+        # Verificar si email debe estar verificado
+        can_login, error_message = AuthService.check_email_verification(user, email)
 
-                # Create EmailAddress for allauth
-                email_obj = EmailAddress.objects.create(user=user, email=email, primary=True, verified=False)
+        if not can_login:
+            messages.warning(request, error_message)
+            return redirect("users:auth")
 
-                # Trigger verification email (optional based on settings)
-                try:
-                    email_obj.send_confirmation(request, signup=True)
-                except Exception:
-                    pass # Email sending might fail in dev without SMTP
+        # Login exitoso
+        login(request, user)
+        display_name = get_display_name(user)
+        messages.success(request, f"¡Bienvenido de nuevo, {display_name}!")
+        return redirect("pages:home")
+    else:
+        messages.error(
+            request, "Credenciales inválidas. Por favor verifica tu email y contraseña."
+        )
+        return redirect("users:auth")
 
-                # Auto-login the user after registration
-                authenticated_user = authenticate(request, username=email, password=password)
-                if authenticated_user is not None:
-                    login(request, authenticated_user)
-                    messages.success(request, f"¡Cuenta creada exitosamente, {first_name}!")
-                    return redirect('pages:home')
-                else:
-                    messages.info(request, "¡Cuenta creada! Por favor inicia sesión.")
-                    return redirect('users:auth')
 
-            except Exception as e:
-                messages.error(request, f"Error en el registro: {str(e)}")
+def _handle_register(request):
+    """
+    Maneja el proceso de registro usando AuthService.
+    Crea usuario y EmailAddress, luego auto-login si la verificación no es mandatory.
+    """
+    email = request.POST.get("email")
+    password = request.POST.get("password")
+    first_name = request.POST.get("first_name")
+    last_name = request.POST.get("last_name")
 
-    return render(request, 'users/auth.html')
+    # Validar campos requeridos
+    if not all([email, password, first_name, last_name]):
+        messages.error(request, "Todos los campos son requeridos")
+        return redirect("users:auth")
+
+    # Validar longitud de contraseña
+    if len(password) < 8:
+        messages.error(request, "La contraseña debe tener al menos 8 caracteres")
+        return redirect("users:auth")
+
+    try:
+        # Crear usuario usando el servicio
+        user = AuthService.create_user_with_allauth(
+            email=email, password=password, first_name=first_name, last_name=last_name
+        )
+
+        # Obtener EmailAddress para enviar verificación
+        from allauth.account.models import EmailAddress
+
+        email_obj = EmailAddress.objects.get(user=user, email=email)
+
+        # Enviar email de verificación
+        verification_sent = AuthService.send_verification_email_on_signup(
+            email_obj, request
+        )
+        email_verification = getattr(settings, "ACCOUNT_EMAIL_VERIFICATION", "optional")
+
+        # Si la verificación es mandatory, no hacer auto-login
+        if email_verification == "mandatory" and verification_sent:
+            messages.info(
+                request,
+                f"¡Cuenta creada exitosamente, {first_name}! Por favor verifica tu correo antes de iniciar sesión.",
+            )
+            return redirect("users:auth")
+
+        # Auto-login si verificación no es mandatory
+        login(request, user)
+        messages.success(request, f"¡Cuenta creada exitosamente, {first_name}!")
+        return redirect("pages:home")
+
+    except Exception as e:
+        # Manejo de errores (ej: email duplicado)
+        error_message = str(e)
+        if "already exists" in error_message or "UNIQUE constraint" in error_message:
+            messages.error(
+                request,
+                "Este correo ya está registrado. Si olvidaste tu contraseña, usa la opción de recuperación.",
+            )
+        else:
+            messages.error(
+                request, "Error al crear la cuenta. Por favor intenta de nuevo."
+            )
+
+        return redirect("users:auth")
+
 
 def logout_view(request):
     """Cierra la sesión del usuario"""
+    from django.contrib.auth import logout
+
     logout(request)
     messages.info(request, "Has cerrado sesión correctamente.")
-    return redirect('pages:home')
+    return redirect("pages:home")
 
-from apps.products.models import Favorite
 
 @login_required
 def profile(request):
-    """Dashboard del usuario: Info personal, pedidos y favoritos"""
+    """
+    Dashboard del usuario: Info personal, pedidos y favoritos.
+    Sin cambios - mantiene funcionalidad original.
+    """
     user = request.user
     # Obtener pedidos ordenados por fecha
-    orders = Order.objects.filter(user=user).order_by('-created_at')
+    orders = Order.objects.filter(user=user).order_by("-created_at")
     # Obtener favoritos
-    favorites = Favorite.objects.filter(user=user).select_related('product')
-    
+    favorites = Favorite.objects.filter(user=user).select_related("product")
+
     context = {
-        'user': user,
-        'orders': orders,
-        'favorites': favorites,
-        'user_favorites': favorites.values_list('product_id', flat=True),
-        'active_tab': 'orders'
+        "user": user,
+        "orders": orders,
+        "favorites": favorites,
+        "user_favorites": favorites.values_list("product_id", flat=True),
+        "active_tab": "orders",
     }
-    return render(request, 'users/profile.html', context)
+    return render(request, "users/profile.html", context)

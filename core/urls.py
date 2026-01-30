@@ -5,7 +5,9 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path("admin/", include("apps.admin.urls")),
+    path("admin/", admin.site.urls),
+    # Custom Admin
+    #path("admin/", include("apps.admin.urls")),
     # Home y Páginas Estaticas
     path("", include("apps.pages.urls")),
     # app de productos

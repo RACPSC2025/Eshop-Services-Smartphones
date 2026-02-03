@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from apps.products.models import Product, FileResource, Category
 from apps.pages.models import Banner, About, Testimonial
 from apps.social.models import SocialMedia
+from apps.orders.models import Order
 
 
 class ProductForm(forms.ModelForm):
@@ -128,6 +129,12 @@ class UserForm(forms.ModelForm):
         password = self.cleaned_data.get("password")
         if password:
             user.set_password(password)
+        else:
+            # Preserve existing password if not changing
+            if user.pk:
+                from django.contrib.auth.models import User
+                original_user = User.objects.get(pk=user.pk)
+                user.password = original_user.password
         if commit:
             user.save()
         return user
@@ -291,6 +298,30 @@ class SocialMediaForm(forms.ModelForm):
             "is_active": forms.CheckboxInput(
                 attrs={
                     "class": "w-5 h-5 text-xiaomi bg-gray-100 border-gray-300 rounded focus:ring-xiaomi focus:ring-2"
+                }
+            ),
+        }
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ["status", "payment_method", "notes"]
+        widgets = {
+            "status": forms.Select(
+                attrs={
+                    "class": "w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi transition-colors"
+                }
+            ),
+            "payment_method": forms.Select(
+                attrs={
+                    "class": "w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi transition-colors"
+                }
+            ),
+            "notes": forms.Textarea(
+                attrs={
+                    "class": "w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi transition-colors",
+                    "rows": 3,
                 }
             ),
         }

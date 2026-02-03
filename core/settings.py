@@ -81,6 +81,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
+
 ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
@@ -201,24 +202,27 @@ SOCIALACCOUNT_AUTO_SIGNUP = True  # Automatically create account from social log
 SOCIALACCOUNT_EMAIL_VERIFICATION = (
     "optional"  # Don't require email verification for social accounts
 )
+SOCIALACCOUNT_LOGIN_ON_GET = True  # Skip intermediate page and redirect directly to provider
 
 # Email Backend (Using console for development, CLIENT should configure SMTP)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-# Google OAuth Provider Configuration
+# --- SOCIALACCOUNT PROVIDERS CONFIGURATION ---
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
+        "APPS": [
+            {
+                "client_id": os.getenv("GOOGLE_OAUTH_CLIENT_ID"),
+                "secret": os.getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+                "key": "",
+            },
+        ],
         "SCOPE": [
             "profile",
             "email",
         ],
         "AUTH_PARAMS": {
             "access_type": "online",
-        },
-        # En la sección SOCIALACCOUNT_PROVIDERS, línea 218-220
-        "APP": {
-            "client_id": os.getenv("GOOGLE_OAUTH_CLIENT_ID"),
-            "secret": os.getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
         },
         "VERIFIED_EMAIL": True,  # Trust email as verified from Google
     }

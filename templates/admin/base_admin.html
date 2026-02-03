@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Admin | MiXiaomiUnlock{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body class="bg-[#F5F5F7] text-gray-800 antialiased">
+    <div class="flex h-screen overflow-hidden">
+      {% include "components/admin_sidebar.html" %}
+
+      <!-- ========== MAIN CONTENT ========== -->
+      <main class="flex-1 overflow-y-auto" id="admin-main">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    {% load static %}
+    <script src="{% static 'js/state.js' %}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

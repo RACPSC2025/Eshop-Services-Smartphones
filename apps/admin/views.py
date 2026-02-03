@@ -4,6 +4,8 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
+    View,
+    DetailView,
 )
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
@@ -23,6 +25,7 @@ from .forms import (
     AboutForm,
     TestimonialForm,
     SocialMediaForm,
+    OrderForm,
 )
 
 
@@ -74,6 +77,7 @@ class AdminProductsView(StepAdminMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = ProductForm()
+        context["categories"] = Category.objects.all()
         return context
 
 
@@ -90,6 +94,21 @@ class CreateProductView(StepAdminMixin, CreateView):
         return redirect(
             self.success_url
         )  # For simplicity in this iteration, validation errors handling can be improved later
+
+
+class UpdateProductView(StepAdminMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy("admin:admin_products")
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect(self.success_url)
+
+
+class DeleteProductView(StepAdminMixin, DeleteView):
+    model = Product
+    success_url = reverse_lazy("admin:admin_products")
 
 
 class AdminUsersView(StepAdminMixin, ListView):
@@ -117,11 +136,73 @@ class CreateUserView(StepAdminMixin, CreateView):
         return redirect(self.success_url)
 
 
+class UpdateUserView(StepAdminMixin, UpdateView):
+    model = User
+    form_class = UserForm
+    success_url = reverse_lazy("admin:admin_users")
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect(self.success_url)
+
+
+class DeleteUserView(StepAdminMixin, DeleteView):
+    model = User
+    success_url = reverse_lazy("admin:admin_users")
+
+
 class AdminOrdersView(StepAdminMixin, ListView):
     model = Order
     template_name = "admin/admin_orders.html"
     context_object_name = "orders"
     ordering = ["-created_at"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = OrderForm()
+        return context
+
+
+class UpdateOrderView(StepAdminMixin, UpdateView):
+    model = Order
+    form_class = OrderForm
+    success_url = reverse_lazy("admin:admin_orders")
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect(self.success_url)
+
+
+class UpdateOrderStatusView(StepAdminMixin, View):
+    """Vista para cambio rápido de estado de pedido"""
+
+    def post(self, request, pk, status):
+        from apps.orders.models import Order
+
+        order = Order.objects.get(pk=pk)
+        valid_statuses = [choice[0] for choice in Order.OrderStatus.choices]
+        if status in valid_statuses:
+            order.status = status
+            order.save(update_fields=["status", "updated_at"])
+        return redirect("admin:admin_orders")
+
+
+class OrderDetailView(StepAdminMixin, DetailView):
+    """Vista para ver detalles de un pedido"""
+
+    model = Order
+    template_name = "admin/admin_order_detail.html"
+    context_object_name = "order"
+
+
+class DeleteOrderView(StepAdminMixin, DeleteView):
+    """Vista para eliminar un pedido"""
+
+    model = Order
+    success_url = reverse_lazy("admin:admin_orders")
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
 
 
 class AdminBannersView(StepAdminMixin, ListView):
@@ -149,6 +230,21 @@ class CreateBannerView(StepAdminMixin, CreateView):
         return redirect(self.success_url)
 
 
+class UpdateBannerView(StepAdminMixin, UpdateView):
+    model = Banner
+    form_class = BannerForm
+    success_url = reverse_lazy("admin:admin_banners")
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect(self.success_url)
+
+
+class DeleteBannerView(StepAdminMixin, DeleteView):
+    model = Banner
+    success_url = reverse_lazy("admin:admin_banners")
+
+
 class AdminMediaView(StepAdminMixin, ListView):
     model = FileResource
     template_name = "admin/admin_media.html"
@@ -172,6 +268,21 @@ class CreateMediaView(StepAdminMixin, CreateView):
 
     def form_invalid(self, form):
         return redirect(self.success_url)
+
+
+class UpdateMediaView(StepAdminMixin, UpdateView):
+    model = FileResource
+    form_class = MediaForm
+    success_url = reverse_lazy("admin:admin_media")
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect(self.success_url)
+
+
+class DeleteMediaView(StepAdminMixin, DeleteView):
+    model = FileResource
+    success_url = reverse_lazy("admin:admin_media")
 
 
 # ==================== CATEGORY VIEWS ====================

@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // --- TESTIMONIALS LOGIC ---
-    const testimonials = [
+    const defaultTestimonials = [
         {
             text: "La rapidez con la que liberaron mi iPhone 14 Pro fue impresionante. En 20 minutos ya tenía señal.",
             author: "Marcela V.",
@@ -127,6 +127,10 @@ document.addEventListener("DOMContentLoaded", () => {
             image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80&w=150",
         },
     ];
+
+    const testimonials = (window.TESTIMONIALS_DATA && window.TESTIMONIALS_DATA.length > 0) 
+        ? window.TESTIMONIALS_DATA 
+        : defaultTestimonials;
     let currentTestim = 0;
     const testimImg = document.getElementById("testim-img");
     const testimAuthor = document.getElementById("testim-author");

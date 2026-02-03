@@ -64,6 +64,8 @@ def _handle_login(request):
         login(request, user)
         display_name = get_display_name(user)
         messages.success(request, f"¡Bienvenido de nuevo, {display_name}!")
+        if user.is_staff:
+            return redirect("admin:admin_dashboard")
         return redirect("pages:home")
     else:
         messages.error(

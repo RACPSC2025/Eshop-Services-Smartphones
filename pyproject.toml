@@ -5,9 +5,13 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "cloudinary>=1.44.1",
     "cryptography>=46.0.3",
     "django>=6.0",
     "django-allauth[socialaccount]>=65.13.1",
+    "django-ckeditor-5>=0.2.19",
+    "django-cloudinary-storage>=0.3.0",
+    "django-jazzmin>=3.0.1",
     "django-tailwind-cli>=4.5.1",
     "gunicorn>=23.0.0",
     "pillow>=12.1.0",

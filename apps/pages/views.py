@@ -8,10 +8,13 @@ from apps.products.models import Favorite
 
 # Create your views here.
 def home(request):
-    banners = Banner.objects.all()
+    banners = Banner.objects.filter(is_active=True)
     # Fetch latest services and products separately
     services = Product.objects.filter(catalog_type=Product.CatalogType.SERVICE).order_by('-id')[:4]
     products = Product.objects.filter(catalog_type=Product.CatalogType.PRODUCT).order_by('-id')[:4]
+    
+    # Obtener testimonios aprobados
+    testimonials = Testimonial.objects.all().order_by('-created_at')[:6]
     
     # Obtener IDs de favoritos del usuario si está autenticado
     user_favorites = []
@@ -22,6 +25,7 @@ def home(request):
         'banners': banners,
         'products': products,
         'services': services,
+        'testimonials': testimonials,
         'user_favorites': user_favorites
     })
 
@@ -29,7 +33,7 @@ def contact(request):
     return render(request, 'pages/contact.html')
 
 def about(request):
-    about = About.objects.all()
+    about = About.objects.filter(is_active=True)
     context = {
         'about': about
     }

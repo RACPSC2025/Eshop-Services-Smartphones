@@ -7,34 +7,6 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              xiaomi: "#FF6700",
-              "xiaomi-dark": "#e05a00",
-              "background-light": "#F5F5F7",
-              "card-light": "#FFFFFF",
-              "card-dark": "#1a1a1a",
-              "background-dark": "#0F1C2E",
-              "text-dark": "#1a1a1a",
-              surface: "#FAFAFA",
-            },
-            fontFamily: {
-              display: ["Outfit", "Inter", "sans-serif"],
-              body: ["Inter", "sans-serif"],
-            },
-            boxShadow: {
-              card: "0 10px 30px -10px rgba(0, 0, 0, 0.05)",
-              "card-hover": "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
-            },
-          },
-        },
-      };
-    </script>
-
     <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
@@ -143,11 +115,6 @@
                     <th
                       class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
                     >
-                      Rating
-                    </th>
-                    <th
-                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
-                    >
                       Estado
                     </th>
                     <th
@@ -202,16 +169,6 @@
                     >
                       ${{ product.price }}
                     </td>
-                    <td
-                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >
-                      <div class="flex items-center text-yellow-400">
-                        <span class="material-icons text-sm">star</span>
-                        <span class="ml-1 text-gray-600"
-                          >{{ product.rating|default:"-" }}</span
-                        >
-                      </div>
-                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <span
                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
@@ -223,11 +180,39 @@
                       class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                     >
                       <button
+                        onclick="openViewProductModal(this)"
+                        data-id="{{ product.pk }}"
+                        data-name="{{ product.name }}"
+                        data-category="{{ product.category.name|default:'Sin categoría' }}"
+                        data-price="{{ product.price|stringformat:'g' }}"
+                        data-catalog-type="{{ product.get_catalog_type_display|default:'N/A' }}"
+                        data-tag="{{ product.tag|default:'' }}"
+                        data-description="{{ product.description|default:'Sin descripción' }}"
+                        data-image="{{ product.image.url|default:'' }}"
+                        class="text-blue-600 hover:text-blue-900 mr-3"
+                        title="Ver detalles"
+                      >
+                        <span class="material-icons text-lg">visibility</span>
+                      </button>
+                      <button
+                        onclick="openEditProductModal(this)"
+                        data-id="{{ product.pk }}"
+                        data-name="{{ product.name }}"
+                        data-category="{{ product.category.pk|default:'' }}"
+                        data-price="{{ product.price|stringformat:'g' }}"
+                        data-catalog-type="{{ product.catalog_type }}"
+                        data-tag="{{ product.tag|default:'' }}"
+                        data-description="{{ product.description|default:'' }}"
                         class="text-indigo-600 hover:text-indigo-900 mr-3"
+                        title="Editar"
                       >
                         <span class="material-icons text-lg">edit</span>
                       </button>
-                      <button class="text-red-600 hover:text-red-900">
+                      <button
+                        onclick="openDeleteProductModal({{ product.pk }}, '{{ product.name|escapejs }}')"
+                        class="text-red-600 hover:text-red-900"
+                        title="Eliminar"
+                      >
                         <span class="material-icons text-lg">delete</span>
                       </button>
                     </td>
@@ -247,7 +232,7 @@
       </main>
     </div>
 
-    <!-- Product Modal -->
+    <!-- Product Modal (Create) -->
     <div id="product-modal" class="fixed inset-0 z-[60] hidden">
       <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
       <div class="absolute inset-0 flex items-center justify-center p-4">
@@ -342,6 +327,281 @@
       </div>
     </div>
 
+    <!-- Edit Product Modal -->
+    <div id="edit-product-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50"
+          >
+            <h3 class="text-xl font-black text-gray-900">Editar Producto</h3>
+            <button
+              onclick="closeEditProductModal()"
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <form
+            id="edit-product-form"
+            method="post"
+            enctype="multipart/form-data"
+            class="p-6 space-y-6"
+          >
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700"
+                  >Nombre del Producto</label
+                >
+                <input
+                  type="text"
+                  name="name"
+                  id="edit-product-name"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                  required
+                />
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Categoría</label>
+                <select
+                  name="category"
+                  id="edit-product-category"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                >
+                  {% for category in categories %}
+                  <option value="{{ category.pk }}">{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Precio</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  name="price"
+                  id="edit-product-price"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                  required
+                />
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700"
+                  >Tipo de Catálogo</label
+                >
+                <select
+                  name="catalog_type"
+                  id="edit-product-catalog-type"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                >
+                  <option value="PRODUCT">Producto</option>
+                  <option value="SERVICE">Servicio</option>
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Etiqueta</label>
+                <input
+                  type="text"
+                  name="tag"
+                  id="edit-product-tag"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                />
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700"
+                  >Imagen (opcional)</label
+                >
+                <input
+                  type="file"
+                  name="image"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                />
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Descripción</label>
+              <textarea
+                name="description"
+                id="edit-product-description"
+                rows="3"
+                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+              ></textarea>
+            </div>
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onclick="closeEditProductModal()"
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="px-8 py-2.5 bg-xiaomi text-white font-bold rounded-xl hover:bg-xiaomi-dark transition-colors shadow-lg"
+              >
+                Actualizar Producto
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Product Modal -->
+    <div id="delete-product-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-red-50"
+          >
+            <h3 class="text-xl font-black text-red-600">Eliminar Producto</h3>
+            <button
+              onclick="closeDeleteProductModal()"
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-600 mb-4">
+              ¿Estás seguro de que deseas eliminar el producto
+              <strong id="delete-product-name"></strong>? Esta acción no se
+              puede deshacer.
+            </p>
+            <form id="delete-product-form" method="post">
+              {% csrf_token %}
+              <div class="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onclick="closeDeleteProductModal()"
+                  class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  class="px-8 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-colors shadow-lg"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Product Details Modal -->
+    <div id="view-product-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-blue-50"
+          >
+            <h3 class="text-xl font-black text-blue-600">
+              Detalles del Producto
+            </h3>
+            <button
+              onclick="closeViewProductModal()"
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <div class="p-6">
+            <div class="flex flex-col md:flex-row gap-6">
+              <!-- Product Image -->
+              <div class="w-full md:w-1/3">
+                <div
+                  id="view-product-image-container"
+                  class="w-full aspect-square rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden"
+                >
+                  <img
+                    id="view-product-image"
+                    src=""
+                    alt=""
+                    class="w-full h-full object-cover hidden"
+                  />
+                  <span
+                    id="view-product-no-image"
+                    class="material-icons text-4xl text-gray-400"
+                    >image</span
+                  >
+                </div>
+              </div>
+              <!-- Product Info -->
+              <div class="w-full md:w-2/3 space-y-4">
+                <div>
+                  <h4
+                    class="text-2xl font-bold text-gray-900"
+                    id="view-product-name"
+                  ></h4>
+                  <span
+                    id="view-product-tag"
+                    class="inline-block px-3 py-1 bg-xiaomi text-white text-xs font-bold rounded-full mt-2 hidden"
+                  ></span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <p class="text-sm text-gray-500">Categoría</p>
+                    <p
+                      class="font-semibold text-gray-900"
+                      id="view-product-category"
+                    ></p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Precio</p>
+                    <p
+                      class="font-bold text-2xl text-xiaomi"
+                      id="view-product-price"
+                    ></p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Tipo de Catálogo</p>
+                    <p
+                      class="font-semibold text-gray-900"
+                      id="view-product-catalog-type"
+                    ></p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">ID</p>
+                    <p
+                      class="font-semibold text-gray-900"
+                      id="view-product-id"
+                    ></p>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">Descripción</p>
+                  <p class="text-gray-700" id="view-product-description"></p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex justify-end gap-3 mt-6 pt-6 border-t border-gray-100"
+            >
+              <button
+                type="button"
+                onclick="closeViewProductModal()"
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Scripts -->
     <script src="js/state.js"></script>
     <script src="js/utils.js"></script>
@@ -353,6 +613,121 @@
           window.AdminDashboard.init();
         }
       });
+
+      // Edit Product Modal Functions
+      function openEditProductModal(button) {
+        const id = button.dataset.id;
+        const name = button.dataset.name;
+        const categoryId = button.dataset.category;
+        const price = button.dataset.price;
+        const catalogType = button.dataset.catalogType;
+        const tag = button.dataset.tag;
+        const description = button.dataset.description;
+
+        console.log("Edit Product Data:", {
+          id,
+          name,
+          categoryId,
+          price,
+          catalogType,
+          tag,
+          description,
+        });
+
+        document.getElementById("edit-product-form").action =
+          `/admin/products/${id}/edit/`;
+        document.getElementById("edit-product-name").value = name || "";
+
+        // Set category - verify option exists
+        const categorySelect = document.getElementById("edit-product-category");
+        if (
+          categoryId &&
+          categorySelect.querySelector(`option[value="${categoryId}"]`)
+        ) {
+          categorySelect.value = categoryId;
+        } else {
+          categorySelect.selectedIndex = 0;
+        }
+
+        document.getElementById("edit-product-price").value = price || "";
+        document.getElementById("edit-product-catalog-type").value =
+          catalogType || "PRODUCT";
+        document.getElementById("edit-product-tag").value = tag || "";
+        document.getElementById("edit-product-description").value =
+          description || "";
+        document
+          .getElementById("edit-product-modal")
+          .classList.remove("hidden");
+      }
+
+      function closeEditProductModal() {
+        document.getElementById("edit-product-modal").classList.add("hidden");
+      }
+
+      // Delete Product Modal Functions
+      function openDeleteProductModal(id, name) {
+        document.getElementById("delete-product-form").action =
+          `/admin/products/${id}/delete/`;
+        document.getElementById("delete-product-name").textContent = name;
+        document
+          .getElementById("delete-product-modal")
+          .classList.remove("hidden");
+      }
+
+      function closeDeleteProductModal() {
+        document.getElementById("delete-product-modal").classList.add("hidden");
+      }
+
+      // View Product Modal Functions
+      function openViewProductModal(button) {
+        const id = button.dataset.id;
+        const name = button.dataset.name;
+        const category = button.dataset.category;
+        const price = button.dataset.price;
+        const catalogType = button.dataset.catalogType;
+        const tag = button.dataset.tag;
+        const description = button.dataset.description;
+        const image = button.dataset.image;
+
+        document.getElementById("view-product-id").textContent = id;
+        document.getElementById("view-product-name").textContent = name;
+        document.getElementById("view-product-category").textContent = category;
+        document.getElementById("view-product-price").textContent = "$" + price;
+        document.getElementById("view-product-catalog-type").textContent =
+          catalogType;
+        document.getElementById("view-product-description").textContent =
+          description;
+
+        // Handle tag
+        const tagElement = document.getElementById("view-product-tag");
+        if (tag) {
+          tagElement.textContent = tag;
+          tagElement.classList.remove("hidden");
+        } else {
+          tagElement.classList.add("hidden");
+        }
+
+        // Handle image
+        const imgElement = document.getElementById("view-product-image");
+        const noImageElement = document.getElementById("view-product-no-image");
+        if (image) {
+          imgElement.src = image;
+          imgElement.alt = name;
+          imgElement.classList.remove("hidden");
+          noImageElement.classList.add("hidden");
+        } else {
+          imgElement.classList.add("hidden");
+          noImageElement.classList.remove("hidden");
+        }
+
+        document
+          .getElementById("view-product-modal")
+          .classList.remove("hidden");
+      }
+
+      function closeViewProductModal() {
+        document.getElementById("view-product-modal").classList.add("hidden");
+      }
     </script>
   </body>
 </html>

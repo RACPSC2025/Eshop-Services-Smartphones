@@ -7,34 +7,6 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              xiaomi: "#FF6700",
-              "xiaomi-dark": "#e05a00",
-              "background-light": "#F5F5F7",
-              "card-light": "#FFFFFF",
-              "card-dark": "#1a1a1a",
-              "background-dark": "#0F1C2E",
-              "text-dark": "#1a1a1a",
-              surface: "#FAFAFA",
-            },
-            fontFamily: {
-              display: ["Outfit", "Inter", "sans-serif"],
-              body: ["Inter", "sans-serif"],
-            },
-            boxShadow: {
-              card: "0 10px 30px -10px rgba(0, 0, 0, 0.05)",
-              "card-hover": "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
-            },
-          },
-        },
-      };
-    </script>
-
     <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
@@ -117,11 +89,13 @@
                   class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4"
                 >
                   <button
+                    onclick="openEditBannerModal({{ banner.pk }}, '{{ banner.title|escapejs }}', '{{ banner.link|default:''|escapejs }}', {{ banner.position }}, {{ banner.is_active|yesno:'true,false' }})"
                     class="p-3 bg-white rounded-full text-gray-900 hover:bg-xiaomi hover:text-white transition-all transform scale-90 group-hover:scale-100"
                   >
                     <span class="material-icons">edit</span>
                   </button>
                   <button
+                    onclick="openDeleteBannerModal({{ banner.pk }}, '{{ banner.title|escapejs }}')"
                     class="p-3 bg-white rounded-full text-red-600 hover:bg-red-600 hover:text-white transition-all transform scale-90 group-hover:scale-100"
                   >
                     <span class="material-icons">delete</span>
@@ -261,6 +235,147 @@
       </main>
     </div>
 
+    <!-- Edit Banner Modal -->
+    <div id="edit-banner-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50"
+          >
+            <h3 class="text-xl font-black text-gray-900">Editar Banner</h3>
+            <button
+              onclick="closeEditBannerModal()"
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <form
+            id="edit-banner-form"
+            method="post"
+            enctype="multipart/form-data"
+            class="p-6 space-y-6"
+          >
+            {% csrf_token %}
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Título</label>
+              <input
+                type="text"
+                name="title"
+                id="edit-banner-title"
+                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                required
+              />
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700"
+                >Imagen (dejar vacío para mantener actual)</label
+              >
+              <input
+                type="file"
+                name="image"
+                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                accept="image/*"
+              />
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Enlace</label>
+              <input
+                type="url"
+                name="link"
+                id="edit-banner-link"
+                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+              />
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Posición</label>
+              <input
+                type="number"
+                name="position"
+                id="edit-banner-position"
+                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                min="0"
+              />
+            </div>
+            <div class="space-y-2 flex items-center gap-2">
+              <input
+                type="checkbox"
+                name="is_active"
+                id="edit-banner-is-active"
+                class="rounded border-gray-300"
+              />
+              <label class="text-sm font-bold text-gray-700">Activo</label>
+            </div>
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onclick="closeEditBannerModal()"
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="px-8 py-2.5 bg-xiaomi text-white font-bold rounded-xl hover:bg-xiaomi-dark transition-colors shadow-lg"
+              >
+                Actualizar Banner
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Banner Modal -->
+    <div id="delete-banner-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-red-50"
+          >
+            <h3 class="text-xl font-black text-red-600">Eliminar Banner</h3>
+            <button
+              onclick="closeDeleteBannerModal()"
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-600 mb-4">
+              ¿Estás seguro de que deseas eliminar el banner
+              <strong id="delete-banner-name"></strong>? Esta acción no se puede
+              deshacer.
+            </p>
+            <form id="delete-banner-form" method="post">
+              {% csrf_token %}
+              <div class="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onclick="closeDeleteBannerModal()"
+                  class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  class="px-8 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-colors shadow-lg"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Scripts -->
     <script src="js/state.js"></script>
     <script src="js/utils.js"></script>
@@ -271,6 +386,35 @@
           window.AdminDashboard.init();
         }
       });
+
+      // Edit Banner Modal Functions
+      function openEditBannerModal(id, title, link, position, isActive) {
+        document.getElementById("edit-banner-form").action =
+          `/admin/banners/${id}/edit/`;
+        document.getElementById("edit-banner-title").value = title;
+        document.getElementById("edit-banner-link").value = link;
+        document.getElementById("edit-banner-position").value = position;
+        document.getElementById("edit-banner-is-active").checked = isActive;
+        document.getElementById("edit-banner-modal").classList.remove("hidden");
+      }
+
+      function closeEditBannerModal() {
+        document.getElementById("edit-banner-modal").classList.add("hidden");
+      }
+
+      // Delete Banner Modal Functions
+      function openDeleteBannerModal(id, title) {
+        document.getElementById("delete-banner-form").action =
+          `/admin/banners/${id}/delete/`;
+        document.getElementById("delete-banner-name").textContent = title;
+        document
+          .getElementById("delete-banner-modal")
+          .classList.remove("hidden");
+      }
+
+      function closeDeleteBannerModal() {
+        document.getElementById("delete-banner-modal").classList.add("hidden");
+      }
     </script>
   </body>
 </html>

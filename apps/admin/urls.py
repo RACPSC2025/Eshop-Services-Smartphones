@@ -4,16 +4,81 @@ from . import views
 app_name = "admin"
 
 urlpatterns = [
-    path("", views.DashboardView.as_view(), name="admin_dashboard"),
+    path("panel/", views.DashboardView.as_view(), name="admin_dashboard"),
+    # Products
     path("products/", views.AdminProductsView.as_view(), name="admin_products"),
     path("products/create/", views.CreateProductView.as_view(), name="create_product"),
+    path(
+        "products/<int:pk>/edit/",
+        views.UpdateProductView.as_view(),
+        name="edit_product",
+    ),
+    path(
+        "products/<int:pk>/delete/",
+        views.DeleteProductView.as_view(),
+        name="delete_product",
+    ),
+    # Users
     path("users/", views.AdminUsersView.as_view(), name="admin_users"),
     path("users/create/", views.CreateUserView.as_view(), name="create_user"),
+    path(
+        "users/<int:pk>/edit/",
+        views.UpdateUserView.as_view(),
+        name="edit_user",
+    ),
+    path(
+        "users/<int:pk>/delete/",
+        views.DeleteUserView.as_view(),
+        name="delete_user",
+    ),
+    # Orders
+    path("orders/", views.AdminOrdersView.as_view(), name="admin_orders"),
+    path(
+        "orders/<int:pk>/edit/",
+        views.UpdateOrderView.as_view(),
+        name="edit_order",
+    ),
+    path(
+        "orders/<int:pk>/detail/",
+        views.OrderDetailView.as_view(),
+        name="order_detail",
+    ),
+    path(
+        "orders/<int:pk>/delete/",
+        views.DeleteOrderView.as_view(),
+        name="delete_order",
+    ),
+    path(
+        "orders/<int:pk>/status/<str:status>/",
+        views.UpdateOrderStatusView.as_view(),
+        name="update_order_status",
+    ),
+    # Banners
     path("banners/", views.AdminBannersView.as_view(), name="admin_banners"),
     path("banners/create/", views.CreateBannerView.as_view(), name="create_banner"),
+    path(
+        "banners/<int:pk>/edit/",
+        views.UpdateBannerView.as_view(),
+        name="edit_banner",
+    ),
+    path(
+        "banners/<int:pk>/delete/",
+        views.DeleteBannerView.as_view(),
+        name="delete_banner",
+    ),
+    # Media
     path("media/", views.AdminMediaView.as_view(), name="admin_media"),
     path("media/create/", views.CreateMediaView.as_view(), name="create_media"),
-    path("orders/", views.AdminOrdersView.as_view(), name="admin_orders"),
+    path(
+        "media/<int:pk>/edit/",
+        views.UpdateMediaView.as_view(),
+        name="edit_media",
+    ),
+    path(
+        "media/<int:pk>/delete/",
+        views.DeleteMediaView.as_view(),
+        name="delete_media",
+    ),
     # Categories
     path("categories/", views.AdminCategoriesView.as_view(), name="admin_categories"),
     path(
@@ -71,3 +136,4 @@ urlpatterns = [
         name="delete_social",
     ),
 ]
+

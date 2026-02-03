@@ -8,34 +8,6 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              xiaomi: "#FF6700",
-              "xiaomi-dark": "#e05a00",
-              "background-light": "#F5F5F7",
-              "card-light": "#FFFFFF",
-              "card-dark": "#1a1a1a",
-              "background-dark": "#0F1C2E",
-              "text-dark": "#1a1a1a",
-              surface: "#FAFAFA",
-            },
-            fontFamily: {
-              display: ["Outfit", "Inter", "sans-serif"],
-              body: ["Inter", "sans-serif"],
-            },
-            boxShadow: {
-              card: "0 10px 30px -10px rgba(0, 0, 0, 0.05)",
-              "card-hover": "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
-            },
-          },
-        },
-      };
-    </script>
-
     <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
@@ -98,21 +70,45 @@
             >
               <button
                 id="filter-all"
+                data-filter="ALL"
                 class="filter-btn px-4 py-2 bg-xiaomi text-white font-bold text-sm"
               >
                 Todos
               </button>
               <button
                 id="filter-pending"
+                data-filter="PENDING"
                 class="filter-btn px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-50"
               >
                 Pendientes
               </button>
               <button
-                id="filter-completed"
+                id="filter-processing"
+                data-filter="PROCESSING"
                 class="filter-btn px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-50"
               >
-                Completados
+                Procesando
+              </button>
+              <button
+                id="filter-shipped"
+                data-filter="SHIPPED"
+                class="filter-btn px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-50"
+              >
+                Enviado
+              </button>
+              <button
+                id="filter-delivered"
+                data-filter="DELIVERED"
+                class="filter-btn px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-50"
+              >
+                Entregado
+              </button>
+              <button
+                id="filter-cancelled"
+                data-filter="CANCELLED"
+                class="filter-btn px-4 py-2 text-gray-600 font-bold text-sm hover:bg-gray-50"
+              >
+                Cancelado
               </button>
             </div>
           </div>
@@ -159,7 +155,10 @@
                 </thead>
                 <tbody id="orders-table-body" class="divide-y divide-gray-200">
                   {% for order in orders %}
-                  <tr class="hover:bg-gray-50 transition-colors">
+                  <tr
+                    class="hover:bg-gray-50 transition-colors order-row"
+                    data-status="{{ order.status }}"
+                  >
                     <td
                       class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
                     >
@@ -175,12 +174,10 @@
                         </div>
                         <div>
                           <div class="text-sm font-medium text-gray-900">
-                            {{
-                            order.user.get_full_name|default:order.user.username
-                            }}
+                            {{ order.user.get_full_name|default:order.user.username }}
                           </div>
                           <div class="text-sm text-gray-500">
-                            @{{ order.user.username }}
+                            {{ order.user.email }}
                           </div>
                         </div>
                       </div>
@@ -205,9 +202,34 @@
                     <td
                       class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                     >
-                      <button class="text-indigo-600 hover:text-indigo-900">
-                        Ver Detalles
-                      </button>
+                      <div class="flex items-center justify-end gap-2">
+                        <!-- Ver Detalles -->
+                        <a
+                          href="{% url 'admin:order_detail' order.pk %}"
+                          class="text-gray-500 hover:text-gray-700"
+                          title="Ver detalles"
+                        >
+                          <span class="material-icons text-lg">visibility</span>
+                        </a>
+
+                        <!-- Cambio rápido de estado -->
+                        <button
+                          onclick="openStatusModal({{ order.pk }}, '{{ order.status }}')"
+                          class="text-blue-500 hover:text-blue-700"
+                          title="Cambiar estado"
+                        >
+                          <span class="material-icons text-lg">sync</span>
+                        </button>
+
+                        <!-- Eliminar -->
+                        <button
+                          onclick="confirmDeleteOrder({{ order.pk }}, '#{{ order.pk }}')"
+                          class="text-red-500 hover:text-red-700"
+                          title="Eliminar pedido"
+                        >
+                          <span class="material-icons text-lg">delete</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                   {% empty %}
@@ -225,6 +247,135 @@
       </main>
     </div>
 
+    <!-- Edit Order Modal -->
+    <div id="edit-order-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50"
+          >
+            <h3 class="text-xl font-black text-gray-900">Editar Pedido</h3>
+            <button
+              onclick="closeEditOrderModal()"
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <form id="edit-order-form" method="post" class="p-6 space-y-6">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700"
+                  >Estado del Pedido</label
+                >
+                <select
+                  name="status"
+                  id="edit-order-status"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                >
+                  <option value="PENDING">Pendiente</option>
+                  <option value="PROCESSING">Procesando</option>
+                  <option value="SHIPPED">Enviado</option>
+                  <option value="DELIVERED">Entregado</option>
+                  <option value="CANCELLED">Cancelado</option>
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700"
+                  >Método de Pago</label
+                >
+                <select
+                  name="payment_method"
+                  id="edit-order-payment-method"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                >
+                  <option value="CASH">Efectivo</option>
+                  <option value="CARD">Tarjeta</option>
+                  <option value="TRANSFER">Transferencia</option>
+                  <option value="CRYPTO">Criptomoneda</option>
+                </select>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-bold text-gray-700">Notas</label>
+              <textarea
+                name="notes"
+                id="edit-order-notes"
+                rows="3"
+                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+              ></textarea>
+            </div>
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onclick="closeEditOrderModal()"
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="px-8 py-2.5 bg-xiaomi text-white font-bold rounded-xl hover:bg-xiaomi-dark transition-colors shadow-lg"
+              >
+                Actualizar Pedido
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Cambio de Estado -->
+    <div id="status-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+      <div
+        class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0"
+      >
+        <div
+          class="fixed inset-0 transition-opacity"
+          onclick="closeStatusModal()"
+        >
+          <div class="absolute inset-0 bg-gray-900 opacity-75"></div>
+        </div>
+        <div
+          class="inline-block align-middle bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-md sm:w-full"
+        >
+          <div class="bg-white px-6 py-6">
+            <div class="flex items-center justify-between mb-6">
+              <h3
+                class="text-xl font-black text-gray-900"
+                id="status-modal-title"
+              >
+                Cambiar Estado del Pedido #<span id="status-order-id"></span>
+              </h3>
+              <button
+                onclick="closeStatusModal()"
+                class="text-gray-400 hover:text-gray-600"
+              >
+                <span class="material-icons">close</span>
+              </button>
+            </div>
+            <p class="text-gray-600 mb-6">Selecciona el nuevo estado:</p>
+            <div class="grid grid-cols-1 gap-3" id="status-buttons">
+              <!-- Los botones se generan dinámicamente -->
+            </div>
+            <div class="flex justify-end mt-6 pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onclick="closeStatusModal()"
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Scripts -->
     <script src="{% static 'js/state.js' %}"></script>
     <script src="{% static 'js/utils.js' %}"></script>
@@ -235,7 +386,127 @@
         if (window.AdminDashboard) {
           window.AdminDashboard.init();
         }
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const orderRows = document.querySelectorAll(".order-row");
+
+        filterButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Update active button styles
+            filterButtons.forEach((b) => {
+              b.classList.remove("bg-xiaomi", "text-white");
+              b.classList.add("text-gray-600", "hover:bg-gray-50");
+            });
+            btn.classList.remove("text-gray-600", "hover:bg-gray-50");
+            btn.classList.add("bg-xiaomi", "text-white");
+
+            // Filter orders
+            const filter = btn.dataset.filter;
+            orderRows.forEach((row) => {
+              if (filter === "ALL" || row.dataset.status === filter) {
+                row.style.display = "";
+              } else {
+                row.style.display = "none";
+              }
+            });
+          });
+        });
       });
+
+      // Edit Order Modal Functions
+      function openEditOrderModal(id, status, paymentMethod, notes) {
+        document.getElementById("edit-order-form").action =
+          `/admin/orders/${id}/edit/`;
+        document.getElementById("edit-order-status").value = status;
+        document.getElementById("edit-order-payment-method").value =
+          paymentMethod;
+        document.getElementById("edit-order-notes").value = notes;
+        document.getElementById("edit-order-modal").classList.remove("hidden");
+      }
+
+      function closeEditOrderModal() {
+        document.getElementById("edit-order-modal").classList.add("hidden");
+      }
+
+      function confirmDeleteOrder(orderId, orderNumber) {
+        if (
+          confirm(
+            `¿Estás seguro de que deseas eliminar el pedido ${orderNumber}? Esta acción no se puede deshacer.`,
+          )
+        ) {
+          window.location.href = `/admin/orders/${orderId}/delete/`;
+        }
+      }
+
+      // Status Modal Functions
+      let currentStatusOrderId = null;
+
+      const statusConfig = {
+        PENDING: {
+          label: "Pendiente",
+          color: "bg-yellow-500 hover:bg-yellow-600",
+          icon: "schedule",
+        },
+        PROCESSING: {
+          label: "Procesando",
+          color: "bg-blue-500 hover:bg-blue-600",
+          icon: "autorenew",
+        },
+        SHIPPED: {
+          label: "Enviado",
+          color: "bg-purple-500 hover:bg-purple-600",
+          icon: "local_shipping",
+        },
+        DELIVERED: {
+          label: "Entregado",
+          color: "bg-green-500 hover:bg-green-600",
+          icon: "check_circle",
+        },
+        CANCELLED: {
+          label: "Cancelado",
+          color: "bg-red-500 hover:bg-red-600",
+          icon: "cancel",
+        },
+      };
+
+      function openStatusModal(orderId, currentStatus) {
+        currentStatusOrderId = orderId;
+        document.getElementById("status-order-id").textContent = orderId;
+
+        const buttonsContainer = document.getElementById("status-buttons");
+        buttonsContainer.innerHTML = "";
+
+        // Crear botones para cada estado
+        Object.entries(statusConfig).forEach(([status, config]) => {
+          const isCurrentStatus = status === currentStatus;
+          const form = document.createElement("form");
+          form.method = "post";
+          form.action = `/admin/orders/${orderId}/status/${status}/`;
+
+          const csrfToken = document.querySelector(
+            "[name=csrfmiddlewaretoken]",
+          ).value;
+          form.innerHTML = `
+            <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+            <button type="submit" 
+              class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white font-bold transition-colors ${config.color} ${isCurrentStatus ? "ring-2 ring-offset-2 ring-gray-900" : ""}"
+              ${isCurrentStatus ? "disabled" : ""}>
+              <span class="material-icons">${config.icon}</span>
+              ${config.label}
+              ${isCurrentStatus ? '<span class="ml-auto text-xs opacity-75">(Actual)</span>' : ""}
+            </button>
+          `;
+          buttonsContainer.appendChild(form);
+        });
+
+        document.getElementById("status-modal").classList.remove("hidden");
+      }
+
+      function closeStatusModal() {
+        document.getElementById("status-modal").classList.add("hidden");
+        currentStatusOrderId = null;
+      }
     </script>
   </body>
 </html>

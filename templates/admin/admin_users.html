@@ -7,34 +7,6 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              xiaomi: "#FF6700",
-              "xiaomi-dark": "#e05a00",
-              "background-light": "#F5F5F7",
-              "card-light": "#FFFFFF",
-              "card-dark": "#1a1a1a",
-              "background-dark": "#0F1C2E",
-              "text-dark": "#1a1a1a",
-              surface: "#FAFAFA",
-            },
-            fontFamily: {
-              display: ["Outfit", "Inter", "sans-serif"],
-              body: ["Inter", "sans-serif"],
-            },
-            boxShadow: {
-              card: "0 10px 30px -10px rgba(0, 0, 0, 0.05)",
-              "card-hover": "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
-            },
-          },
-        },
-      };
-    </script>
-
     <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
@@ -141,11 +113,6 @@
                     <th
                       class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
                     >
-                      Puntos
-                    </th>
-                    <th
-                      class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
-                    >
                       Estado
                     </th>
                     <th
@@ -203,11 +170,6 @@
                       </span>
                       {% endif %}
                     </td>
-                    <td
-                      class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                    >
-                      -
-                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       {% if user.is_active %}
                       <span
@@ -227,12 +189,39 @@
                       class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                     >
                       <button
+                        onclick="openViewUserModal(
+                          '{{ user.username|escapejs }}',
+                          '{{ user.email|escapejs }}',
+                          '{{ user.first_name|escapejs }}',
+                          '{{ user.last_name|escapejs }}',
+                          {{ user.is_staff|yesno:'true,false' }},
+                          {{ user.is_superuser|yesno:'true,false' }},
+                          {{ user.is_active|yesno:'true,false' }},
+                          '{{ user.date_joined|date:"d/m/Y H:i" }}',
+                          '{{ user.last_login|date:"d/m/Y H:i"|default:"Nunca" }}',
+                          {
+                            phone: '{{ user.profile.phone|default:""|escapejs }}',
+                            avatar: '{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ user.username }}&background=random{% endif %}'
+                          }
+                        )"
+                        class="text-blue-600 hover:text-blue-900 mr-3"
+                        title="Ver detalles"
+                      >
+                        <span class="material-icons text-lg">visibility</span>
+                      </button>
+                      <button
+                        onclick="openEditUserModal({{ user.pk }}, '{{ user.username|escapejs }}', '{{ user.first_name|escapejs }}', '{{ user.last_name|escapejs }}', '{{ user.email|escapejs }}', {{ user.is_staff|yesno:'true,false' }}, {{ user.is_superuser|yesno:'true,false' }}, {{ user.is_active|yesno:'true,false' }})"
                         class="text-indigo-600 hover:text-indigo-900 mr-3"
+                        title="Editar"
                       >
                         <span class="material-icons text-lg">edit</span>
                       </button>
-                      <button class="text-red-600 hover:text-red-900">
-                        <span class="material-icons text-lg">block</span>
+                      <button
+                        onclick="openDeleteUserModal({{ user.pk }}, '{{ user.username|escapejs }}')"
+                        class="text-red-600 hover:text-red-900"
+                        title="Eliminar"
+                      >
+                        <span class="material-icons text-lg">delete</span>
                       </button>
                     </td>
                   </tr>
@@ -249,6 +238,69 @@
           </div>
         </div>
       </main>
+    </div>
+
+    <!-- View User Modal -->
+    <div id="view-user-modal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                    <h3 class="text-xl font-black text-gray-900">Detalles del Usuario</h3>
+                    <button onclick="document.getElementById('view-user-modal').classList.add('hidden')" class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                
+                <div class="p-6 overflow-y-auto max-h-[80vh]">
+                    <!-- Profile Header -->
+                    <div class="flex items-center gap-6 mb-8">
+                        <img id="view-user-avatar" src="" alt="Avatar" class="w-24 h-24 rounded-full border-4 border-gray-100 shadow-lg object-cover">
+                        <div>
+                            <h4 id="view-user-fullname" class="text-2xl font-bold text-gray-900"></h4>
+                            <p id="view-user-username-display" class="text-gray-500 font-medium text-lg"></p>
+                            <div class="flex gap-2 mt-3" id="view-user-badges">
+                                <!-- Badges will be injected here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Account Info -->
+                        <div class="space-y-4">
+                            <h5 class="text-sm font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-2">Información de Cuenta</h5>
+                            <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-4 text-sm">
+                                <span class="text-gray-500 font-medium">Email:</span>
+                                <span id="view-user-email" class="text-gray-900 font-medium break-all"></span>
+                                
+                                <span class="text-gray-500 font-medium">Fecha Registro:</span>
+                                <span id="view-user-date-joined" class="text-gray-900"></span>
+                                
+                                <span class="text-gray-500 font-medium">Último Acceso:</span>
+                                <span id="view-user-last-login" class="text-gray-900"></span>
+                            </div>
+                        </div>
+
+                        <!-- Personal Info -->
+                        <div class="space-y-4">
+                            <h5 class="text-sm font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-2">Información Personal</h5>
+                            <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-4 text-sm">
+                                <span class="text-gray-500 font-medium">Teléfono:</span>
+                                <span id="view-user-phone" class="text-gray-900"></span>
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 border-t border-gray-100 bg-gray-50/50 flex justify-end">
+                    <button type="button" onclick="document.getElementById('view-user-modal').classList.add('hidden')" class="px-6 py-2.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-lg">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- User Modal -->
@@ -346,6 +398,160 @@
       </div>
     </div>
 
+    <!-- Edit User Modal -->
+    <div id="edit-user-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50"
+          >
+            <h3 class="text-xl font-black text-gray-900">Editar Usuario</h3>
+            <button
+              onclick="closeEditUserModal()"
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <form id="edit-user-form" method="post" class="p-6 space-y-6">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Usuario</label>
+                <input
+                  type="text"
+                  name="username"
+                  id="edit-user-username"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                  required
+                />
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="edit-user-email"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                />
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Nombre</label>
+                <input
+                  type="text"
+                  name="first_name"
+                  id="edit-user-first-name"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                />
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Apellido</label>
+                <input
+                  type="text"
+                  name="last_name"
+                  id="edit-user-last-name"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-xiaomi"
+                />
+              </div>
+              <div class="space-y-2 flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="is_staff"
+                  id="edit-user-is-staff"
+                  class="rounded border-gray-300"
+                />
+                <label class="text-sm font-bold text-gray-700">Staff</label>
+              </div>
+              <div class="space-y-2 flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="is_superuser"
+                  id="edit-user-is-superuser"
+                  class="rounded border-gray-300"
+                />
+                <label class="text-sm font-bold text-gray-700">Superuser</label>
+              </div>
+              <div class="space-y-2 flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="is_active"
+                  id="edit-user-is-active"
+                  class="rounded border-gray-300"
+                  checked
+                />
+                <label class="text-sm font-bold text-gray-700">Activo</label>
+              </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+              <button
+                type="button"
+                onclick="closeEditUserModal()"
+                class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                class="px-8 py-2.5 bg-xiaomi text-white font-bold rounded-xl hover:bg-xiaomi-dark transition-colors shadow-lg"
+              >
+                Actualizar Usuario
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete User Modal -->
+    <div id="delete-user-modal" class="fixed inset-0 z-[60] hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div
+          class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden"
+        >
+          <div
+            class="p-6 border-b border-gray-100 flex items-center justify-between bg-red-50"
+          >
+            <h3 class="text-xl font-black text-red-600">Eliminar Usuario</h3>
+            <button
+              onclick="closeDeleteUserModal()"
+              class="p-2 hover:bg-white rounded-xl transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+          <div class="p-6">
+            <p class="text-gray-600 mb-4">
+              ¿Estás seguro de que deseas eliminar al usuario
+              <strong id="delete-user-name"></strong>? Esta acción no se puede
+              deshacer.
+            </p>
+            <form id="delete-user-form" method="post">
+              {% csrf_token %}
+              <div class="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onclick="closeDeleteUserModal()"
+                  class="px-6 py-2.5 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  class="px-8 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-colors shadow-lg"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Scripts -->
     <script src="js/state.js"></script>
     <script src="js/utils.js"></script>
@@ -357,6 +563,84 @@
           window.AdminDashboard.init();
         }
       });
+
+      // View User Modal Function
+      function openViewUserModal(username, email, firstName, lastName, isStaff, isSuperuser, isActive, dateJoined, lastLogin, profile) {
+          // Set Basic Info
+          document.getElementById('view-user-avatar').src = profile.avatar;
+          document.getElementById('view-user-fullname').textContent = `${firstName} ${lastName}`.trim() || username;
+          document.getElementById('view-user-username-display').textContent = `@${username}`;
+          
+          // Set Badges
+          const badgesContainer = document.getElementById('view-user-badges');
+          badgesContainer.innerHTML = '';
+          
+          if (isSuperuser) {
+              badgesContainer.innerHTML += `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-700">Admin</span>`;
+          } else if (isStaff) {
+              badgesContainer.innerHTML += `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Staff</span>`;
+          } else {
+            badgesContainer.innerHTML += `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700">Usuario</span>`;
+          }
+          
+          if (isActive) {
+              badgesContainer.innerHTML += `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">Activo</span>`;
+          } else {
+              badgesContainer.innerHTML += `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-700">Inactivo</span>`;
+          }
+
+          // Set Account Info
+          document.getElementById('view-user-email').textContent = email || 'No especificado';
+          document.getElementById('view-user-date-joined').textContent = dateJoined;
+          document.getElementById('view-user-last-login').textContent = lastLogin;
+
+          // Set Personal Info
+          document.getElementById('view-user-phone').textContent = profile.phone || 'No especificado';
+          
+
+
+          // Open Modal
+          document.getElementById('view-user-modal').classList.remove('hidden');
+      }
+
+      // Edit User Modal Functions
+      function openEditUserModal(
+        id,
+        username,
+        firstName,
+        lastName,
+        email,
+        isStaff,
+        isSuperuser,
+        isActive,
+      ) {
+        document.getElementById("edit-user-form").action =
+          `/admin/users/${id}/edit/`;
+        document.getElementById("edit-user-username").value = username;
+        document.getElementById("edit-user-first-name").value = firstName;
+        document.getElementById("edit-user-last-name").value = lastName;
+        document.getElementById("edit-user-email").value = email;
+        document.getElementById("edit-user-is-staff").checked = isStaff;
+        document.getElementById("edit-user-is-superuser").checked = isSuperuser;
+        document.getElementById("edit-user-is-active").checked = isActive;
+        document.getElementById("edit-user-modal").classList.remove("hidden");
+      }
+
+      function closeEditUserModal() {
+        document.getElementById("edit-user-modal").classList.add("hidden");
+      }
+
+      // Delete User Modal Functions
+      function openDeleteUserModal(id, username) {
+        document.getElementById("delete-user-form").action =
+          `/admin/users/${id}/delete/`;
+        document.getElementById("delete-user-name").textContent = username;
+        document.getElementById("delete-user-modal").classList.remove("hidden");
+      }
+
+      function closeDeleteUserModal() {
+        document.getElementById("delete-user-modal").classList.add("hidden");
+      }
     </script>
   </body>
 </html>

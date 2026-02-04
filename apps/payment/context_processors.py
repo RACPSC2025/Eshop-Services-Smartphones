@@ -13,6 +13,6 @@ def paypal_settings(request):
         dict: Diccionario con PAYPAL_CLIENT_ID y PAYPAL_MODE
     """
     return {
-        'PAYPAL_CLIENT_ID': settings.PAYPAL_CLIENT_ID,
-        'PAYPAL_MODE': settings.PAYPAL_MODE,
+        'PAYPAL_CLIENT_ID': str(settings.PAYPAL_CLIENT_ID).strip('"'),
+        'PAYPAL_MODE': str(settings.PAYPAL_MODE).strip('"'),
     }

@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class="font-display animate-fade-in bg-[#F5F5F7] dark:bg-background-dark min-h-screen pt-8 pb-20">
-    <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header -->
         <div class="mb-8 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
@@ -24,94 +24,127 @@
             {% csrf_token %}
             
             <!-- Left: Form -->
-            <div class="lg:col-span-7 space-y-6">
+            <div class="lg:col-span-7 space-y-4">
                 
                 <!-- Shipping Info -->
-                <div class="bg-white dark:bg-card-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 md:p-8">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                        <span class="material-icons text-xiaomi">local_shipping</span>
-                        Información de Envío
-                    </h2>
+                <div class="bg-white dark:bg-card-dark rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-800 p-6 md:p-8 transition-all hover:border-xiaomi/20">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center">
+                                <span class="material-icons text-xiaomi text-xl">local_shipping</span>
+                            </span>
+                            Información de Envío
+                        </h2>
+                        <span class="text-[10px] font-bold text-xiaomi bg-orange-50 dark:bg-orange-900/20 px-2 py-0.5 rounded-full uppercase tracking-wider">Paso 1</span>
+                    </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
                         <!-- Name -->
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Nombre Completo</label>
-                            {{ form.shipping_name }}
+                        <div class="md:col-span-2 group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Nombre Completo</label>
+                            <div class="relative">
+                                {{ form.shipping_name }}
+                            </div>
                             {% if form.shipping_name.errors %}
-                                <p class="text-red-500 text-xs mt-1">{{ form.shipping_name.errors.0 }}</p>
+                                <p class="text-red-500 text-xs mt-2 ml-2 font-medium flex items-center gap-1">
+                                    <span class="material-icons text-sm">error_outline</span>
+                                    {{ form.shipping_name.errors.0 }}
+                                </p>
                             {% endif %}
                         </div>
 
                         <!-- Email -->
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Correo Electrónico</label>
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Correo Electrónico</label>
                             {{ form.shipping_email }}
                              {% if form.shipping_email.errors %}
-                                <p class="text-red-500 text-xs mt-1">{{ form.shipping_email.errors.0 }}</p>
+                                <p class="text-red-500 text-[10px] mt-1.5 ml-2 font-medium flex items-center gap-1">
+                                    <span class="material-icons text-[10px]">error_outline</span>
+                                    {{ form.shipping_email.errors.0 }}
+                                </p>
                             {% endif %}
                         </div>
 
                         <!-- Phone -->
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Teléfono Móvil</label>
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Teléfono Móvil</label>
                             {{ form.shipping_phone }}
                              {% if form.shipping_phone.errors %}
-                                <p class="text-red-500 text-xs mt-1">{{ form.shipping_phone.errors.0 }}</p>
+                                <p class="text-red-500 text-[10px] mt-1.5 ml-2 font-medium flex items-center gap-1">
+                                    <span class="material-icons text-[10px]">error_outline</span>
+                                    {{ form.shipping_phone.errors.0 }}
+                                </p>
                             {% endif %}
                         </div>
 
                         <!-- Address -->
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Dirección de Entrega</label>
+                        <div class="md:col-span-2 group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Dirección de Entrega</label>
                             {{ form.shipping_address }}
                              {% if form.shipping_address.errors %}
-                                <p class="text-red-500 text-xs mt-1">{{ form.shipping_address.errors.0 }}</p>
+                                <p class="text-red-500 text-[10px] mt-1.5 ml-2 font-medium flex items-center gap-1">
+                                    <span class="material-icons text-[10px]">error_outline</span>
+                                    {{ form.shipping_address.errors.0 }}
+                                </p>
                             {% endif %}
                         </div>
 
                         <!-- City & Dept -->
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Ciudad</label>
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Ciudad</label>
                             {{ form.shipping_city }}
                              {% if form.shipping_city.errors %}
-                                <p class="text-red-500 text-xs mt-1">{{ form.shipping_city.errors.0 }}</p>
+                                <p class="text-red-500 text-[10px] mt-1.5 ml-2 font-medium flex items-center gap-1">
+                                    <span class="material-icons text-[10px]">error_outline</span>
+                                    {{ form.shipping_city.errors.0 }}
+                                </p>
                             {% endif %}
                         </div>
-                         <div>
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Departamento</label>
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Departamento</label>
                             {{ form.shipping_department }}
                              {% if form.shipping_department.errors %}
-                                <p class="text-red-500 text-xs mt-1">{{ form.shipping_department.errors.0 }}</p>
+                                <p class="text-red-500 text-[10px] mt-1.5 ml-2 font-medium flex items-center gap-1">
+                                    <span class="material-icons text-[10px]">error_outline</span>
+                                    {{ form.shipping_department.errors.0 }}
+                                </p>
                             {% endif %}
                         </div>
                         
                          <!-- Postal Code -->
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Código Postal (Opcional)</label>
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Código Postal (Opcional)</label>
                             {{ form.shipping_postal_code }}
                         </div>
                     </div>
                 </div>
 
                 <!-- Payment Info -->
-                <div class="bg-white dark:bg-card-dark rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 md:p-8">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                        <span class="material-icons text-xiaomi">payments</span>
-                        Pago y Notas
-                    </h2>
+                <div class="bg-white dark:bg-card-dark rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-800 p-6 md:p-8 transition-all hover:border-xiaomi/20">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center">
+                                <span class="material-icons text-xiaomi text-xl">payments</span>
+                            </span>
+                            Pago y Notas
+                        </h2>
+                        <span class="text-[10px] font-bold text-xiaomi bg-orange-50 dark:bg-orange-900/20 px-2 py-0.5 rounded-full uppercase tracking-wider">Paso 2</span>
+                    </div>
                     
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Método de Pago</label>
+                    <div class="space-y-6">
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Método de Pago</label>
                             {{ form.payment_method }}
                              {% if form.payment_method.errors %}
-                                <p class="text-red-500 text-xs mt-1">{{ form.payment_method.errors.0 }}</p>
+                                <p class="text-red-500 text-[10px] mt-1.5 ml-2 font-medium flex items-center gap-1">
+                                    <span class="material-icons text-[10px]">error_outline</span>
+                                    {{ form.payment_method.errors.0 }}
+                                </p>
                             {% endif %}
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Notas del Pedido (Opcional)</label>
+                        <div class="group">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 ml-1 group-focus-within:text-xiaomi transition-colors">Notas del Pedido (Opcional)</label>
                             {{ form.notes }}
                         </div>
                     </div>
@@ -221,25 +254,54 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicializar botones de PayPal
     if (typeof paypal !== 'undefined') {
+        console.log('PayPal SDK cargado correctamente');
         paypal.Buttons({
+            // Estilo de los botones
+            style: {
+                layout: 'vertical',
+                color: 'blue',
+                shape: 'rect',
+                label: 'paypal',
+                height: 50
+            },
+            
             // onClick se ejecuta antes de que PayPal inicie el proceso de pago
             onClick: function(data, actions) {
-                // Validación básica del formulario en el cliente
-                const requiredFields = ['shipping_name', 'shipping_email', 'shipping_phone', 'shipping_address', 'shipping_city'];
+                // Validación detallada del formulario
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const requiredFields = [
+                    { name: 'shipping_name', label: 'Nombre Completo' },
+                    { name: 'shipping_email', label: 'Correo Electrónico', isEmail: true },
+                    { name: 'shipping_phone', label: 'Teléfono' },
+                    { name: 'shipping_address', label: 'Dirección' },
+                    { name: 'shipping_city', label: 'Ciudad' }
+                ];
+                
                 let isValid = true;
+                let firstError = null;
                 
                 for (let field of requiredFields) {
-                    const el = checkoutForm.querySelector(`[name="${field}"]`);
-                    if (!el || !el.value.trim()) {
+                    const el = checkoutForm.querySelector(`[name="${field.name}"]`);
+                    const val = el ? el.value.trim() : '';
+                    
+                    let fieldValid = true;
+                    if (!val) {
+                        fieldValid = false;
+                    } else if (field.isEmail && !emailRegex.test(val)) {
+                        fieldValid = false;
+                    }
+                    
+                    if (!fieldValid) {
                         el.classList.add('border-red-500', 'ring-1', 'ring-red-500');
                         isValid = false;
+                        if (!firstError) firstError = field.label;
                     } else {
                         el.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
                     }
                 }
                 
                 if (!isValid) {
-                    alert('Por favor completa todos los campos requeridos antes de proceder con PayPal.');
+                    alert('Por favor ingresa un ' + firstError + ' válido antes de proceder.');
                     return actions.reject();
                 }
                 return actions.resolve();
@@ -247,43 +309,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Crear orden en backend
             createOrder: function(data, actions) {
-                const formData = new FormData(checkoutForm);
-                formData.append('use_paypal', 'true');
-                formData.append('payment_method', 'PAYPAL');
+                // Mostrar un loading o deshabilitar algo si es necesario
+                console.log('Iniciando creación de orden PayPal...');
                 
-                // Unificamos todo en una sola petición al endpoint de creación de orden
-                // Esto elimina la latencia de peticiones secuenciales
+                const formData = new FormData(checkoutForm);
+                formData.set('payment_method', 'PAYPAL'); // Asegurar el método
+                
                 return fetch('/payment/create/', {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': formData.get('csrfmiddlewaretoken')
                     },
-                    body: formData // Enviamos el FormData completo
+                    body: formData
                 })
                 .then(res => {
                     if (!res.ok) {
-                        return res.json().then(data => {
-                            throw new Error(data.error || 'Error al procesar la orden');
+                        return res.json().then(errData => {
+                            let msg = errData.error || 'Error del servidor';
+                            if (errData.details) {
+                                // Extraer primer detalle de error de Django
+                                const firstKey = Object.keys(errData.details)[0];
+                                msg += ': ' + errData.details[firstKey][0];
+                            }
+                            throw new Error(msg);
                         });
                     }
                     return res.json();
                 })
                 .then(data => {
                     if (data.success && data.order_id) {
+                        console.log('Orden creada:', data.order_id);
                         return data.order_id;
                     } else {
-                        throw new Error(data.error || 'No se pudo obtener el ID de orden');
+                        throw new Error(data.error || 'No se recibió ID de orden');
                     }
                 })
                 .catch(error => {
-                    console.error('PayPal Order Error:', error);
-                    alert('Error al iniciar PayPal: ' + error.message);
+                    console.error('PayPal createOrder error:', error);
+                    alert('No se pudo iniciar el pago: ' + error.message);
+                    // Re-lanzar para que PayPal sepa que falló y cierre el popup o muestre error
+                    throw error;
                 });
             },
             
             // Capturar pago después de aprobación
             onApprove: function(data, actions) {
+                console.log('Pago aprobado en PayPal, capturando en backend...');
                 const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                
+                // Mostrar overlay de procesamiento
+                const overlay = document.createElement('div');
+                overlay.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-[300] flex items-center justify-center';
+                overlay.innerHTML = '<div class="bg-white dark:bg-card-dark p-8 rounded-3xl text-center"><div class="animate-spin rounded-full h-12 w-12 border-4 border-xiaomi border-t-transparent mx-auto mb-4"></div><p class="font-bold">Procesando tu pedido...</p></div>';
+                document.body.appendChild(overlay);
                 
                 return fetch(`/payment/capture/${data.orderID}/`, {
                     method: 'POST',
@@ -295,39 +373,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'success') {
-                        // Redirigir a página de éxito
                         window.location.href = '/orders/success/';
                     } else {
+                        overlay.remove();
                         alert('Error al procesar el pago: ' + data.message);
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error al capturar pago');
+                    overlay.remove();
+                    console.error('Capture error:', error);
+                    alert('Error crítico al capturar el pago. Por favor contacta a soporte.');
                 });
             },
             
             // Manejar cancelación
             onCancel: function(data) {
-                console.log('Pago cancelado', data);
-                alert('Has cancelado el pago. Puedes intentar nuevamente.');
+                console.log('El usuario cerró la ventana de PayPal', data);
             },
             
             // Manejar errores
             onError: function(err) {
-                console.error('Error de PayPal:', err);
-                alert('Ocurrió un error con PayPal. Por favor intenta nuevamente.');
-            },
-            
-            // Estilo de los botones
-            style: {
-                layout: 'vertical',
-                color: 'blue',
-                shape: 'rect',
-                label: 'paypal',
-                height: 50
+                console.error('PayPal SDK error:', err);
+                // No alertamos aquí si ya alertamos en createOrder/onApprove para evitar alertas duplicadas
             }
         }).render('#paypal-button-container');
+    } else {
+        console.error('PayPal SDK no se pudo cargar. Verifique PAYPAL_CLIENT_ID en el archivo .env');
+        // Mostrar botón normal como respaldo o mensaje de error
+        const errorMsg = document.createElement('p');
+        errorMsg.className = 'text-red-500 text-xs mt-2 text-center';
+        errorMsg.textContent = 'Error: El sistema de PayPal no está disponible actualmente.';
+        paypalContainer.appendChild(errorMsg);
+        paypalContainer.style.display = 'block';
     }
 });
 </script>

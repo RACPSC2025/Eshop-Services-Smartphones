@@ -179,10 +179,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # --- ALLAUTH CONFIGURATION ---
 
 # Authentication
-ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use email instead of username
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True  # Enforce unique emails
-ACCOUNT_USERNAME_REQUIRED = False  # Don't require username
+# 1. Define how users log in
+ACCOUNT_LOGIN_METHODS = {'email'}
+
+# 2. Define signup requirements (Replacing EMAIL_REQUIRED and USERNAME_REQUIRED)
+# Removing 'username' from this list makes it not required.
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+
+# 3. This setting remains the same as it is not deprecated
+ACCOUNT_UNIQUE_EMAIL = True
 
 # Redirects
 LOGIN_REDIRECT_URL = "/"
@@ -213,8 +218,8 @@ SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APPS": [
             {
-                "client_id": os.getenv("GOOGLE_OAUTH_CLIENT_ID"),
-                "secret": os.getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+                "client_id": os.getenv("GOOGLE_OAUTH_CLIENT_ID", ""),
+                "secret": os.getenv("GOOGLE_OAUTH_CLIENT_SECRET", ""),
                 "key": "",
             },
         ],

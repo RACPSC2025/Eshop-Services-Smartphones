@@ -85,6 +85,14 @@
               <span class="material-icons text-sm">person_add</span>
               <span>Nuevo Usuario</span>
             </button>
+
+            <a
+              href="{% url 'pages:home' %}"
+              class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 text-gray-500 hover:bg-orange-50 hover:text-xiaomi transition-all shadow-sm flex-shrink-0"
+              title="Ir al Inicio"
+            >
+              <span class="material-icons">home</span>
+            </a>
           </div>
         </header>
 
@@ -189,21 +197,7 @@
                       class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
                     >
                       <button
-                        onclick="openViewUserModal(
-                          '{{ user.username|escapejs }}',
-                          '{{ user.email|escapejs }}',
-                          '{{ user.first_name|escapejs }}',
-                          '{{ user.last_name|escapejs }}',
-                          {{ user.is_staff|yesno:'true,false' }},
-                          {{ user.is_superuser|yesno:'true,false' }},
-                          {{ user.is_active|yesno:'true,false' }},
-                          '{{ user.date_joined|date:"d/m/Y H:i" }}',
-                          '{{ user.last_login|date:"d/m/Y H:i"|default:"Nunca" }}',
-                          {
-                            phone: '{{ user.profile.phone|default:""|escapejs }}',
-                            avatar: '{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ user.username }}&background=random{% endif %}'
-                          }
-                        )"
+                        onclick="openViewUserModal(`{{ user.username|escapejs }}`, `{{ user.email|escapejs }}`, `{{ user.first_name|escapejs }}`, `{{ user.last_name|escapejs }}`, {{ user.is_staff|yesno:'true,false' }}, {{ user.is_superuser|yesno:'true,false' }}, {{ user.is_active|yesno:'true,false' }}, `{{ user.date_joined|date:'d/m/Y H:i' }}`, `{{ user.last_login|date:'d/m/Y H:i'|default:'Nunca' }}`, { phone: `{{ user.profile.phone|default:''|escapejs }}`, avatar: `{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}https://ui-avatars.com/api/?name={{ user.username }}&background=random{% endif %}` })"
                         class="text-blue-600 hover:text-blue-900 mr-3"
                         title="Ver detalles"
                       >

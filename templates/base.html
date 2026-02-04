@@ -44,9 +44,10 @@
         <link rel="icon" type="image/x-icon" href="{% static 'assets/icons/favicon.webp' %}">
 
         {% tailwind_css %}
+        {% block extra_head %}{% endblock %}
         <title>{% block title %}UnlockXiaomi{% endblock %}</title>
         
-        <script src="{% static 'js/theme.js' %}" defer></script>
+        <script src="{% static 'js/theme.js' %}"></script>
 
         <style>
             :root {
@@ -68,7 +69,7 @@
         </style>
     </head>
     <body
-        class="bg-[#F5F5F7] dark:bg-background-dark text-gray-900 dark:text-gray-100 transition-colors duration-500 font-display flex flex-col min-h-screen"
+        class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100 transition-colors duration-500 font-display flex flex-col min-h-screen"
     >
         {% include 'components/navbar.html' %}
 

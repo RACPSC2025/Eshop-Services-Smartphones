@@ -3,6 +3,11 @@
 
 {% block title %}Checkout | MiXiaomiUnlock{% endblock %}
 
+{% block extra_head %}
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id={{ PAYPAL_CLIENT_ID }}&currency=USD"></script>
+{% endblock %}
+
 
 {% block content %}
 <div class="font-display animate-fade-in bg-[#F5F5F7] dark:bg-background-dark min-h-screen pt-8 pb-20">
@@ -15,7 +20,7 @@
             <span class="text-gray-900 dark:text-white font-bold">Checkout</span>
         </div>
 
-        <form method="post" action="." class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <form id="checkout-form" method="post" action="." class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {% csrf_token %}
             
             <!-- Left: Form -->
@@ -164,11 +169,14 @@
                         <span class="text-2xl font-bold text-primary dark:text-white">${{ cart.get_total }}</span>
                     </div>
 
-                    <!-- Submit Button -->
-                    <button type="submit" class="w-full mt-8 py-4 bg-primary dark:bg-white text-white dark:text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-opacity-90 shadow-lg shadow-blue-500/20 active:scale-95 transition-all">
+                    <!-- Submit Buttons -->
+                    <button type="submit" id="submit-button" class="w-full mt-8 py-4 bg-primary dark:bg-white text-white dark:text-black rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-opacity-90 shadow-lg shadow-blue-500/20 active:scale-95 transition-all">
                         <span class="material-icons">lock</span>
                         Confirmar Compra
                     </button>
+                    
+                    <!-- PayPal Buttons Container (Initially Hidden) -->
+                    <div id="paypal-button-container" class="w-full mt-8" style="display: none;"></div>
                     
                     <p class="text-center text-xs text-gray-400 mt-4 flex items-center justify-center gap-1">
                         <span class="material-icons text-xs">verified_user</span>
@@ -179,4 +187,148 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// PayPal Integration Script
+document.addEventListener('DOMContentLoaded', function() {
+    const checkoutForm = document.getElementById('checkout-form');
+    const submitButton = document.getElementById('submit-button');
+    const paypalContainer = document.getElementById('paypal-button-container');
+    const paymentMethodSelect = document.querySelector('[name="payment_method"]');
+    
+    // Función para mostrar/ocultar botones según método de pago
+    function updatePaymentUI() {
+        const paymentMethod = paymentMethodSelect ? paymentMethodSelect.value : '';
+        
+        if (paymentMethod === 'PAYPAL') {
+            // Mostrar botones PayPal, ocultar botón submit
+            submitButton.style.display = 'none';
+            paypalContainer.style.display = 'block';
+        } else {
+            // Mostrar botón submit, ocultar PayPal
+            submitButton.style.display = 'flex';
+            paypalContainer.style.display = 'none';
+        }
+    }
+    
+    // Escuchar cambios en el método de pago
+    if (paymentMethodSelect) {
+        paymentMethodSelect.addEventListener('change', updatePaymentUI);
+        updatePaymentUI(); // Inicializar en carga
+    }
+    
+    // Inicializar botones de PayPal
+    if (typeof paypal !== 'undefined') {
+        paypal.Buttons({
+            // onClick se ejecuta antes de que PayPal inicie el proceso de pago
+            onClick: function(data, actions) {
+                // Validación básica del formulario en el cliente
+                const requiredFields = ['shipping_name', 'shipping_email', 'shipping_phone', 'shipping_address', 'shipping_city'];
+                let isValid = true;
+                
+                for (let field of requiredFields) {
+                    const el = checkoutForm.querySelector(`[name="${field}"]`);
+                    if (!el || !el.value.trim()) {
+                        el.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+                        isValid = false;
+                    } else {
+                        el.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+                    }
+                }
+                
+                if (!isValid) {
+                    alert('Por favor completa todos los campos requeridos antes de proceder con PayPal.');
+                    return actions.reject();
+                }
+                return actions.resolve();
+            },
+
+            // Crear orden en backend
+            createOrder: function(data, actions) {
+                const formData = new FormData(checkoutForm);
+                formData.append('use_paypal', 'true');
+                formData.append('payment_method', 'PAYPAL');
+                
+                // Unificamos todo en una sola petición al endpoint de creación de orden
+                // Esto elimina la latencia de peticiones secuenciales
+                return fetch('/payment/create/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                    },
+                    body: formData // Enviamos el FormData completo
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(data => {
+                            throw new Error(data.error || 'Error al procesar la orden');
+                        });
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.success && data.order_id) {
+                        return data.order_id;
+                    } else {
+                        throw new Error(data.error || 'No se pudo obtener el ID de orden');
+                    }
+                })
+                .catch(error => {
+                    console.error('PayPal Order Error:', error);
+                    alert('Error al iniciar PayPal: ' + error.message);
+                });
+            },
+            
+            // Capturar pago después de aprobación
+            onApprove: function(data, actions) {
+                const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                
+                return fetch(`/payment/capture/${data.orderID}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Redirigir a página de éxito
+                        window.location.href = '/orders/success/';
+                    } else {
+                        alert('Error al procesar el pago: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al capturar pago');
+                });
+            },
+            
+            // Manejar cancelación
+            onCancel: function(data) {
+                console.log('Pago cancelado', data);
+                alert('Has cancelado el pago. Puedes intentar nuevamente.');
+            },
+            
+            // Manejar errores
+            onError: function(err) {
+                console.error('Error de PayPal:', err);
+                alert('Ocurrió un error con PayPal. Por favor intenta nuevamente.');
+            },
+            
+            // Estilo de los botones
+            style: {
+                layout: 'vertical',
+                color: 'blue',
+                shape: 'rect',
+                label: 'paypal',
+                height: 50
+            }
+        }).render('#paypal-button-container');
+    }
+});
+</script>
 {% endblock %}

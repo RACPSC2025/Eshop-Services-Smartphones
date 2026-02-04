@@ -1,16 +1,10 @@
+# apps/payment/urls.py
 from django.urls import path
-from . import views
+from .views import create_paypal_order, capture_paypal_order
 
 urlpatterns = [
-    path("", views.PaymentView.as_view(), name="payment_index"),
-    path(
-        "create-order/",
-        views.CreatePayPalOrderView.as_view(),
-        name="payment_create_order",
-    ),
-    path(
-        "capture-order/",
-        views.CapturePayPalOrderView.as_view(),
-        name="payment_capture_order",
-    ),
+    # Crear orden en PayPal
+    path('create/', create_paypal_order, name='paypal-create'),
+    # Capturar orden después de aprobación
+    path('capture/<str:order_id>/', capture_paypal_order, name='paypal-capture'),
 ]

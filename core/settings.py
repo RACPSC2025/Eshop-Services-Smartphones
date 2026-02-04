@@ -95,6 +95,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "apps.orders.context_processors.cart_context",  # ✅ Carrito Global
+                "apps.payment.context_processors.paypal_settings",  # ✅ PayPal Config
             ],
         },
     },
@@ -266,3 +267,4 @@ CKEDITOR_5_CONFIGS = {
 # --- PAYPAL CONFIG ---
 PAYPAL_CLIENT_ID = os.getenv("PAYPAL_CLIENT_ID")
 PAYPAL_SECRET = os.getenv("PAYPAL_SECRET")
+PAYPAL_MODE = os.getenv("PAYPAL_MODE", "sandbox")

@@ -140,6 +140,7 @@
         <script src="{% static 'js/notifications.js' %}" defer></script>
         <script src="{% static 'js/cart.js' %}" defer></script>
         <script src="{% static 'js/favorites.js' %}" defer></script>
+        {% block extra_js %}{% endblock %}
         {% block scripts %}{% endblock %}
     </body>
 </html>
